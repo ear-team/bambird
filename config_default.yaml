@@ -72,8 +72,8 @@ PARAMS_FEATURES:
 ################################
 PARAMS_CLUSTER:
   SCALER: MINMAXSCALER   # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
-  PERCENTAGE_PTS: 5     # minimum number of ROIs to form a cluster (in % of the total number of ROIs)
-  EPS: auto               # set the maximum distance between elements in a single clusters {a number or 'auto'}
+  PERCENTAGE_PTS: 5      # minimum number of ROIs to form a cluster (in % of the total number of ROIs)
+  EPS: auto              # set the maximum distance between elements in a single clusters {a number or 'auto'}
   METHOD: DBSCAN         # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
   KEEP: BIGGEST          # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
 

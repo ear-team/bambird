@@ -27,35 +27,33 @@ DEFAULT_PARAMS_XC = {
 
 DEFAULT_PARAMS_EXTRACT = {
     # Extract Audio resampling
-    "SAMPLE_RATE": 44100,  # Sampling frequency in Hz
+    "SAMPLE_RATE": 48000,  # Sampling frequency in Hz
     # Audio preprocess
     "LOW_FREQ": 250,  # Low frequency in Hz of the bandpass filter applied to the audio
     "HIGH_FREQ": 12000,  # High frequency in Hz of the bandpass filter applied to the audio
     # butterworth filter order to select the bandwidth corresponding to the ROI
-    "BUTTER_ORDER": 5,
+    "BUTTER_ORDER": 1,
     # Max duration of the audio files that we will use to compute the features
-    "AUDIO_DURATION": 20,
+    "AUDIO_DURATION": 60,
     # Split the audio signal of chunk with duration = SIGNAL LENGTH (in second)
-    "SIGNAL_LENGTH": 20,
-    "OVLP": 0,  # Define the overlap ratio between each chunk
+    "SIGNAL_LENGTH": 10,
+    "OVLP": 0.5,  # Define the overlap ratio between each chunk
     # Spectrogram
     # Mode to compute the remove_background ('mean', 'median')
     "MODE_RMBCKG": "median",
     # Number of points used to compute the running mean of the noise profil
     "N_RUNNING_MEAN": 10,
-    "NFFT": 2048,  # Number of points of the spectrogram
+    "NFFT": 1024,  # Number of points of the spectrogram
     # Combination of parameters for ROIs extraction
-    "MASK_PARAM1": 50,  # 30 37
-    "MASK_PARAM2": 30,  # 20 33
+    "MASK_PARAM1": 26,  # 30 37
+    "MASK_PARAM2": 10,  # 20 33
     # Select and merge bbox parameters
-    # values should be a multiple of the resolution/2 of the reducted spectro
-    # df_reduc = 323Hz FACTOR_F = 15, NFFT = 2048 and SAMPLE_RATE = 44100
-    # dt_reduc = 0.232s for FACTOR_T = 10, NFFT = 2048 and SAMPLE_RATE = 44100
-    "MIN_DURATION": 0.1,  # minimum event duration in s
+    "MAX_RATIO_YX": 7,      # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
+    "MIN_DURATION": 0.1,    # minimum event duration in s
     "MARGIN_T_LEFT": 0.2,
     "MARGIN_T_RIGHT": 0.2,
-    "MARGIN_F_TOP": 100,
-    "MARGIN_F_BOTTOM": 100,
+    "MARGIN_F_TOP": 250,
+    "MARGIN_F_BOTTOM": 250,
     # save parameters
     "MARGIN_T": 0.1,  # time margin in s around the ROI
     "MARGIN_F": 250,  # frequency margin in Hz around the ROI
@@ -65,24 +63,24 @@ DEFAULT_PARAMS_EXTRACT = {
 
 DEFAULT_PARAMS_FEATURES = {
     # Extract Audio resampling
-    "SAMPLE_RATE": 24000,  # Sampling frequency in Hz
+    "SAMPLE_RATE": 48000,  # Sampling frequency in Hz
     # Audio preprocess
     "LOW_FREQ": 250,  # Low frequency in Hz of the bandpass filter applied to the audio
     "HIGH_FREQ": 11000,  # High frequency in Hz of the bandpass filter applied to the audio
     # butterworth filter order to select the bandwidth corresponding to the ROI
     "BUTTER_ORDER": 1,
     # Spectrogram
-    # Number of points used to compute the running mean of the noise profil
-    "N_RUNNING_MEAN": 35,
-    "NFFT": 2048,  # Number of points of the spectrogram
-    "SHAPE_RES": "med",
+    "NFFT": 1024,  
+    # Number of points of the spectrogram
+    "SHAPE_RES": "high",
 }
 
 DEFAULT_PARAMS_CLUSTER = {
-    "PERCENTAGE_PTS": 10,       # in %
-    "METHOD": "HDBSCAN",        # HDBSCAN or DBSCAN
-    "SCALER": "STANDARDSCALER", # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
-    "KEEP":   "BIGGEST"         # ALL or BIGGEST
+    "PERCENTAGE_PTS": 5,       # in %
+    "METHOD": "DBSCAN",        # HDBSCAN or DBSCAN
+    "SCALER": "MINMAXSCALER", # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
+    "KEEP":   "BIGGEST",         # ALL or BIGGEST
+    "EPS":    "auto"            # set the maximum distance between elements in a single clusters {a number or 'auto'}
 }
 
 

@@ -13,10 +13,10 @@ RANDOM_SEED: 1979         # Fixed random seed
 ################################
 PARAMS_XC:
   NUM_FILES: 20            # Number of file to extract for each species
-  PARAM_XC_LIST:          # Xeno-canto parameters
+  PARAM_XC_LIST:           # Xeno-canto parameters
   - len:30-60
   - q:">C"
-  #- type:song
+  - type:song
   #CSV_XC_FILE: 'dataset_xc_embcit.csv' # The file will contain all the metadata collected from Xeno-canto
  
 ################################
@@ -65,7 +65,7 @@ PARAMS_FEATURES:
   HIGH_FREQ: 11000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
   # Spectrogram
-  NFFT: 512              # Number of points of the spectrogram
+  NFFT: 512               # Number of points of the spectrogram
   SHAPE_RES: 'med'        # Resolution of the shapes {low, med, high}
 
 ################################
@@ -74,6 +74,7 @@ PARAMS_FEATURES:
 PARAMS_CLUSTER:
   SCALER: MINMAXSCALER   # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
   PERCENTAGE_PTS: 10     # minimum number of ROIs to form a cluster (in % of the total number of ROIs)
+  EPS: auto              # set the maximum distance between elements in a single clusters {a number or 'auto'}
   METHOD: DBSCAN         # cluster method that allow some points being outside of a cluster {HDBSCAN, DBSCAN}
   KEEP: BIGGEST          # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
 
