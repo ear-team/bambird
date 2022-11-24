@@ -19,7 +19,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 plt.close("all")
 
-import maad
 import bambird
 
 # %%
@@ -31,9 +30,18 @@ TEMP_DIR        = "./build_dataset_temp"
 DATASET_NAME    = Path('WORKFLOW_SINGLE_FILE')
 ROIS_NAME       = Path(str(DATASET_NAME) +'_ROIS')
 
-# Xeno-Canto number (ie. 473724 for a audio of Columba palumbus https://xeno-canto.org/758652)
-# Without XC
-XC_NUMBER = 473724
+# List of species to build a clean dataset
+SCIENTIC_NAME_LIST = [
+                        "Columba palumbus",
+                        # "Regulus regulus",
+                        # "Phylloscopus collybita",
+                        # "Anthus triviali", 
+                        # "Fringilla coelebs", 
+                        # "Troglodytes troglodytes", 
+                        # "Phoenicurus phoenicurus", 
+                        # "Strix aluco", 
+                        # "Aegithalos caudatus",
+                      ]
 
 CONFIG_FILE = '../config_default.yaml' 
 
@@ -48,8 +56,13 @@ if __name__ == '__main__':
 
 #%%    
     # Query Xeno-Canto
-    # ----------------   
-    df_dataset = maad.util.xc_query(['nr:' + str(XC_NUMBER)])
+    # ----------------
+    df_dataset = bambird.query_xc(
+                        species_list    = SCIENTIC_NAME_LIST,
+                        params          = params['PARAMS_XC'],
+                        random_seed     = params['RANDOM_SEED'],
+                        verbose         = True
+                        )
     
     # Download audio Xeno-Canto
     # -------------------------
@@ -67,15 +80,29 @@ if __name__ == '__main__':
     # Extract ROIS
     # -------------------------------
     
+    # # select a random file
+    df_single = df_xc.sample(n=1).squeeze()
+    # select a file by its XC name
+    # df_single = df_xc[df_xc['filename'] == 'XC574126.mp3'].squeeze() 
+        
     # ROIS extraction of a single file
     df_rois_single = bambird.single_file_extract_rois (
-                        audio_path  = df_xc.fullfilename.squeeze(),
+                        audio_path  = df_single.fullfilename,
                         fun         = params['PARAMS_EXTRACT']['FUNC'],
                         params      = params['PARAMS_EXTRACT'],
                         save_path   = TEMP_DIR / ROIS_NAME,
                         display     = True,
                         verbose     = True)
     
+    # ROIS extraction of the full dataset
+    df_rois, csv_rois = bambird.multicpu_extract_rois(
+                        dataset     = df_xc,
+                        fun         = params['PARAMS_EXTRACT']['FUNC'],
+                        params      = params['PARAMS_EXTRACT'],
+                        save_path   = TEMP_DIR / ROIS_NAME,
+                        overwrite   = True,
+                        verbose     = True
+                        )
     
 #%%
     # Compute features for each ROIS
@@ -101,13 +128,23 @@ if __name__ == '__main__':
                         overwrite   = True,
                         verbose     = True)
         
+    # Test if at least 1 ROI was found     
+    if len(df_rois) > 0 :    
+        # compute the features on the full dataset       
+        df_features, csv_features = bambird.multicpu_compute_features(
+                        dataset     = df_rois,
+                        params      = params['PARAMS_FEATURES'],
+                        save_path   = TEMP_DIR / ROIS_NAME,
+                        overwrite   = True,
+                        verbose     = True)
+        
 #%%        
     #  Cluster ROIS
     # -------------------------------
     
     # with dataframe or csv file
     
-    dataset = df_features_single
+    dataset = df_features # df_features df_features_single
     
     try : 
         df_cluster = bambird.find_cluster(
@@ -130,7 +167,7 @@ if __name__ == '__main__':
                         params          = params['PARAMS_EXTRACT'],
                         column_labels   = 'cluster_number', #auto_label
                         unique_labels   = np.sort(df_cluster.cluster_number.unique()),
-                        filename        = None,
+                        filename        = df_cluster.filename.unique()[3],
                         random_seed     = None,
                         verbose         = True
                         )
