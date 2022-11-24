@@ -42,7 +42,7 @@ from kneed import KneeLocator
 # HDBSCAN package (clustering)
 import hdbscan
 
-from bamxc import config as cfg
+from bambird import config as cfg
 
 warnings.filterwarnings("ignore", module="librosa")
 warnings.filterwarnings("ignore", module="maad")

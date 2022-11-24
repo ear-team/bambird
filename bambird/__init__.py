@@ -11,7 +11,7 @@ from .version import __version__
 Labelling function
 ==================
 
-The package ``bam`` is an ensemble of functions to build a labelling function to clean audio recordings from Xeno-Canto.
+The package ``bambird`` is an ensemble of functions to build a labelling function to clean audio recordings from Xeno-Canto.
 
 Config yaml
 -----------

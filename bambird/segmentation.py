@@ -43,8 +43,8 @@ from skimage.morphology import closing
 import maad
 
 #
-from bamxc import config as cfg
-from bamxc import grab_audio_to_df
+from bambird import config as cfg
+from bambird import grab_audio_to_df
 
 #%%
 

@@ -97,7 +97,7 @@ def _fun_call_by_name(val):
         module_name, fun_name = val.rsplit('.', 1)
         # Restrict which modules may be loaded here to avoid safety issue
         # Put the name of the module
-        assert module_name.startswith('bamxc')
+        assert module_name.startswith('bambird')
     else:
         module_name = '__main__'
         fun_name = val
