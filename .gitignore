@@ -11,6 +11,7 @@
 !*.ipynb
 !*.yaml
 !*.png
+!*.md
 # and .gitignore
 !.gitignore
 examples/build_dataset_temp/
