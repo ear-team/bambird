@@ -23,7 +23,7 @@ import glob
 import maad
 
 #
-from bamxc import config as cfg
+from bambird import config as cfg
 
 #%%
 """ ===========================================================================
