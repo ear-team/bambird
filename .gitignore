@@ -1,0 +1,17 @@
+# First, ignore everything
+*
+# Now, whitelist anything that's a directory
+!*/
+**/_old
+**/data
+# And all the file types you're interested in.
+!*.py
+!*.txt
+!*.csv
+!*.ipynb
+!*.yaml
+!*.png
+# and .gitignore
+!.gitignore
+examples/build_dataset_temp/
+examples/build_dataset/

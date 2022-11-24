@@ -1,0 +1,1895 @@
+filename_ts;code;species;birdnet_label
+XC102276_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC102276_0s_03.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC102826_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC102826_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC102826_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC103696_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC103696_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC103696_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC103696_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC103823_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC103823_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC105197_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC105197_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC105197_0s_05.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC105197_0s_10.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC106593_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC106593_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC110739_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC110739_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC110739_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC112211_0s_04.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC112211_0s_06.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC112211_0s_09.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC120422_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC120422_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC120422_0s_07.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC120422_0s_14.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC120953_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC120953_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC120953_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC122440_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC122440_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC122440_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC122440_0s_04 (copy).wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC122440_0s_06.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122440_0s_07.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC122440_0s_09.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122440_0s_10.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122440_0s_11.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122440_0s_12.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122440_0s_12 (copy).wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC122468_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC122468_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC122468_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC122468_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC122468_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC122468_0s_06.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC128130_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC128130_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC128130_0s_06.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC128849_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC129192_0s_04.wav;regreg;Regulus regulus_Goldcrest;0
+XC129192_0s_11.wav;regreg;Regulus regulus_Goldcrest;1
+XC129192_0s_12.wav;regreg;Regulus regulus_Goldcrest;1
+XC129192_0s_13.wav;regreg;Regulus regulus_Goldcrest;1
+XC129192_0s_14.wav;regreg;Regulus regulus_Goldcrest;1
+XC129626_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC129626_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC129626_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC129626_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC129626_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC130417_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC130417_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC130417_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC130556_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC130556_0s_07.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC130556_0s_08.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC130556_0s_14.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC130556_0s_15.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC130950_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC130950_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC134083_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC135381_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC135381_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC135381_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC135381_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC135552_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135552_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135552_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135552_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135552_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135552_0s_06.wav;asiotu;Asio otus_Long-eared Owl;0
+XC135729_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC135729_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC135729_0s_11.wav;athnoc;Athene noctua_Little Owl;0
+XC136073_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC136073_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC136073_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC136073_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC136073_0s_05.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC136655_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136655_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136655_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136655_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136655_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136655_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136655_0s_07.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136655_0s_08.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136655_0s_09.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_12.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_15.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_17.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136656_0s_19.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136657_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC136657_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136657_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136657_0s_08.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC136657_0s_15.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC137673_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC138979_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC138979_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC140538_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC140538_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC140592_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC140592_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC140592_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC140664_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC140835_0s_00.wav;athnoc;Athene noctua_Little Owl;0
+XC140835_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC140835_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC140835_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC142977_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC142977_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC142977_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC142977_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC142977_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC142977_0s_09.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC142977_0s_12.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC142977_0s_13.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC143082_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC143380_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC143380_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC143380_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC143380_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC143380_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC145062_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC145062_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC145062_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC145062_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC145062_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC145065_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC145065_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC145065_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC145065_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC145110_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC145110_0s_02.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC145232_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC145644_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC146707_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC151278_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC151278_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC154909_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC154909_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC154909_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC154909_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC156257_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC156257_0s_05.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC156257_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC156469_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156469_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156469_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156470_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC156578_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_07.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_08.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_09.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156578_0s_10.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC156753_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC156753_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC156753_0s_02.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC156753_0s_05.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC156780_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156780_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156780_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156780_0s_10.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156982_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_04.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_05.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_06.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_07.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_08.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_09.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_10.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_11.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_12.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156982_0s_13.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156982_0s_14.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC156982_0s_18.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_20.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC156982_0s_23.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC158170_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC158170_0s_00 (copy).wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC158170_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC158170_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC158170_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC161903_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC161903_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC161916_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC161916_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC165852_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC165852_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC165852_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC165852_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC165852_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC165852_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC165852_0s_06.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC168863_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC168863_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC168863_0s_04.wav;regreg;Regulus regulus_Goldcrest;1
+XC169740_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC169740_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC169740_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC170708_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC170708_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC170708_0s_02.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC170708_0s_08.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC170714_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC170714_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC170714_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC170962_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC170962_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC170962_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC170962_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_09.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_16.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC170962_0s_22.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_24.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_25.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_28.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_29.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC170962_0s_31.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC173503_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC173503_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC173843_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC173843_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC173843_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC173843_0s_05.wav;perate;Periparus ater_Coal Tit;1
+XC173843_0s_06.wav;perate;Periparus ater_Coal Tit;0
+XC173843_0s_07.wav;perate;Periparus ater_Coal Tit;0
+XC173843_0s_08.wav;perate;Periparus ater_Coal Tit;0
+XC173843_0s_09.wav;perate;Periparus ater_Coal Tit;0
+XC175093_0s_01.wav;turpil;Turdus pilaris_Fieldfare;0
+XC175093_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC175093_0s_08.wav;turpil;Turdus pilaris_Fieldfare;0
+XC175093_0s_11.wav;turpil;Turdus pilaris_Fieldfare;0
+XC175093_0s_13.wav;turpil;Turdus pilaris_Fieldfare;0
+XC175093_0s_16.wav;turpil;Turdus pilaris_Fieldfare;0
+XC176625_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC176625_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC176625_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC176625_0s_05.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC177327_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC177327_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC180378_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC180378_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC180928_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC180928_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC180928_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC180928_0s_05.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC181295_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC181295_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC181295_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC182924_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC182924_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC182924_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC182924_0s_04.wav;regreg;Regulus regulus_Goldcrest;1
+XC189567_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC189567_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC189567_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC191398_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC191398_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC206658_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_04.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_09.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_13.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_14.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_15.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_23.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_24.wav;turpil;Turdus pilaris_Fieldfare;0
+XC206658_0s_27.wav;turpil;Turdus pilaris_Fieldfare;0
+XC208240_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC208240_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC208240_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC208240_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC208240_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC208240_0s_07.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC211240_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC211240_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC211881_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC211881_0s_04.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC211881_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC211881_0s_07.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC211881_0s_08.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC211881_0s_12.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC212560_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC212560_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC212560_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC212560_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC217378_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_08.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_16.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_18.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC217378_0s_19.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC239998_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC239998_0s_05.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC239998_0s_06.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC239998_0s_07.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC246193_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC246193_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC246193_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC253695_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC253695_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC253695_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC253695_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC253695_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC25564_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC25564_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC25564_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC25564_0s_03.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC25564_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC25564_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC263881_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC263881_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC263881_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC263881_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC263881_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC263927_0s_01.wav;turpil;Turdus pilaris_Fieldfare;1
+XC263927_0s_02.wav;turpil;Turdus pilaris_Fieldfare;1
+XC263927_0s_04.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263927_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263927_0s_08.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_01.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_03.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_08.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_13.wav;turpil;Turdus pilaris_Fieldfare;0
+XC263928_0s_16.wav;turpil;Turdus pilaris_Fieldfare;0
+XC266565_0s_00.wav;perate;Periparus ater_Coal Tit;0
+XC266565_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC266565_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC266565_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC270147_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC270147_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC270147_0s_05.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC270147_0s_06.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC27999_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC281340_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281340_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281340_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC281340_0s_03.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC281341_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281341_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281341_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281343_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC281343_0s_05.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281343_0s_06.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281344_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281344_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281344_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC281359_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC281359_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC281359_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC281359_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC281359_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC281466_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC281507_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC281507_0s_17.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC281513_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC281520_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC281520_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC281544_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC281544_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC281544_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC281549_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281549_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281549_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281549_0s_09.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC281552_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281552_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281552_0s_04.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281552_0s_05.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC281574_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC281574_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC281600_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC281600_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC281656_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC281656_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC281656_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC281656_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC281657_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC281657_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC281657_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC281657_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC281657_0s_04.wav;perate;Periparus ater_Coal Tit;0
+XC281732_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC281732_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC281732_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC281732_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC281732_0s_08.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC281771_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC281771_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC281771_0s_09.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC288338_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC289804_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC289804_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC289804_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC289804_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC289804_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC290025_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC292476_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC292476_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC292476_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC292476_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC292577_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC292577_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC292577_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC292577_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC295916_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_07.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_08.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_10.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295916_0s_12.wav;stuvul;Sturnus vulgaris_Common Starling;1
+XC295918_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295918_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295918_0s_07.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295918_0s_14.wav;stuvul;Sturnus vulgaris_Common Starling;1
+XC295918_0s_15.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC295918_0s_22.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC296029_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296029_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296029_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296029_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296029_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296029_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296031_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC296031_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC296031_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC296052_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC296052_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC296052_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC296052_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC298820_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC298820_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC298820_0s_03.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC301970_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC301970_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC302811_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC302811_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC308048_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_01 (copy).wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC308048_0s_05.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC309183_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC309183_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC309183_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC310574_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC310574_0s_01.wav;turpil;Turdus pilaris_Fieldfare;0
+XC310574_0s_05.wav;turpil;Turdus pilaris_Fieldfare;1
+XC310574_0s_06.wav;turpil;Turdus pilaris_Fieldfare;1
+XC310574_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC310574_0s_12.wav;turpil;Turdus pilaris_Fieldfare;0
+XC310574_0s_16.wav;turpil;Turdus pilaris_Fieldfare;1
+XC310875_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC310875_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC310875_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC310875_0s_04.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC311017_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC311017_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC311017_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC311017_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC312290_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC312290_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312290_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312290_0s_10.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312290_0s_11.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312290_0s_12.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312290_0s_13.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC312436_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC312436_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC312887_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC312887_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC312887_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC312887_0s_03.wav;athnoc;Athene noctua_Little Owl;1
+XC312887_0s_05.wav;athnoc;Athene noctua_Little Owl;0
+XC313421_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC313421_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC313421_0s_03.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC313421_0s_04.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC313421_0s_05.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC313421_0s_06.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC313421_0s_07.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC313810_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC313810_0s_10.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC313810_0s_14.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC313810_0s_15.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC315111_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315111_0s_06.wav;asiotu;Asio otus_Long-eared Owl;0
+XC315444_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC315444_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC315444_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC315444_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC315543_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC315543_0s_01.wav;turpil;Turdus pilaris_Fieldfare;0
+XC315543_0s_02.wav;turpil;Turdus pilaris_Fieldfare;1
+XC315543_0s_03.wav;turpil;Turdus pilaris_Fieldfare;1
+XC315543_0s_05.wav;turpil;Turdus pilaris_Fieldfare;0
+XC315543_0s_06.wav;turpil;Turdus pilaris_Fieldfare;1
+XC315543_0s_08.wav;turpil;Turdus pilaris_Fieldfare;0
+XC317407_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC317408_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC317408_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC317408_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC317408_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC317408_0s_07.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC318988_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC318988_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC318988_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC319535_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC319535_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC319535_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC319535_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC319535_0s_04.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC319535_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC322542_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC322542_0s_09.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC322542_0s_19.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC322542_0s_22.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC324714_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC324714_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC324714_0s_04.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC325651_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC325651_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC325651_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC332073_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC332073_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC332073_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC333437_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC333437_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC333437_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC333650_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC333650_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC333650_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC333650_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC34038_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC34038_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC34038_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC34038_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC34038_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC345951_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC345951_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC345951_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC346468_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC346468_0s_01.wav;turpil;Turdus pilaris_Fieldfare;1
+XC346468_0s_04.wav;turpil;Turdus pilaris_Fieldfare;0
+XC346468_0s_06.wav;turpil;Turdus pilaris_Fieldfare;1
+XC346468_0s_10.wav;turpil;Turdus pilaris_Fieldfare;1
+XC346468_0s_11.wav;turpil;Turdus pilaris_Fieldfare;0
+XC346468_0s_14.wav;turpil;Turdus pilaris_Fieldfare;0
+XC346468_0s_15.wav;turpil;Turdus pilaris_Fieldfare;0
+XC349526_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC349526_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC349526_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC349526_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC350883_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC361635_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_07.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_09.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_10.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_11.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC361635_0s_13.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC362375_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC362375_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC362375_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC362375_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC362375_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC363739_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC363739_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC363996_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC363996_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC363996_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC363996_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC363996_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC364246_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC364246_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC364246_0s_05.wav;regreg;Regulus regulus_Goldcrest;1
+XC364246_0s_06.wav;regreg;Regulus regulus_Goldcrest;0
+XC365751_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC365751_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC365751_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC365751_0s_04.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC366200_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC366200_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC366719_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC366719_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC366719_0s_06.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC366719_0s_08.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC366719_0s_14.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC366719_0s_15.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC367207_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC367207_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC367458_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC367458_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC36801_0s_00.wav;perate;Periparus ater_Coal Tit;0
+XC36801_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC36801_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC36801_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC370477_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC370477_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC370477_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC370477_0s_08.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC370477_0s_17.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC373580_0s_04.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC373580_0s_05.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC374793_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC374793_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC374793_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC374793_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC374873_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC374873_0s_04.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC374873_0s_06.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC374873_0s_07.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC376371_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC376371_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC376371_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC376371_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC376371_0s_08.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC376371_0s_09.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC377104_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC377104_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC377648_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC377648_0s_08.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC377648_0s_11.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC377648_0s_12.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC378218_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC378218_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC378218_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC378218_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC378218_0s_10.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC378736_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC378736_0s_06.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC378736_0s_08.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC379503_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC379503_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC379503_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381184_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC381184_0s_08.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC381184_0s_09.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC381631_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC381631_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC383565_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_08.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_09.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_10.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_11.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_14.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383565_0s_16.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC383672_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383672_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383672_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383673_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383673_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383673_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC383769_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC383769_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC383769_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC383769_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC383769_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC383769_0s_09.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC384380_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC384380_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC384380_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC384380_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC384619_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC384619_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC394233_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC394233_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC394233_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC394233_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC394233_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC394233_0s_08.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC400377_0s_05.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC400377_0s_08.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC400377_0s_12.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC400377_0s_15.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC401963_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_10.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_11.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC401963_0s_16.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC402901_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC402901_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC402901_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC402901_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC402901_0s_08.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC402901_0s_09.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC404889_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC404889_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC404889_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC404889_0s_03.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC405944_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC405944_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC405944_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC405944_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC405944_0s_06.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC405944_0s_13.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC405944_0s_16.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC410462_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC410462_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC411139_0s_00.wav;perate;Periparus ater_Coal Tit;0
+XC411139_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC411139_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC411139_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC411139_0s_04.wav;perate;Periparus ater_Coal Tit;0
+XC412089_0s_07.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC412089_0s_08.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC412089_0s_09.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC412179_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC412179_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC412179_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC414027_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC414027_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC414395_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC414395_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC417396_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC417396_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC417396_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC417396_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC419336_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC419336_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC419336_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC419336_0s_03.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC419336_0s_04.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC420143_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC420143_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC420143_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC420143_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC420143_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC420143_0s_05.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC420143_0s_06.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC425903_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC425903_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC425903_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC428706_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC428706_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC428706_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC428706_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC430644_0s_05.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC430644_0s_10.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC430644_0s_12.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC430644_0s_14.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC430644_0s_17.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC433552_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC444097_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC444097_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC444097_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC444097_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC444097_0s_05.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC444097_0s_06.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC444097_0s_13.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC44547_0s_00.wav;athnoc;Athene noctua_Little Owl;0
+XC44547_0s_02.wav;athnoc;Athene noctua_Little Owl;1
+XC44547_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC44547_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC44547_0s_05.wav;athnoc;Athene noctua_Little Owl;0
+XC44547_0s_06.wav;athnoc;Athene noctua_Little Owl;0
+XC447310_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC447310_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC449207_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_05.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_06.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_07.wav;athnoc;Athene noctua_Little Owl;0
+XC449207_0s_09.wav;athnoc;Athene noctua_Little Owl;0
+XC452476_0s_00.wav;regreg;Regulus regulus_Goldcrest;0
+XC45373_0s_09.wav;regreg;Regulus regulus_Goldcrest;0
+XC453959_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC453959_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC453959_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC454247_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC454247_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC454247_0s_02.wav;athnoc;Athene noctua_Little Owl;1
+XC454247_0s_03.wav;athnoc;Athene noctua_Little Owl;1
+XC454247_0s_07.wav;athnoc;Athene noctua_Little Owl;0
+XC454593_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC454593_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC454593_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC454593_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC45856_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC45856_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC45856_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC45856_0s_07.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC45856_0s_09.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC459895_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC459895_0s_15.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC462139_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462139_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462139_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462139_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462139_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462139_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC462490_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC462490_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC462490_0s_08.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC462956_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC462956_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC462956_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC462956_0s_09.wav;turpil;Turdus pilaris_Fieldfare;0
+XC462956_0s_11.wav;turpil;Turdus pilaris_Fieldfare;0
+XC463008_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_07.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463008_0s_08.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463365_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463365_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463365_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463365_0s_06.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC463365_0s_07.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_09.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_12.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_13.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_15.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_16.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463365_0s_18.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC463555_0s_03.wav;turpil;Turdus pilaris_Fieldfare;0
+XC463555_0s_04.wav;turpil;Turdus pilaris_Fieldfare;1
+XC463555_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC463773_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC463773_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC46452_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC46452_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC46452_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC46452_0s_07.wav;athnoc;Athene noctua_Little Owl;0
+XC464612_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC464612_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC465929_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC465929_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC467822_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC467822_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC467822_0s_03.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC467822_0s_04.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC468022_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC468022_0s_09.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC468022_0s_11.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC469802_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC469802_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC469802_0s_03.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC469802_0s_04.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC469959_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC469959_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC469959_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC469959_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC471011_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC471011_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC471011_0s_04.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC471096_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC471096_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC471096_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC471096_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC471096_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC471705_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC471705_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC471705_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC471705_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC473328_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC473328_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC473920_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC473920_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC474503_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474503_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474503_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC474503_0s_07.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474503_0s_11.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474960_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC474960_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474960_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC474960_0s_05.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC475507_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC475507_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC475507_0s_04.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC475510_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC475510_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC475510_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC475510_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC476215_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC476545_0s_03.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC476545_0s_04.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC476545_0s_07.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC476854_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC476854_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC477115_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC477115_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC477115_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC477620_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC47867_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC47867_0s_05.wav;turpil;Turdus pilaris_Fieldfare;0
+XC47867_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC480595_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC480595_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC481567_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC483789_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC483789_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC483808_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC483808_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC484819_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC484819_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC484819_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC484819_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC485439_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC485439_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC485439_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC485439_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC485439_0s_04.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC485917_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC485917_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC485917_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC485917_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC485917_0s_05.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC487074_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC487074_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC487074_0s_08.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC487074_0s_10.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC487074_0s_11.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC487224_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487224_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487224_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC487224_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487224_0s_06.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487224_0s_08.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487224_0s_12.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC487819_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC487819_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC487819_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC487819_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC487819_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC487819_0s_05.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC487972_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC487972_0s_03.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC488718_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC488718_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC503956_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC508056_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC508056_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC508056_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC508056_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC508056_0s_04.wav;perate;Periparus ater_Coal Tit;0
+XC508373_0s_02.wav;turpil;Turdus pilaris_Fieldfare;1
+XC508373_0s_03.wav;turpil;Turdus pilaris_Fieldfare;1
+XC508373_0s_04.wav;turpil;Turdus pilaris_Fieldfare;1
+XC508373_0s_05.wav;turpil;Turdus pilaris_Fieldfare;0
+XC508373_0s_09.wav;turpil;Turdus pilaris_Fieldfare;0
+XC508373_0s_10.wav;turpil;Turdus pilaris_Fieldfare;0
+XC508373_0s_11.wav;turpil;Turdus pilaris_Fieldfare;0
+XC510709_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC510709_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC510709_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC510709_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC510709_0s_04.wav;perate;Periparus ater_Coal Tit;1
+XC510985_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC511198_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC511834_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC511834_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC511834_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC519603_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC519603_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC519603_0s_02.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC519603_0s_03.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC519603_0s_04.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC519723_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC519723_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC519723_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC519723_0s_06.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC519723_0s_10.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC522604_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC522604_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC523649_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC523649_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;1
+XC524359_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_07.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_17.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524359_0s_19.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC524554_0s_00.wav;perate;Periparus ater_Coal Tit;0
+XC524554_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC524554_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC524554_0s_04.wav;perate;Periparus ater_Coal Tit;1
+XC524554_0s_05.wav;perate;Periparus ater_Coal Tit;0
+XC524554_0s_06.wav;perate;Periparus ater_Coal Tit;0
+XC524554_0s_07.wav;perate;Periparus ater_Coal Tit;0
+XC525918_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC525918_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC525918_0s_03.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC525918_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC525918_0s_07.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC527625_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC527625_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC527625_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC527625_0s_04.wav;athnoc;Athene noctua_Little Owl;1
+XC527625_0s_05.wav;athnoc;Athene noctua_Little Owl;1
+XC527625_0s_06.wav;athnoc;Athene noctua_Little Owl;1
+XC529918_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC529918_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC529918_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC529918_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC529918_0s_18.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC533576_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC533576_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC533576_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC535395_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC535395_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC535395_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC535395_0s_03.wav;athnoc;Athene noctua_Little Owl;1
+XC535395_0s_04.wav;athnoc;Athene noctua_Little Owl;1
+XC535395_0s_05.wav;athnoc;Athene noctua_Little Owl;0
+XC535690_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC535690_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC535690_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC535690_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC535690_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC535690_0s_07.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC536319_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC536319_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC536319_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC536319_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC536319_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC536319_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC537313_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC537313_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC537313_0s_04.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC537313_0s_05.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC537313_0s_06.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC539364_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC539364_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC539364_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC540476_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC540476_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC540504_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC540504_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC540504_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC540859_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC540859_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC540859_0s_17.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC541287_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC541287_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC541287_0s_05.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC541287_0s_09.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC541287_0s_13.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC541811_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC541811_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC541811_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC541811_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC541811_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC541931_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC542673_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC542673_0s_08.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC542673_0s_14.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC545088_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC545088_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC545088_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC545088_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC546632_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC546632_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC550832_0s_00.wav;regreg;Regulus regulus_Goldcrest;0
+XC550832_0s_04.wav;regreg;Regulus regulus_Goldcrest;0
+XC550832_0s_06.wav;regreg;Regulus regulus_Goldcrest;1
+XC550832_0s_09.wav;regreg;Regulus regulus_Goldcrest;1
+XC550832_0s_10.wav;regreg;Regulus regulus_Goldcrest;1
+XC552302_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_06.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552302_0s_07.wav;asiotu;Asio otus_Long-eared Owl;0
+XC552372_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC552372_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC552372_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC553186_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC553186_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC553190_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC553190_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC553343_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC553343_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC553343_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC554468_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC554468_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC554468_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC554468_0s_05.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC554468_0s_06.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_09.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_10.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_11.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_12.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554468_0s_15.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC554680_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC554680_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC555016_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC555016_0s_06.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC555016_0s_11.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC555016_0s_12.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC555031_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC555781_0s_05.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC555781_0s_08.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC555781_0s_09.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC555781_0s_10.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC555781_0s_11.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC556899_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC556965_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC556965_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC556965_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC556965_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC559379_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC559379_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC561266_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_03.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_07.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_08.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_12.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_13.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561266_0s_15.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_04.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_05.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_06.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_07.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561609_0s_10.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC561617_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC561617_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC561617_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC561617_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC562376_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC562376_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC562376_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC56244_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC56244_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC56244_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC562759_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC562759_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC562759_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC562759_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC562813_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC562813_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC562813_0s_06.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC563446_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC563446_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC563446_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC563446_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC564548_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC564548_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC564548_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC564548_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC564548_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC566818_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC566818_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC566818_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC568615_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC568615_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC568615_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC568615_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC569086_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC569086_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC569086_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC569091_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC569091_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC569091_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC570247_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC570247_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC570247_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC570247_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC570247_0s_04.wav;perate;Periparus ater_Coal Tit;0
+XC571293_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC571819_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC571980_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC571980_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC571980_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC571980_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC571980_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC574057_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC574057_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC574057_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC574302_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC574302_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC574302_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC574302_0s_03.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC574302_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC574302_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC587145_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC587145_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC587145_0s_05.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC587145_0s_06.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC587145_0s_07.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC587145_0s_08.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC587783_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC587783_0s_02.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC587783_0s_10.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC587783_0s_11.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC587783_0s_16.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC589378_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC589378_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC589378_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC589378_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC589378_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC590372_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC590372_0s_05.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC590372_0s_06.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC590372_0s_09.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC590372_0s_13.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC591884_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC591884_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_07.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC591884_0s_08.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_10.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_11.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_15.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC591884_0s_16.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC594143_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC594143_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC595964_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595964_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595964_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595964_0s_04.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595964_0s_05.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595964_0s_06.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595965_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595965_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595965_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC595965_0s_04.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC595965_0s_06.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC596629_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC596629_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC596629_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC596629_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC596629_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC596636_0s_00.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC596636_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC596636_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC596636_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC596636_0s_06.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;0
+XC598651_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC598651_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC598651_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC598651_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC600106_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC600106_0s_01.wav;turpil;Turdus pilaris_Fieldfare;0
+XC600106_0s_02.wav;turpil;Turdus pilaris_Fieldfare;0
+XC600126_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC600126_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC600126_0s_11.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC600126_0s_14.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC602377_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC605558_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC605558_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC605558_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC605558_0s_04.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC605558_0s_07.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC605558_0s_08.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC606032_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC606032_0s_05.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC608243_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC608243_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC608243_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC613633_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC613633_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC613772_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC613772_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC618881_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC618881_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_05.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_07.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC618881_0s_08.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC618881_0s_09.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC621403_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC621403_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC621403_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC621403_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC621403_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC621403_0s_06.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC622786_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC622786_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC622786_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC622786_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC622786_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC623342_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC623342_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC623342_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC623342_0s_10.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC623342_0s_11.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC623342_0s_17.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC623493_0s_03.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC623908_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC623908_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC623908_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC625676_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC625676_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC625676_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC625676_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC626139_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC626139_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC626139_0s_02.wav;perate;Periparus ater_Coal Tit;0
+XC626139_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC626139_0s_04.wav;perate;Periparus ater_Coal Tit;0
+XC626139_0s_05.wav;perate;Periparus ater_Coal Tit;1
+XC626139_0s_06.wav;perate;Periparus ater_Coal Tit;1
+XC626139_0s_07.wav;perate;Periparus ater_Coal Tit;0
+XC626139_0s_08.wav;perate;Periparus ater_Coal Tit;0
+XC626141_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC626141_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC626694_0s_01.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC626694_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC626694_0s_06.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC626694_0s_11.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC627747_0s_04.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC630725_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC630725_0s_07.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC630725_0s_08.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC630725_0s_13.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC630725_0s_14.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC631078_0s_00.wav;regreg;Regulus regulus_Goldcrest;0
+XC631078_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC631078_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC631078_0s_04.wav;regreg;Regulus regulus_Goldcrest;0
+XC631078_0s_07.wav;regreg;Regulus regulus_Goldcrest;1
+XC631078_0s_08.wav;regreg;Regulus regulus_Goldcrest;1
+XC631078_0s_09.wav;regreg;Regulus regulus_Goldcrest;1
+XC631078_0s_14.wav;regreg;Regulus regulus_Goldcrest;1
+XC632866_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC632866_0s_05.wav;athnoc;Athene noctua_Little Owl;1
+XC632882_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC632882_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC632882_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC632882_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC632882_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC633544_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC633544_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC634366_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC634366_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC634366_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC634607_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC634607_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC634607_0s_09.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC634607_0s_13.wav;phooch;Phoenicurus ochruros_Black Redstart;0
+XC634779_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC634779_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC634779_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC634779_0s_03.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC635213_0s_00.wav;turpil;Turdus pilaris_Fieldfare;1
+XC635213_0s_01.wav;turpil;Turdus pilaris_Fieldfare;1
+XC635213_0s_02.wav;turpil;Turdus pilaris_Fieldfare;1
+XC635213_0s_03.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_02.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_04.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_05.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_07.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_08.wav;turpil;Turdus pilaris_Fieldfare;0
+XC635633_0s_10.wav;turpil;Turdus pilaris_Fieldfare;0
+XC636461_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_09.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_13.wav;stuvul;Sturnus vulgaris_Common Starling;1
+XC636461_0s_16.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_17.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC636461_0s_20.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC637080_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC637080_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC637080_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC637080_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC637094_0s_00.wav;perate;Periparus ater_Coal Tit;0
+XC637094_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC637094_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC637094_0s_03.wav;perate;Periparus ater_Coal Tit;0
+XC637331_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC637331_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC637332_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC637332_0s_03.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC637332_0s_05.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC637332_0s_06.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC638231_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC638231_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC638231_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC638231_0s_04.wav;regreg;Regulus regulus_Goldcrest;1
+XC638528_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC638528_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC638528_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC638528_0s_08.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;1
+XC638528_0s_09.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC638528_0s_10.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC639004_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC639004_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639004_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639004_0s_08.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639004_0s_09.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639293_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC639293_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639293_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639293_0s_08.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639293_0s_09.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC639582_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC639582_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC639582_0s_08.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC639582_0s_10.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC640724_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC640724_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC641545_0s_00.wav;asiotu;Asio otus_Long-eared Owl;1
+XC641545_0s_01.wav;asiotu;Asio otus_Long-eared Owl;1
+XC641545_0s_06.wav;asiotu;Asio otus_Long-eared Owl;1
+XC641584_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC641584_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC641584_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC641584_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC641586_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC641586_0s_03.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC641586_0s_04.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC641586_0s_07.wav;phycol;Phylloscopus collybita_Common Chiffchaff;0
+XC642060_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC642060_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642060_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642060_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642060_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642060_0s_08.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642060_0s_09.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC642323_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC642323_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC642440_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC642440_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC643280_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC643280_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC643280_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC643280_0s_03.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC643280_0s_05.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC643457_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC643457_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC643457_0s_04.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC643457_0s_06.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC643457_0s_08.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC643586_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC643586_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC643586_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC643586_0s_05.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC643586_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC644853_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC644860_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC644860_0s_02.wav;turpil;Turdus pilaris_Fieldfare;0
+XC645045_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC645045_0s_08.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC645102_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC645102_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC645102_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC645102_0s_04.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC645102_0s_13.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC645708_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC645708_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC645708_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC645708_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC645708_0s_04.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC645708_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC647324_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC647324_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC647324_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC647792_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC648586_0s_10.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC648772_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC648772_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC648772_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC648772_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC648772_0s_06.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC650963_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC650964_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC650964_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC651505_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC651505_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC651505_0s_04.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC651505_0s_14.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC651629_0s_02.wav;turpil;Turdus pilaris_Fieldfare;0
+XC651629_0s_03.wav;turpil;Turdus pilaris_Fieldfare;0
+XC651629_0s_05.wav;turpil;Turdus pilaris_Fieldfare;0
+XC651629_0s_06.wav;turpil;Turdus pilaris_Fieldfare;0
+XC653424_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC653424_0s_01.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC653424_0s_02.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;0
+XC653916_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653916_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653916_0s_10.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653916_0s_13.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653916_0s_22.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653916_0s_27.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC653934_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC653934_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC654305_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC654305_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC654305_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC654306_0s_02.wav;regreg;Regulus regulus_Goldcrest;1
+XC654306_0s_03.wav;regreg;Regulus regulus_Goldcrest;1
+XC654733_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC654733_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC654733_0s_05.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC654733_0s_06.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC654879_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC654879_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC654879_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC654879_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC654879_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC654879_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC655220_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC655220_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC655220_0s_02.wav;athnoc;Athene noctua_Little Owl;1
+XC655220_0s_03.wav;athnoc;Athene noctua_Little Owl;1
+XC655269_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC655269_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC655269_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC655269_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC655269_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC655464_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC655464_0s_04.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC655531_0s_01.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC655531_0s_02.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC655531_0s_06.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC655840_0s_01.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC655840_0s_02.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC655840_0s_03.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC655840_0s_04.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC655840_0s_05.wav;oenoen;Oenanthe oenanthe_Northern Wheatear;1
+XC656534_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC656534_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC657051_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC657051_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC657051_0s_04.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC657051_0s_06.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC657292_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC657292_0s_03.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC657292_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC657292_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC657292_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC658350_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658350_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658350_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658598_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658598_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658598_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658598_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC658598_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658598_0s_05.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC658972_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC658972_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC658972_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC658987_0s_01.wav;athnoc;Athene noctua_Little Owl;0
+XC658987_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC658987_0s_03.wav;athnoc;Athene noctua_Little Owl;0
+XC658987_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC658987_0s_05.wav;athnoc;Athene noctua_Little Owl;0
+XC659826_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC659826_0s_03.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC659826_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC659826_0s_05.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC659826_0s_06.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC659870_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC659870_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC659870_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC661529_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC661529_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC661529_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC661529_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC662522_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC662522_0s_02.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC662522_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC663360_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC663360_0s_01.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC663360_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC665328_0s_00.wav;acrsci;Acrocephalus scirpaceus_Eurasian Reed Warbler;1
+XC665903_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC665903_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC665903_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC665903_0s_08.wav;stuvul;Sturnus vulgaris_Common Starling;1
+XC666948_0s_00.wav;phytro;Phylloscopus trochilus_Willow Warbler;0
+XC666948_0s_01.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC666948_0s_02.wav;phytro;Phylloscopus trochilus_Willow Warbler;1
+XC667910_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC67094_0s_03.wav;turpil;Turdus pilaris_Fieldfare;0
+XC67094_0s_04.wav;turpil;Turdus pilaris_Fieldfare;0
+XC67094_0s_05.wav;turpil;Turdus pilaris_Fieldfare;1
+XC67094_0s_06.wav;turpil;Turdus pilaris_Fieldfare;1
+XC67094_0s_12.wav;turpil;Turdus pilaris_Fieldfare;1
+XC672361_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC672361_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC672361_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC672361_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC672361_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC672361_0s_05.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC674253_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC677986_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC677986_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC677986_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC677986_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC686004_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC686004_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686004_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686006_0s_00.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686006_0s_01.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686006_0s_02.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686006_0s_03.wav;motfla;Motacilla flava_Western Yellow Wagtail;1
+XC686006_0s_05.wav;motfla;Motacilla flava_Western Yellow Wagtail;0
+XC687311_0s_00.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;1
+XC687311_0s_10.wav;acrsch;Acrocephalus schoenobaenus_Sedge Warbler;0
+XC687664_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC687664_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC687664_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC692164_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC692164_0s_01.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC692164_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;0
+XC695418_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC695418_0s_08.wav;athnoc;Athene noctua_Little Owl;1
+XC695418_0s_12.wav;athnoc;Athene noctua_Little Owl;1
+XC695418_0s_16.wav;athnoc;Athene noctua_Little Owl;0
+XC695418_0s_17.wav;athnoc;Athene noctua_Little Owl;0
+XC695418_0s_21.wav;athnoc;Athene noctua_Little Owl;0
+XC696022_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;1
+XC696022_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC696022_0s_03.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC696882_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC696882_0s_01.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC696882_0s_04.wav;cetcet;Cettia cetti_Cetti's Warbler;1
+XC697785_0s_06.wav;athnoc;Athene noctua_Little Owl;0
+XC69798_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC69798_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC69798_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC69798_0s_03.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC69798_0s_04.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC698511_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC698511_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC698511_0s_04.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC698511_0s_05.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC699862_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_01.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_02.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_08.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_09.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_10.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_13.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699862_0s_22.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC699866_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC699866_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC699866_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC699866_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC699866_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC699866_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC699896_0s_00.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC699896_0s_03.wav;sylbor;Sylvia borin_Garden Warbler;1
+XC700176_0s_02.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC700176_0s_03.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC700176_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC700410_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC700410_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC700410_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC700410_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC700410_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC701199_0s_04.wav;asiotu;Asio otus_Long-eared Owl;0
+XC701199_0s_05.wav;asiotu;Asio otus_Long-eared Owl;0
+XC701199_0s_06.wav;asiotu;Asio otus_Long-eared Owl;0
+XC701700_0s_00.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_01.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_02.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_03.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_04.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_05.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_06.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701700_0s_09.wav;stuvul;Sturnus vulgaris_Common Starling;0
+XC701970_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC701970_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC701970_0s_02.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_08.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_09.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_10.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_11.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_12.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_13.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_14.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_17.wav;athnoc;Athene noctua_Little Owl;0
+XC701970_0s_20.wav;athnoc;Athene noctua_Little Owl;0
+XC702027_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;0
+XC702027_0s_01.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC702027_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC702027_0s_09.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC703889_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC704591_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC704591_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC704591_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC704591_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC705166_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC705166_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC705166_0s_02.wav;athnoc;Athene noctua_Little Owl;1
+XC705166_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC705166_0s_05.wav;athnoc;Athene noctua_Little Owl;1
+XC705166_0s_06.wav;athnoc;Athene noctua_Little Owl;0
+XC705166_0s_07.wav;athnoc;Athene noctua_Little Owl;0
+XC708878_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC708878_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC709159_0s_00.wav;asiotu;Asio otus_Long-eared Owl;1
+XC709159_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC709756_0s_00.wav;cetcet;Cettia cetti_Cetti's Warbler;0
+XC710105_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC710105_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC710105_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC710105_0s_06.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_07.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC710105_0s_08.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC710105_0s_09.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_10.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_12.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_13.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC710105_0s_14.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC711819_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC711819_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC711819_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC711819_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC711819_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC711819_0s_06.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC713037_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC713037_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC713037_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC713370_0s_00.wav;asiotu;Asio otus_Long-eared Owl;0
+XC713370_0s_01.wav;asiotu;Asio otus_Long-eared Owl;0
+XC713370_0s_02.wav;asiotu;Asio otus_Long-eared Owl;0
+XC713370_0s_03.wav;asiotu;Asio otus_Long-eared Owl;0
+XC713370_0s_04.wav;asiotu;Asio otus_Long-eared Owl;1
+XC713383_0s_00.wav;perate;Periparus ater_Coal Tit;1
+XC713383_0s_01.wav;perate;Periparus ater_Coal Tit;1
+XC713383_0s_02.wav;perate;Periparus ater_Coal Tit;1
+XC713383_0s_03.wav;perate;Periparus ater_Coal Tit;1
+XC713383_0s_04.wav;perate;Periparus ater_Coal Tit;1
+XC713383_0s_05.wav;perate;Periparus ater_Coal Tit;0
+XC713875_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC713875_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC713875_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC72823_0s_00.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC74372_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC74372_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC74372_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC75987_0s_00.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC75987_0s_01.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC75987_0s_02.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;1
+XC75987_0s_03.wav;embsch;Emberiza schoeniclus_Common Reed Bunting;0
+XC77545_0s_00.wav;athnoc;Athene noctua_Little Owl;1
+XC77545_0s_01.wav;athnoc;Athene noctua_Little Owl;1
+XC77545_0s_02.wav;athnoc;Athene noctua_Little Owl;1
+XC77545_0s_03.wav;athnoc;Athene noctua_Little Owl;1
+XC77545_0s_04.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_07.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_08.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_12.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_16.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_17.wav;athnoc;Athene noctua_Little Owl;0
+XC77545_0s_19.wav;athnoc;Athene noctua_Little Owl;0
+XC77547_0s_00.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC77547_0s_02.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC77547_0s_04.wav;carcar;Carduelis carduelis_European Goldfinch;1
+XC77971_0s_00.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC77971_0s_01.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC77971_0s_02.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC77971_0s_03.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC77971_0s_04.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;1
+XC77971_0s_08.wav;strdec;Streptopelia decaocto_Eurasian Collared Dove;0
+XC77972_0s_00.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC77972_0s_00 (copy).wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC77972_0s_02.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC77972_0s_03.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC77972_0s_04.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC77972_0s_05.wav;phooch;Phoenicurus ochruros_Black Redstart;1
+XC79059_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC79059_0s_01.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC79059_0s_06.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC80722_0s_00.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC80722_0s_01.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC80722_0s_02.wav;phycol;Phylloscopus collybita_Common Chiffchaff;1
+XC81796_0s_00.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC81796_0s_02.wav;hirrus;Hirundo rustica_Barn Swallow;1
+XC81796_0s_03.wav;hirrus;Hirundo rustica_Barn Swallow;0
+XC82079_0s_00.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC82079_0s_01.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC82079_0s_02.wav;antpra;Anthus pratensis_Meadow Pipit;0
+XC83357_0s_04.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC83357_0s_05.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC83357_0s_06.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC83357_0s_07.wav;pyrpyr;Pyrrhula pyrrhula_Eurasian Bullfinch;0
+XC83719_0s_00.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC83719_0s_01.wav;sylcom;Sylvia communis_Common Whitethroat;1
+XC83719_0s_02.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC83719_0s_06.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC83719_0s_10.wav;sylcom;Sylvia communis_Common Whitethroat;0
+XC90937_0s_01.wav;perate;Periparus ater_Coal Tit;0
+XC90937_0s_07.wav;perate;Periparus ater_Coal Tit;1
+XC90937_0s_08.wav;perate;Periparus ater_Coal Tit;1
+XC90937_0s_09.wav;perate;Periparus ater_Coal Tit;1
+XC91110_0s_00.wav;turpil;Turdus pilaris_Fieldfare;0
+XC91110_0s_02.wav;turpil;Turdus pilaris_Fieldfare;1
+XC91110_0s_04.wav;turpil;Turdus pilaris_Fieldfare;1
+XC91110_0s_06.wav;turpil;Turdus pilaris_Fieldfare;1
+XC91163_0s_00.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC91163_0s_04.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC91163_0s_05.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC91163_0s_07.wav;spispi;Spinus spinus_Eurasian Siskin;1
+XC91163_0s_11.wav;spispi;Spinus spinus_Eurasian Siskin;0
+XC96766_0s_02.wav;regreg;Regulus regulus_Goldcrest;0
+XC96766_0s_04.wav;regreg;Regulus regulus_Goldcrest;0
+XC96766_0s_05.wav;regreg;Regulus regulus_Goldcrest;1
+XC96766_0s_06.wav;regreg;Regulus regulus_Goldcrest;1
+XC96766_0s_10.wav;regreg;Regulus regulus_Goldcrest;0
+XC97039_0s_01.wav;regreg;Regulus regulus_Goldcrest;1
+XC97039_0s_09.wav;regreg;Regulus regulus_Goldcrest;0
+XC97039_0s_10.wav;regreg;Regulus regulus_Goldcrest;1
+XC97039_0s_12.wav;regreg;Regulus regulus_Goldcrest;1
+XC97405_0s_00.wav;regreg;Regulus regulus_Goldcrest;1
+XC97938_0s_00.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_01.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_02.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_03.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_04.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_05.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_06.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_07.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_08.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;1
+XC97938_0s_10.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_11.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_12.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_13.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_15.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_16.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
+XC97938_0s_18.wav;cyacae;Cyanistes caeruleus_Eurasian Blue Tit;0
