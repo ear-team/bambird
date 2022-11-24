@@ -37,7 +37,8 @@ $ pip install bambird
 To install the latest version from source clone the master repository and from the top-level folder call:
 
 ```bash
-$ python setup.py install
+$ git clone https://github.com/ear-team/bambird.git && cd bambird
+$ pip install -e .
 ```
 
 ## Examples and documentation
