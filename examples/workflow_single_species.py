@@ -167,7 +167,7 @@ if __name__ == '__main__':
                         params          = params['PARAMS_EXTRACT'],
                         column_labels   = 'cluster_number', #auto_label
                         unique_labels   = np.sort(df_cluster.cluster_number.unique()),
-                        filename        = df_cluster.filename.unique()[3],
+                        filename        = None,
                         random_seed     = None,
                         verbose         = True
                         )
