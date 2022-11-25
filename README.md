@@ -45,6 +45,7 @@ $ pip install -e .
 
 - See the directory "example" to find scripts to run the labelling function on a collection of birds species or on a single file
 - More example scripts will be available soon on [colab](https://colab.research.google.com/)
+  - [workflow single species](https://colab.research.google.com/drive/18tglsE1JciyD1xpTryX3JIenHKGScLSq#scrollTo=bzlosQhqt7vf)
 - Full description of the package **scikit-maad**: https://doi.org/10.1111/2041-210X.13711
 - Online reference manual and example gallery of **scikit-maad** [here](https://scikit-maad.github.io/).
 - In depth information related to the Multiresolution Analysis of Acoustic Diversity implemented in scikit-maad was published in: Ulloa, J. S., Aubin, T., Llusia, D., Bouveyron, C., & Sueur, J. (2018). [Estimating animal acoustic diversity in tropical environments using unsupervised multiresolution analysis](https://doi.org/10.1016/j.ecolind.2018.03.026). Ecological Indicators, 90, 346–355
