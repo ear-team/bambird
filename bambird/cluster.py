@@ -705,7 +705,7 @@ def overlay_rois (cluster,
                      + " " 
                      + df_single_file.species.unique()))
         fig.tight_layout()
-
+        plt.show()
 
     except Exception as e:
         if verbose:
