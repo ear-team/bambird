@@ -23,8 +23,8 @@ Dataset
 -------
 .. autosummary::
     :toctree: generated/
-    query
-    download
+    query_xc
+    download_xc
     grab_audio_to_df
     change_path
     
@@ -32,15 +32,10 @@ ROIs segmentation
 -----------------
 .. autosummary::
     :toctree: generated/
-    
-    intersection_bbox
-    fusion_bbox
-    merge_bbox
     extract_rois_core
     extract_rois_full_sig    
     single_file_extract_rois
     multicpu_extract_rois
-    save_rois
 
 ROIs features
 -------------
@@ -76,10 +71,16 @@ from .dataset import(
     )
 
 from .segmentation import(     
-    extract_rois_core,
-    extract_rois_full_sig,   
     single_file_extract_rois,
     multicpu_extract_rois,
+    )
+
+from .segmentation_extract_rois_full_sig import(       
+    extract_rois_full_sig,
+    )
+
+from .segmentation_extract_rois_core import(       
+    extract_rois_core,
     )
 
 from .features import(

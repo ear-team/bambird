@@ -102,11 +102,8 @@ def query_xc (species_list,
 
     # test if recordings are found
     if len(df_dataset) > 0 :
-        # add scientific name and code into the dataframe
-        df_dataset.insert(4, 'species', df_dataset['gen'] + ' ' + df_dataset['sp'])
-        df_dataset.insert(5, 'code', (df_dataset['gen'].str[0:3]
-                                      + df_dataset['sp'].str[0:3]).str.lower())
-        
+        # add scientific name and categories into the dataframe
+        df_dataset.insert(4, 'categories', df_dataset['gen'] + ' ' + df_dataset['sp'])        
     else:  
         if verbose :
             print("No audio recording was found with the parameters: \n {}".format(params))
@@ -176,13 +173,9 @@ def download_xc (df_dataset,
     #-------------------------------------------------------------------
     
     df_dataset['filename']  = df_dataset['fullfilename'].apply(os.path.basename)
-    df_dataset['species']   = df_dataset['fullfilename'].apply(lambda path : 
-                                                               Path(path).parts[-2])
-    df_dataset['code']      = df_dataset['species'].apply(lambda species : 
-                                                          (species.split(" ", 1)[0][0:3]).lower() 
-                                                          + (species.split(" ", 1)[1][0:3]).lower())
+    df_dataset['categories']   = df_dataset['fullfilename'].apply(lambda path : 
+                                                                  Path(path).parts[-2])
         
-    
     #--------------------------------------------------------------------------    
     # test if the csv file with all the metadata already exists and append the
     # df_dataset otherwise write a new csv file
@@ -216,17 +209,12 @@ def download_xc (df_dataset,
    
     #--------------------------------------------------------------------------
     # display information about the downloaded audio files
-    if verbose :
-        # # create a dataframe with all recordings in the directory
-        # grab_audio_to_df(path         =rootdir / dataset_name, 
-        #                  audio_format ='mp3', 
-        #                  verbose      =verbose)
-        
+    if verbose :        
         if len(df_dataset)>0 :
             print('*******************************************************')
             print('number of files : %2.0f' % len(df_dataset))
-            print('number of species : %2.0f' % len(df_dataset.species.unique()))
-            print('unique species code : {}'.format(df_dataset['code'].unique()))
+            print('number of categories : %2.0f' % len(df_dataset.categories.unique()))
+            print('unique categories : {}'.format(df_dataset['categories'].unique()))
             print('*******************************************************')
         else :
             print('*** WARNING *** The dataframe is empty.')  
@@ -234,14 +222,6 @@ def download_xc (df_dataset,
     return df_dataset, csv_fullfilename
 
 #%%
-
-
-""" ===========================================================================
-
-                    Public function 
-
-============================================================================"""
-
 def grab_audio_to_df (path, 
                       audio_format, 
                       verbose=False) :
@@ -257,42 +237,35 @@ def grab_audio_to_df (path,
                                       '**/*.'+audio_format), 
                          recursive=True)
     
-    df_data = pd.DataFrame()
+    df_dataset = pd.DataFrame()
     for file in filelist:
-        species = Path(file).parts[-2]
-        try :
-            code = (species.split(" ", 1)[0][0:3]).lower() + (species.split(" ", 1)[1][0:3]).lower()
-            iden = Path(file).parts[-1].split('.',1)[0][2:]
-        except :
-            code = species
-            iden = Path(file).parts[-1]
+        categories = Path(file).parts[-2]
+        iden = Path(file).parts[-1]
             
-        df_data = df_data.append({
-                                  'fullfilename':file,
-                                  'filename'    :Path(file).parts[-1],
-                                  'species'     :species,
-                                  'code'        :code,
-                                  'id'          :iden},
-                                ignore_index=True)
-    
+        df_dataset = df_dataset.append({
+                                      'fullfilename':file,
+                                      'filename'    :Path(file).parts[-1],
+                                      'categories'  :categories,
+                                      'id'          :iden},
+                                    ignore_index=True)
+        
     # set id as index
-    df_data.set_index('id', inplace = True)
+    df_dataset.set_index('id', inplace = True)
         
     if verbose :
-        if len(df_data)>0 :
+        if len(df_dataset)>0 :
             print('*******************************************************')
-            print('number of files : %2.0f' % len(df_data))
-            print('number of species : %2.0f' % len(df_data.species.unique()))
-            print('unique species code : {}'.format(df_data['code'].unique()))
+            print('number of files : %2.0f' % len(df_dataset))
+            print('number of categories : %2.0f' % len(df_dataset.categories.unique()))
+            print('unique categories : {}'.format(df_dataset['categories'].unique()))
             print('*******************************************************')
         else :
             print('No {} audio file was found in {}'.format(audio_format,
                                                             path))    
     
-    return df_data
+    return df_dataset
 
-
-
+#%%
 def change_path (dataset_csv,
                  old_path,
                  new_path,
