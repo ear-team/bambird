@@ -10,7 +10,6 @@ of interest (ROIs) in time and frequency.
 #
 # License: New BSD License
 
-
 #%%
 # general packages
 import os
@@ -24,9 +23,6 @@ import pandas as pd
 # Scipy
 from scipy.io import wavfile
 
-# scikit-image (image processing) package
-from skimage.transform import resize
-
 # audio package
 import librosa
 
@@ -35,377 +31,12 @@ from functools import partial
 from tqdm import tqdm
 from concurrent import futures
 
-# scikit-image package
-from skimage import measure
-from skimage.morphology import closing
-
 # Scikit-Maad (ecoacoustics functions) package
 import maad
 
 #
 from bambird import config as cfg
 from bambird import grab_audio_to_df
-
-#%%
-
-""" ===========================================================================
-
-                    Functions to extract ROIS    
-
-============================================================================"""
-
-
-###############################################################################
-def _select_rois(im_bin, min_roi=None ,max_roi=None, 
-                margins=(0,0), 
-                verbose=False, display=False, savefig = None, **kwargs): 
-    """ 
-    Select regions of interest based on its dimensions.
-    
-    The input is a binary mask, and the output is an image with labelled pixels. 
- 
-    Parameters 
-    ---------- 
-    im : 2d ndarray of scalars 
-        Spectrogram (or image) 
-         
-    min_roi, max_roi : scalars, optional, default : None 
-        Define the minimum and the maximum area possible for an ROI. If None,  
-        the minimum ROI area is 1 pixel and the maximum ROI area is the area of  
-        the image 
-        
-    margins : tuple, default : (0, 0)
-        Before selected the ROIs, an optional closing (dilation followed by an
-        erosion) is performed on the binary mask. The element used for the closing
-        is defined my margins. The first number is the number of pixels along 
-        y axis (frequency) while the second number is the number of pixels along 
-        x axis (time). This operation will merge events that are closed to
-        each other in order to create a bigger ROIs encompassing all of them
-        
-    verbose : boolean, optional, default is False
-        print messages
-         
-    display : boolean, optional, default is False 
-        Display the signal if True 
-         
-    savefig : string, optional, default is None 
-        Root filename (with full path) is required to save the figures. Postfix 
-        is added to the root filename. 
-         
-    \*\*kwargs, optional. This parameter is used by plt.plot and savefig functions 
-            
-        - savefilename : str, optional, default :'_spectro_after_noise_subtraction.png' 
-            Postfix of the figure filename 
-         
-        - figsize : tuple of integers, optional, default: (4,10) 
-            width, height in inches.   
-         
-        - title : string, optional, default : 'Spectrogram' 
-            title of the figure 
-         
-        - xlabel : string, optional, default : 'Time [s]' 
-            label of the horizontal axis 
-         
-        - ylabel : string, optional, default : 'Amplitude [AU]' 
-            label of the vertical axis 
-         
-        - cmap : string or Colormap object, optional, default is 'gray' 
-            See https://matplotlib.org/examples/color/colormaps_reference.html 
-            in order to get all the  existing colormaps 
-            examples: 'hsv', 'hot', 'bone', 'tab20c', 'jet', 'seismic',  
-            'viridis'... 
-         
-        - vmin, vmax : scalar, optional, default: None 
-            `vmin` and `vmax` are used in conjunction with norm to normalize 
-            luminance data.  Note if you pass a `norm` instance, your 
-            settings for `vmin` and `vmax` will be ignored. 
-         
-        - extent : scalars (left, right, bottom, top), optional, default: None 
-            The location, in data-coordinates, of the lower-left and 
-            upper-right corners. If `None`, the image is positioned such that 
-            the pixel centers fall on zero-based (row, column) indices. 
-         
-        - dpi : integer, optional, default is 96 
-            Dot per inch.  
-            For printed version, choose high dpi (i.e. dpi=300) => slow 
-            For screen version, choose low dpi (i.e. dpi=96) => fast 
-         
-        - format : string, optional, default is 'png' 
-            Format to save the figure 
-             
-        ... and more, see matplotlib    
- 
-    Returns 
-    ------- 
-    im_rois: 2d ndarray 
-        image with labels as values 
-             
-    rois: pandas DataFrame 
-        Regions of interest with future descriptors will be computed. 
-        Array have column names: ``labelID``, ``label``, ``min_y``, ``min_x``,
-        ``max_y``, ``max_x``,
-        Use the function ``maad.util.format_features`` before using 
-        centroid_features to format of the ``rois`` DataFrame 
-        correctly.
-        
-    Examples 
-    -------- 
-    
-    Load audio recording compute the spectrogram in dB.
-    
-    >>> s, fs = maad.sound.load('../data/cold_forest_daylight.wav')
-    >>> Sxx,tn,fn,ext = maad.sound.spectrogram (s, fs, fcrop=(0,20000), display=True)           
-    >>> Sxx_dB = maad.util.power2dB(Sxx) +96
-    
-    Smooth the spectrogram
-    
-    >>> Sxx_dB_blurred = maad.sound.smooth(Sxx_dB)
-    
-     Using image binarization, detect isolated region in the time-frequency domain with high density of energy, i.e. regions of interest (ROIs).
-    
-    >>> im_bin = maad.rois.create_mask(Sxx_dB_blurred, bin_std=1.5, bin_per=0.5, mode='relative')
-    
-    Select ROIs from the binary mask.
-    
-    >>> im_rois, df_rois = maad.rois.select_rois(im_bin, display=True)
-    
-    We detected the background noise as a ROI, and that multiple ROIs are mixed in a single region. To have better results, it is adviced to preprocess the spectrogram to remove the background noise before creating the mask.
-    
-    >>> Sxx_noNoise = maad.sound.median_equalizer(Sxx)
-    >>> Sxx_noNoise_dB = maad.util.power2dB(Sxx_noNoise)     
-    >>> Sxx_noNoise_dB_blurred = maad.sound.smooth(Sxx_noNoise_dB)        
-    >>> im_bin2 = maad.rois.create_mask(Sxx_noNoise_dB_blurred, bin_std=6, bin_per=0.5, mode='relative') 
-    >>> im_rois2, df_rois2 = maad.rois.select_rois(im_bin2, display=True)
-    
-    """ 
- 
-    # test if max_roi and min_roi are defined 
-    if max_roi is None:  
-        # the maximum ROI is set to the aera of the image 
-        max_roi=im_bin.shape[0]*im_bin.shape[1] 
-         
-    if min_roi is None: 
-        # the min ROI area is set to 1 pixel 
-        min_roi = 1 
-    
-    if verbose :
-        print(72 * '_') 
-        print('Automatic ROIs selection in progress...') 
-        print ('**********************************************************') 
-        print ('  Min ROI area %d pix² | Max ROI area %d pix²' % (min_roi, max_roi)) 
-        print ('**********************************************************') 
-        
-    # merge ROIS
-    if sum(margins) !=0 :
-        footprint = np.ones((margins[0]*2+1,margins[1]*2+1))
-        im_bin = closing(im_bin, footprint)            
- 
-    labels = measure.label(im_bin)    #Find connected components in binary image 
-    rprops = measure.regionprops(labels) 
-     
-    rois_bbox = [] 
-    rois_label = [] 
-     
-    for roi in rprops: 
-         
-        # select the rois  depending on their size 
-        if (roi.area >= min_roi) & (roi.area <= max_roi): 
-            # get the label 
-            rois_label.append(roi.label) 
-            # get rectangle coordonates            
-            rois_bbox.append (roi.bbox)     
-                 
-    im_rois = np.isin(labels, rois_label)    # test if the indice is in the matrix of indices 
-    im_rois = im_rois* labels 
-     
-    # create a list with labelID and labelName (None in this case) 
-    rois_label = list(zip(rois_label,['unknown']*len(rois_label))) 
-    
-    # test if there is a roi
-    if len(rois_label)>0 :
-        # create a dataframe rois containing the coordonates and the label 
-        rois = np.concatenate((np.asarray(rois_label), np.asarray(rois_bbox)), axis=1) 
-        rois = pd.DataFrame(rois, columns = ['labelID', 'label', 'min_y','min_x','max_y', 'max_x']) 
-        # force type to integer 
-        rois = rois.astype({'label': str,'min_y':int,'min_x':int,'max_y':int, 'max_x':int}) 
-        # compensate half-open interval of bbox from skimage 
-        rois.max_y -= 1 
-        rois.max_x -= 1 
-        
-    else :
-        rois = []    
-        rois = pd.DataFrame(rois, columns = ['labelID', 'label', 'min_y','min_x','max_y', 'max_x']) 
-        rois = rois.astype({'label': str,'min_y':int,'min_x':int,'max_y':int, 'max_x':int}) 
-     
-    # Display 
-    if display :  
-        ylabel =kwargs.pop('ylabel','Frequency [Hz]') 
-        xlabel =kwargs.pop('xlabel','Time [sec]')  
-        title  =kwargs.pop('title','Selected ROIs')  
-        extent=kwargs.pop('extent',None)
-                
-        if extent is None : 
-            xlabel = 'pseudotime [points]'
-            ylabel = 'pseudofrequency [points]'
-         
-        # randcmap = rand_cmap(len(rois_label)) 
-        # cmap   =kwargs.pop('cmap',randcmap)  
-        cmap   =kwargs.pop('cmap','tab20') 
-         
-        _, fig = maad.util.plot2d (
-                                im_rois, 
-                                extent = extent,
-                                title  = title,  
-                                ylabel = ylabel, 
-                                xlabel = xlabel,
-                                cmap   = cmap, 
-                                **kwargs) 
-        # SAVE FIGURE 
-        if savefig is not None :  
-            dpi   =kwargs.pop('dpi',96) 
-            format=kwargs.pop('format','png')  
-            filename=kwargs.pop('filename','_spectro_selectrois')                 
-            filename = savefig+filename+'.'+format 
-            fig.savefig(filename, bbox_inches='tight', dpi=dpi, format=format, 
-                        **kwargs)  
-            
-    return im_rois, rois 
-
-
-###############################################################################
-def _intersection_bbox(bb1, bb2):
-    """
-    test if 2 bounding-boxes intersect.
-
-    Parameters
-    ----------
-    bb1 : dict
-        Keys: {'x1', 'x2', 'y1', 'y2'}
-        The (x1, y1) position is at the top left corner,
-        the (x2, y2) position is at the bottom right corner
-    bb2 : dict
-        Keys: {'x1', 'x2', 'y1', 'y2'}
-        The (x, y) position is at the top left corner,
-        the (x2, y2) position is at the bottom right corner
-
-    Returns
-    -------
-    boolean
-
-    """
-
-    # test if values are consistant (min < max)
-    assert bb1["min_x"] <= bb1["max_x"]
-    assert bb1["min_y"] <= bb1["max_y"]
-    assert bb2["min_x"] <= bb2["max_x"]
-    assert bb2["min_y"] <= bb2["max_y"]
-
-    # determine the coordinates of the intersection rectangle
-    x_left = max(bb1["min_x"], bb2["min_x"])
-    y_top = max(bb1["min_y"], bb2["min_y"])
-    x_right = min(bb1["max_x"], bb2["max_x"])
-    y_bottom = min(bb1["max_y"], bb2["max_y"])
-
-    if (x_right < x_left) or (y_bottom < y_top):
-        is_intersected = False
-    else:
-        is_intersected = True
-
-    return is_intersected
-
-###############################################################################
-def _fusion_bbox(df_rois, idx, idx2):
-    """[fusion beginning and ends of 2 events that are too close to each other. It is applied if
-    the 2 beginnings or the 2 ends are too close, or if the end of the first one is too close to the beginning
-    of the second event. This function test all the events that follow each other in the dataframe.]
-
-    Args:
-        df_rois : 
-            dataframe with all bbox to test for merging
-        idx1 : 
-            position of the FIRST bbox in the dataframe
-        idx2 : 
-            position of the SECOND bbox in the dataframe
-
-    Return       df_rois: 
-            returns the original dataframe with merged bbox
-    """
-    bb1 = df_rois.loc[idx]
-    bb2 = df_rois.loc[idx2]
-
-    min_t = min(bb1.min_t, bb2.min_t)
-    max_t = max(bb1.max_t, bb2.max_t)
-    min_f = min(bb1.min_f, bb2.min_f)
-    max_f = max(bb1.max_f, bb2.max_f)
-
-    df_rois.loc[idx, ["min_f", "min_t", "max_f", "max_t"]] = [
-        min_f,
-        min_t,
-        max_f,
-        max_t,
-    ]
-
-    min_x = min(bb1.min_x, bb2.min_x)
-    max_x = max(bb1.max_x, bb2.max_x)
-    min_y = min(bb1.min_y, bb2.min_y)
-    max_y = max(bb1.max_y, bb2.max_y)
-
-    df_rois.loc[idx, ["min_y", "min_x", "max_y", "max_x"]] = [
-        min_y,
-        min_x,
-        max_y,
-        max_x,
-    ]
-
-    df_rois = df_rois.drop(index=idx2)
-
-    return df_rois
-
-###############################################################################
-def _merge_bbox(df_rois, margins):
-    """[Merge two bbox that are within the margin. As the process is iterative
-    if the resulting bbox is also close to another bbox, then it is merged. 
-    And so on]
-
-    Args:
-        df_rois : 
-            dataframe with all bbox to test for merging
-        margins : 
-            array with margins before/after the bbox and upper/lower the bbox
-
-    Returns:
-        df_rois: 
-            returns the original dataframe with merged bbox
-    """
-
-    # loop until all bbox are merged
-    # test if the number of rois is stable. if not, then run again the merging
-    # process.
-    num_rois = len(df_rois) + 1
-    while len(df_rois) < num_rois:
-        num_rois = len(df_rois)
-        for idx, row in df_rois.iterrows():
-            # test if the index idx is still in the dataframe
-            if idx in df_rois.index:
-                # remove the current ROIs (to avoid auto-merge)
-                df_rois_without_current_row = df_rois.drop(idx)
-                # add the margins to the bbox
-                bb1 = row[["min_x", "min_y", "max_x", "max_y"]] + margins
-                # loop to all the other ROIs
-                for idx2, row2 in df_rois_without_current_row.iterrows():
-                    # add the margins to the bbox
-                    bb2 = row2[["min_x", "min_y", "max_x", "max_y"]] + margins
-                    # If intersection => merge
-                    if _intersection_bbox(bb1, bb2):
-                        df_rois = _fusion_bbox(df_rois, idx, idx2)
-                    # test if length of df_rois >1
-                    if len(df_rois) <= 1:
-                        break
-
-    return df_rois
-
-
-
 
 ###############################################################################
 def _save_rois(
@@ -416,9 +47,35 @@ def _save_rois(
     margins=(0.02, 50),
     filter_order=5,
     display=False):
-    """ save the rois (= chunk) as new wave file. Margins around the bbox
-    can  be applied around the bbox in order to enlarge the save bbox in time
-    and frequency
+    """ 
+    Save the rois as new wave files. 
+    Margins around the bbox can  be applied around the bbox in order to 
+    enlarge the save bbox in time and frequency
+    
+    Parameters
+    ----------
+    chunk: numpy array
+        chunk of audio which a 1d vector of scalars to be saved
+    fs: integer
+        Sampling frequency of the audio
+    df_rois: pandas dataframe
+        dataframe with all the rois to be saved. Each roi is defined by limits
+        in time and frequency that is used to cut the portion of audio that
+        correspond to the roi.        
+    margins: list of numbers, optional
+        the first numbers corresponds to the +/- margins in time (s)
+        the second numbers corresponds to the +/- margins in frequency (Hz)
+        the default value is (0.02s, 50Hz)
+    filter_order: integer, optional
+        Define the order of the bandpass filter. The default value is 5
+    display: boolean, optional
+        If true, display the spectrogram of the roi that is saved
+    
+    Returns
+    ------- 
+    df_rois: pandas dataframe 
+        returns the dataframe with a new column "fullfilename_ts" that contains
+        the full path to the rois
     """
 
     fullfilename_ts_list = []
@@ -501,390 +158,12 @@ def _save_rois(
 
     return df_rois
 
-###############################################################################
-def extract_rois_core(
-    sig,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
-    display=False,
-    verbose=False,
-    **kwargs):
-    
-    """ Extract all Rois in the audio file
-    Parameters
-    ----------
-    audio_path : TYPE
-        DESCRIPTION. 
-    params : dictionnary
-        contains all the parameters to extract the rois 
-    save_path : string, default is None
-        Path to the directory where the segmented rois will be saved   
-    display : TYPE, optional
-        DESCRIPTION. The default is False.
-    verbose : TYPE, optional
-        DESCRIPTION. The default is False.
-    Returns
-    -------
-    df_rois : TYPE
-        DESCRIPTION.
-    """
-    
-    # 1. compute the spectrogram
-    Sxx, tn, fn, ext = maad.sound.spectrogram(
-                                    sig,
-                                    params["SAMPLE_RATE"],
-                                    nperseg=params["NFFT"],
-                                    noverlap=params["NFFT"] // 2)
-
-    t_resolution = tn[1] - tn[0]
-    f_resolution = fn[1] - fn[0]
-
-    if verbose:
-        print("time resolution {}s".format(t_resolution))
-        print("frequency resolution {}s".format(f_resolution))
-
-    if display:
-
-        # creating grid for subplots
-        fig = plt.figure()
-        fig.set_figheight(5)
-        fig.set_figwidth(13)
-        ax0 = plt.subplot2grid(shape=(2, 4), loc=(0, 0), colspan=1)
-        ax1 = plt.subplot2grid(shape=(2, 4), loc=(1, 0), colspan=1)
-        ax2 = plt.subplot2grid(shape=(2, 4), loc=(0, 1), colspan=1)
-        ax3 = plt.subplot2grid(shape=(2, 4), loc=(1, 1), colspan=1)
-        ax4 = plt.subplot2grid(shape=(2, 4), loc=(0, 2), rowspan=2, colspan=2)
-
-        maad.util.plot_spectrogram(
-                        Sxx,
-                        extent=ext,
-                        ax=ax0,
-                        title="1. original spectrogram",
-                        interpolation=None,
-                        now=False)
-
-    # 2. reduce the size of the spectrogram Sxx
-    # Both parameters can be adapted to the audio signature that we want to select
-    Sxx_reduced = resize(
-                    Sxx, 
-                    (Sxx.shape[0] // params["FACTOR_F"], 
-                     Sxx.shape[1] // params["FACTOR_T"]),
-                    anti_aliasing=True)
-    
-    if display:
-        maad.util.plot_spectrogram(
-                            Sxx_reduced,
-                            log_scale=True,
-                            extent=ext,
-                            ax=ax1,
-                            title="2. Resized spectrogram",
-                            interpolation=None,
-                            now=False)
-
-    # 3. Clean spectrogram : remove background)
-    Sxx_clean_reduced, _ = maad.sound.remove_background_along_axis(
-                                                    Sxx_reduced,
-                                                    mode=params["MODE_RMBCKG"],
-                                                    N=params["N_RUNNING_MEAN"],
-                                                    display=False)
-    
-    # 4. convert to dB
-    Sxx_clean_dB_reduced = (maad.util.power2dB(Sxx_clean_reduced, db_range=96) +96)
-
-    if display:
-        maad.util.plot_spectrogram(
-                        Sxx_clean_dB_reduced,
-                        extent=ext,
-                        log_scale=False,
-                        ax=ax2,
-                        title="3. cleaned spectrogram",
-                        interpolation=None,
-                        now=False)
-
-    # reduce time and frequential vectors
-    if params["FACTOR_T"] % 2 == 0:  # is even
-        tn_reduced = (tn[np.arange(params["FACTOR_T"] // 2, 
-                                   len(tn), 
-                                   params["FACTOR_T"])]
-                      + t_resolution/2)
-    else:  # is odd
-        tn_reduced = tn[np.arange(params["FACTOR_T"] // 2,
-                                  len(tn), 
-                                  params["FACTOR_T"])]
-
-    if params["FACTOR_F"] % 2 == 0:  # is even
-        fn_reduced = (fn[ np.arange(params["FACTOR_F"] // 2, 
-                                    len(fn), 
-                                    params["FACTOR_F"])]
-                      + f_resolution/2)
-    else:  # is odd
-        fn_reduced = fn[np.arange(params["FACTOR_F"] // 2,
-                                  len(fn), 
-                                  params["FACTOR_F"])]
-
-    # 7. binarization of the spectrogram to select part of the spectrogram with
-    # acoustic activity
-    # Both parameters can be adapted to the situation in order to take more
-    # or less ROIs that are more or less large
-    im_mask = maad.rois.create_mask(
-                        Sxx_clean_dB_reduced,
-                        mode_bin="absolute",
-                        bin_h=params["MASK_PARAM1"],
-                        bin_l=params["MASK_PARAM2"])
-
-    if display:
-        maad.util.plot_spectrogram(
-                        im_mask,
-                        extent=ext,
-                        ax=ax3,
-                        title="4. mask",
-                        interpolation=None,
-                        now=True)
-
-    # 8. get the mask with rois (im_rois) and the bounding box for each rois (rois_bbox)
-    # and an unique index for each rois => in the pandas dataframe rois
-    _, df_rois = maad.rois.select_rois(im_mask, min_roi=None)
- 
-    # and format ROis to reduced tn and fn
-    df_rois = maad.util.format_features(df_rois, tn_reduced, fn_reduced)
-    # and format ROis to initial tn and fn
-    df_rois = maad.util.format_features(df_rois, tn, fn)
-
-    # Remove cut ROIs (begining and end of audio) and 1 line rois (vertical
-    # and horizontal )
-    # Drop ROIs with same min_x max_x and min_y max_y (=> 1 line)
-    df_rois = df_rois[df_rois.min_x < df_rois.max_x]
-    df_rois = df_rois[df_rois.min_y < df_rois.max_y]
-
-    # Drop two columns
-    df_rois = df_rois.drop(
-        columns=["labelID", "label"])
-
-    if verbose:
-        print("\nBEFORE MERGING FOUND {} ROIS ".format(len(df_rois)))
-
-    # Test if we found an ROI otherwise we pass to the next chunk
-    if len(df_rois) > 0:
-
-        if len(df_rois) > 1:
-            # 9. Merge ROIs that are very close to each other.
-            # Default, if marings = [0,0,0,0], bbox must overlap in order
-            # to be merge. If margins is not null, all bbox are expanded
-            # according to margins. If the expanded bbox overlapped, they
-            # are merged.
-            # The process is iterative which means than several ROIs can be
-            # merged after several pass
-            margins = [
-                -round(params["MARGIN_T_LEFT"] / t_resolution),
-                -round(params["MARGIN_F_BOTTOM"] / f_resolution),
-                 round(params["MARGIN_T_RIGHT"] / t_resolution),
-                 round(params["MARGIN_F_TOP"] / f_resolution)]
-            df_rois = _merge_bbox(df_rois, margins)
-
-        # Keep only events with duration longer than MIN_DURATION
-        df_rois = df_rois[((df_rois["max_t"] - df_rois["min_t"]) > params["MIN_DURATION"])]
-
-        if verbose:
-            print("=> AFTER MERGING FOUND {} ROIS".format(len(df_rois)))
-
-        if display:
-            # Convert in dB
-            X = maad.util.power2dB(Sxx, db_range=96) + 96
-            kwargs = {"vmax": np.max(X)}
-            kwargs.update({"vmin": np.min(X)})
-            kwargs.update({"extent": ext})
-            kwargs.update({"figsize": (1, 2.5)})
-            maad.util.plot_spectrogram(X, ext, 
-                                  log_scale=False, 
-                                  ax=ax4, 
-                                  title="5. Overlay ROIs")
-            maad.util.overlay_rois(X, df_rois, 
-                              ax=ax4, fig=fig,
-                              edge_color='yellow',
-                              **kwargs)
-            kwargs.update({"ms": 4, "marker": "+", "fig": fig, "ax": ax4})
-            # ax, fig = maad.util.overlay_centroid(X, df_rois, **kwargs)
-            fig.suptitle(kwargs.pop("suptitle", ""))
-            fig.tight_layout()
-
-    return df_rois
-
-###############################################################################
-def extract_rois_full_sig(
-    sig,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
-    display=False,
-    verbose=False,
-    **kwargs):
-    """ Extract all Rois in the audio file
-    Parameters
-    ----------
-    sig : TYPE
-        DESCRIPTION.
-    params : dictionnary
-        contains all the parameters to extract the rois 
-    display : TYPE, optional
-        DESCRIPTION. The default is False.
-    verbose : TYPE, optional
-        DESCRIPTION. The default is False.
-    Returns
-    -------
-    df_rois : TYPE
-        DESCRIPTION.
-    """
-
-    # 1. compute the spectrogram
-    Sxx, tn, fn, ext = maad.sound.spectrogram(
-                                sig,
-                                params["SAMPLE_RATE"],
-                                nperseg=params["NFFT"],
-                                noverlap=params["NFFT"] // 2,
-                                flims=[params["LOW_FREQ"], params["HIGH_FREQ"]])
-
-    t_resolution = tn[1] - tn[0]
-    f_resolution = fn[1] - fn[0]
-
-    if verbose:
-        print("time resolution {}s".format(t_resolution))
-        print("frequency resolution {}s".format(f_resolution))
-
-    if display:
-        # creating grid for subplots
-        fig = plt.figure()
-        fig.set_figheight(5)
-        fig.set_figwidth(13)
-        ax0 = plt.subplot2grid(shape=(2, 4), loc=(0, 0), colspan=1)
-        ax1 = plt.subplot2grid(shape=(2, 4), loc=(1, 0), colspan=1)
-        ax2 = plt.subplot2grid(shape=(2, 4), loc=(0, 1), colspan=1)
-        ax3 = plt.subplot2grid(shape=(2, 4), loc=(1, 1), colspan=1)
-        ax4 = plt.subplot2grid(shape=(2, 4), loc=(0, 2), rowspan=2, colspan=2)
-
-        maad.util.plot_wave(sig, fs=params["SAMPLE_RATE"], ax=ax0)
-
-        maad.util.plot_spectrogram(
-            Sxx,
-            extent=ext,
-            ax=ax1,
-            title="1. original spectrogram",
-            interpolation=None,
-            now=False)
-        
-    # 3. convert to dB
-    Sxx_dB = maad.util.power2dB(Sxx, db_range=96) + 96
-    
-    # 2. Clean spectrogram : remove background)
-    Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB,
-                                                      mode=params["MODE_RMBCKG"],
-                                                      N=params["N_RUNNING_MEAN"],
-                                                      display=False)
-
-    if display:
-        maad.util.plot_spectrogram(
-            Sxx_clean_dB,
-            extent=ext,
-            log_scale=False,
-            ax=ax2,
-            title="2. cleaned spectrogram",
-            interpolation='none',
-            now=False,
-            vmin = 0,
-            vmax = np.percentile(Sxx_clean_dB,99.9)
-        )
-    
-    # 4. snr estimation to threshold the spectrogram
-    _,bgn,snr,_,_,_ = maad.sound.spectral_snr(maad.util.dB2power(Sxx_clean_dB))
-    if verbose :
-        print('BGN {}dB / SNR {}dB'.format(bgn,snr))
-        
-    # 5. binarization of the spectrogram to select part of the spectrogram with
-    # acoustic activity
-    # Both parameters can be adapted to the situation in order to take more
-    # or less ROIs that are more or less large        
-    
-    im_mask = maad.rois.create_mask(
-        Sxx_clean_dB,
-        mode_bin="absolute",
-        # bin_h= snr + params["MASK_PARAM1"],
-        # bin_l= snr + params["MASK_PARAM2"]
-        bin_h=  params["MASK_PARAM1"],
-        bin_l=  params["MASK_PARAM2"]
-    )
-
-    if display:
-        maad.util.plot_spectrogram(
-            im_mask,
-            extent=ext,
-            ax=ax3,
-            title="3. mask",
-            interpolation=None,
-            now=True,
-        )
-
-    # 6. get the mask with rois (im_rois) and the bounding box for each rois (rois_bbox)
-    # and an unique index for each rois => in the pandas dataframe rois
-    margins = (round(params["MARGIN_F_BOTTOM"] / f_resolution),
-               round(params["MARGIN_T_LEFT"] / t_resolution)) 
-    _, df_rois = _select_rois(im_mask, min_roi=None, margins = margins)
-    
-    # and format ROis to initial tn and fn
-    df_rois = maad.util.format_features(df_rois, tn, fn)
-
-    # Test if we found an ROI otherwise we pass to the next chunk
-    if len(df_rois) > 0:    
-
-        # 7. Remove ROIs with problems in the coordinates
-        df_rois = df_rois[df_rois.min_x < df_rois.max_x]
-        df_rois = df_rois[df_rois.min_y < df_rois.max_y]
-        
-        # 8. remove rois with ratio >max_ratio_xy (they are mostly artefact 
-        # such as wind, rain or clipping)
-        # add ratio x/y
-        df_rois['ratio_yx'] = (df_rois.max_y -df_rois.min_y) / (df_rois.max_x -df_rois.min_x) 
-        if params["MAX_RATIO_YX"] is not None :
-            df_rois = df_rois[df_rois['ratio_yx'] < params["MAX_RATIO_YX"]] 
-    
-        # Drop two columns
-        df_rois = df_rois.drop(columns=["labelID", "label"])
-
-        # Keep only events with duration longer than MIN_DURATION
-        df_rois = df_rois[((df_rois["max_t"]-df_rois["min_t"])>params["MIN_DURATION"])]
-        
-        # 8. remove rois with ratio >max_ratio_xy (they are mostly artefact 
-        # such as wind, ain or clipping)
-        # add ratio x/y
-        df_rois['ratio_yx'] = (df_rois.max_y -df_rois.min_y) / (df_rois.max_x -df_rois.min_x) 
-        print()
-        if params["MAX_RATIO_YX"] is not None :
-            df_rois = df_rois[df_rois['ratio_yx'] < params["MAX_RATIO_YX"]] 
-
-        if verbose:
-            print("=> AFTER MERGING FOUND {} ROIS".format(len(df_rois)))
-        
-        if display:
-            # Convert in dB
-            X = maad.util.power2dB(Sxx, db_range=96) + 96
-            kwargs.update({"vmax": np.max(X)})
-            kwargs.update({"vmin": np.min(X)})
-            kwargs.update({"extent": ext})
-            kwargs.update({"figsize": (1, 2.5)})
-            maad.util.plot_spectrogram(
-                X, ext, log_scale=False, ax=ax4, title="5. Overlay ROIs"
-            )
-            maad.util.overlay_rois(X, df_rois,
-                              edge_color='yellow',
-                              ax=ax4, fig=fig, **kwargs)
-            kwargs.update(
-                {"ms": 4, "marker": "+", "fig": fig, "ax": ax4})
-            # ax, fig = maad.util.overlay_centroid(X, df_rois, **kwargs)
-            fig.suptitle(kwargs.pop("suptitle", ""))
-            fig.tight_layout()
-    
-    return df_rois
 
 
 ###############################################################################
 def single_file_extract_rois(
     audio_path,
-    fun=extract_rois_full_sig,
+    fun,
     params=cfg.DEFAULT_PARAMS_EXTRACT,
     save_path=None,
     display=False,
@@ -894,6 +173,8 @@ def single_file_extract_rois(
     ----------
     audio_path : TYPE
         DESCRIPTION.
+    fun : function
+        name of the function that is called to segment the rois
     params : dictionnary
         contains all the parameters to extract the rois 
     save_path : string, default is None
@@ -1032,14 +313,60 @@ def single_file_extract_rois(
 
 ###############################################################################
 def multicpu_extract_rois(
-    dataset, # directory or csv or dataframe
-    fun=extract_rois_full_sig,
+    dataset, 
+    fun,
     params=cfg.DEFAULT_PARAMS_EXTRACT,
     save_path=None,
     save_csv_filename='rois.csv',
     overwrite=False,
     nb_cpu=None,
     verbose=True):
+    """ 
+    Extract all Rois in the dataset (multiple audio files)
+    
+    Parameters
+    ----------
+    dataset : string or pandas dataframe
+        if it's a string it should be either a directory where are the audio
+        files to process or a full path to a csv file containing a column
+        "filename" and a column "fullfilename" with the full path to the audio
+        files to process
+        if it's a dataframe, the dataframe should contain a column
+        "filename" and a column "fullfilename" with the full path to the audio
+        files to process. This dataframe can be obtained by called the function
+        grab_audio_to_df        
+    fun : function
+        name of the function that is called to segment the rois
+    params : dictionnary, optioanl
+        contains all the parameters to extract the rois 
+    save_path : string, default is None
+        Path to the directory where the segmented rois will be saved    
+    save_csv_filename: string, optional
+        csv filename that contains all the rois that will be saved. The default
+        is rois.csv
+    overwrite : boolean, optional
+        if a directory already exists with the rois, if false, the process is 
+        aborted, if true, new rois will eventually be added in the directory and
+        in the csv file.
+    nb_cpu : integer, optional
+        number of cpus used to segment the rois. The default is None which means
+        that all cpus will be used
+    verbose : boolean, optional
+        if true, print information. The default is False.
+        
+    Returns
+    -------
+    df_rois_sorted : pandas dataframe
+        dataframe containing of the rois found in the audio. Each roi is
+        characterized by a bounding box (min_f max_f, min_t max_t)
+    csv_fullfilename : string
+        full path the csv file with all the rois that were segmented. if the file
+        already exists, the new rois will be appended to the file.
+        
+    See
+    ---
+    grab_audio_to_df
+    """
     
     if verbose :
         print('======================= EXTRACT ROIS =========================\n')
