@@ -26,7 +26,6 @@ import maad
 from bambird import config as cfg
 
 #%%
-
 ###############################################################################
 def _intersection_bbox(bb1, bb2):
     """

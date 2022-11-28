@@ -38,7 +38,9 @@ import maad
 from bambird import config as cfg
 from bambird import grab_audio_to_df
 
+#%%
 ###############################################################################
+
 def _save_rois(
     chunk,
     fs,
