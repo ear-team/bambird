@@ -25,13 +25,18 @@ from skimage.morphology import closing
 import maad
 
 # import bamx
-from bamx import config as cfg
+from bambird import config as cfg
 
 #%%
 ###############################################################################
-def _select_rois(im_bin, min_roi=None ,max_roi=None, 
-                margins=(0,0), 
-                verbose=False, display=False, savefig = None, **kwargs): 
+def _select_rois(im_bin, 
+                 min_roi=None,
+                 max_roi=None, 
+                 margins=(0,0), 
+                 verbose=False, 
+                 display=False, 
+                 savefig = None, 
+                 **kwargs): 
     """ 
     Select regions of interest based on its dimensions.
     

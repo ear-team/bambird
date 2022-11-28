@@ -26,12 +26,6 @@ import maad
 from bambird import config as cfg
 
 #%%
-""" ===========================================================================
-
-                    Functions to download dataset from xeno-canto    
-
-============================================================================"""
-
 ###############################################################################
 def query_xc (species_list, 
            params=cfg.DEFAULT_PARAMS_XC,

@@ -197,11 +197,11 @@ def single_file_extract_rois(
     # extract species and code from fullfilename 
     try :
         _, species = os.path.split(path)
-        code = ((species.split(" ", 1)[0][0:3]).lower() + 
+        categories = ((species.split(" ", 1)[0][0:3]).lower() + 
                 (species.split(" ", 1)[1][0:3]).lower())
     except :
         _, species = os.path.split(path)
-        code = species
+        categories = species
     
     try:
         # 1. load audio
@@ -275,7 +275,7 @@ def single_file_extract_rois(
                     current_df_rois.insert(1, "filename", filename)
                     current_df_rois.insert(2, "fullfilename", audio_path)
                     current_df_rois.insert(3, "species", species)
-                    current_df_rois.insert(4, "code", code)
+                    current_df_rois.insert(4, "categories", categories)
                     current_df_rois.insert(5, "abs_min_t", seconds)
                     current_df_rois.insert(4, "id", filename.split('.',1)[0][2:])
                     
@@ -373,16 +373,17 @@ def multicpu_extract_rois(
 
     # if Dataset is a directory : 
     # > all audio files in the directory will be processed.
-    #-------------------------------------------------------------------------
-    
-    # test if dataset_path is a valid path with audio files (wav or mp3)
+    #-----------------------------------------------------
     if isinstance(dataset, pd.DataFrame) == False :
+        # test if dataset is a path to a directory
+        #-----------------------------------------
         if os.path.isdir(dataset):
             
             # format dataset to Path
             dataset = Path(dataset)
 
             # create a dataframe with all recordings in the directory
+            #--------------------------------------------------------
             df_data = grab_audio_to_df (path            =dataset, 
                                         audio_format    ='mp3',
                                         verbose         =verbose)
@@ -407,7 +408,7 @@ def multicpu_extract_rois(
                 
     # if dataset is a dataframe : 
     # > read the dataframe       
-    #-------------------------------------------------------------------------     
+    #--------------------------- 
     elif isinstance(dataset, pd.DataFrame): 
         df_data = dataset.copy()
         
@@ -420,9 +421,9 @@ def multicpu_extract_rois(
             "WARNING: dataset must be a valid path to a directory, a csv file"
             + "or a dataframe"
         )
-        
-    #----------------------------------------------------------------------------
+
     # Check if the output directory already exists
+    #---------------------------------------------
     dir_exist = os.path.exists(save_path) 
     if (dir_exist == False) or ((dir_exist == True) and (overwrite == True)) : 
         if (dir_exist == True) and (overwrite == True):
@@ -430,11 +431,10 @@ def multicpu_extract_rois(
                 print(("The directory {} already exists" +
                       " and will be overwritten").format(save_path))   
         
-        #----------------------------------------------------------------------
         try :
             # load the dataframe with all ROIs already extracted
-            df_rois = pd.read_csv(save_path / save_csv_filename, 
-                                  sep=';')
+            #---------------------------------------------------
+            df_rois = pd.read_csv(save_path / save_csv_filename, sep=';')
             # create a mask to select or not the audio files that were already segmented
             mask = df_data['filename'].isin(df_rois['filename'].unique().tolist())
             
@@ -456,8 +456,8 @@ def multicpu_extract_rois(
             if verbose :
                 print('Composition of the dataset : ')
                 print('   -number of files : %2.0f' % len(df_data[~mask]))
-                print('   -number of species : %2.0f' % len(df_data[~mask].species.unique()))
-                print('   -unique species code : {}'.format(df_data[~mask]['code'].unique()))
+                print('   -number of categories : %2.0f' % len(df_data[~mask].categories.unique()))
+                print('   -unique categories : {}'.format(df_data[~mask]['categories'].unique()))
         
             # Number of CPU used for the calculation. By default, set to all available
             # CPUs
@@ -465,6 +465,7 @@ def multicpu_extract_rois(
                 nb_cpu = os.cpu_count()
     
             # define a new function with fixed parameters to give to the multicpu pool 
+            #-------------------------------------------------------------------------
             multicpu_func = partial(
                 single_file_extract_rois,
                 fun=fun,
@@ -475,6 +476,7 @@ def multicpu_extract_rois(
             )
         
             # Multicpu process
+            #-------------------
             with tqdm(total=len(df_data[~mask])) as pbar:
                 with futures.ProcessPoolExecutor(max_workers=nb_cpu-1) as pool:
                     for df_rois_temp in pool.map(
@@ -483,12 +485,12 @@ def multicpu_extract_rois(
                         pbar.update(1)
                         df_rois = df_rois.append(df_rois_temp)
             
-            # sort filename for each species
+            # sort filename for each categories
             #---------------------------------
             df_rois_sorted = pd.DataFrame()
-            for code in df_rois["code"].unique():
+            for categories in df_rois["categories"].unique():
                 df_rois_sorted = df_rois_sorted.append(
-                    df_rois[df_rois["code"] == code].sort_index()
+                    df_rois[df_rois["categories"] == categories].sort_index()
                 )
                         
             if verbose :

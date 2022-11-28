@@ -37,21 +37,33 @@ from bambird import grab_audio_to_df
 
 
 #%%
-""" ===========================================================================
-
-                    Features extraction : process the whole dataset
-
-============================================================================"""
-
 ###############################################################################
 def compute_features(
-    audio_fullfilename,
+    audio_path,
     params=cfg.DEFAULT_PARAMS_FEATURES,
     display=False,
     verbose=False):
+    """ 
+    Compute features such as shape (wavelets), centroid and bandwidth
     
-    # Custom Functions
-    #
+    Parameters
+    ----------
+    audio_path : string
+        full path the audio file
+    params : dictionnary, optional
+        contains all the parameters to compute the features
+    display : boolean, optional
+        if true, display the spectrograms and the signals at each step of 
+        the process. The default is False.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+        
+    Returns
+    -------
+    df_features : pandas dataframe
+        dataframe with all the features computed for each roi found in the audio. 
+    """
+    
     # 1.   Load an audio
     # 2.   Bandpass the audio
     # 3.   Compute the spectrogram
@@ -60,29 +72,24 @@ def compute_features(
     # 6.   Compute the features shape of the ROIs 
     # 7.   Compute the centroid and bandwidth of the ROIs
     # 8.   Add the features into a dataframe
-    #
 
     plt.style.use("default")
 
-    # extract audio filename and species from fullfilename
-    path, filename_with_ext = os.path.split(audio_fullfilename)
+    # extract audio filename and categories from fullfilename
+    path, filename_with_ext = os.path.split(audio_path)
     filename = filename_with_ext
-    try :
-        _, species = os.path.split(path)
-        code = ((species.split(" ", 1)[0][0:3]).lower() + 
-                (species.split(" ", 1)[1][0:3]).lower())
-    except :
-        _, species = os.path.split(path)
-        code = species
+    _, categories = os.path.split(path)
     
     if verbose:
-        print("file XC {}".format(filename))
+        print("file {}".format(filename))
 
     try:
         # 1. load audio
-        sig, sr = librosa.load(audio_fullfilename, sr=params["SAMPLE_RATE"])
+        #----------------------------------------------
+        sig, sr = librosa.load(audio_path, sr=params["SAMPLE_RATE"])
 
         # 2. bandpass filter around birds frequencies
+        #----------------------------------------------
         fcut_max = min(params["HIGH_FREQ"], params["SAMPLE_RATE"] // 2 - 1)
         fcut_min = params["LOW_FREQ"]
         sig = maad.sound.select_bandwidth(sig,
@@ -93,6 +100,7 @@ def compute_features(
                                     ftype="bandpass")
 
         # 3. compute the spectrogram
+        #----------------------------------------------
         Sxx, tn, fn, ext = maad.sound.spectrogram(sig,
                                              params["SAMPLE_RATE"],
                                              nperseg=params["NFFT"],
@@ -126,13 +134,13 @@ def compute_features(
                                   now=False)
 
         # 4. convert to dB
+        #----------------------------------------------
         Sxx_dB = maad.util.power2dB(Sxx, db_range=96) + 96
 
         # 5. Clean spectrogram : remove background
+        #----------------------------------------------
         Sxx_clean_dB, _, _ = maad.sound.remove_background(Sxx_dB)
         Sxx_clean_dB = Sxx_clean_dB * (Sxx_clean_dB > 6)
-        
-        # Sxx_clean_dB = Sxx_dB
         
 
         if display:
@@ -164,6 +172,7 @@ def compute_features(
                                          columns=["min_y", "min_x", "max_y", "max_x"])
 
         # 6. Compute acoustic features (MAAD)
+        #----------------------------------------------
         df_shape, params_shape = maad.features.shape_features(Sxx_clean_dB, 
                                                          resolution=params["SHAPE_RES"], 
                                                          rois=df_rois_for_shape)
@@ -179,7 +188,7 @@ def compute_features(
         df_shape = maad.util.format_features(df_shape, tn, fn)
 
         # 7. Compute the centroid (t,f), the bandwidth and the duration of the ROI
-
+        #-------------------------------------------------------------------------
         # initialize the dataframe df_rois with duration and centroid from the
         # size of the spectrogram
         df_rois = pd.DataFrame([[tn[-1], tn[-1] / 2]], columns=["duration_t", "centroid_t"])
@@ -214,14 +223,15 @@ def compute_features(
             ax[1, 1].axvline(x=f_peak_plus_6dB, color="red", linestyle="dotted", linewidth=2)
             ax[1, 1].plot([f_peak], [f_peak_amplitude_dB], "r+")
             ax[1, 1].plot([(f_peak_plus_6dB + f_peak_minus_6dB) /2],[f_peak_amplitude_dB], "bo")
-            fig.suptitle(filename + " " + code)
+            fig.suptitle(filename + " " + categories)
             fig.tight_layout()
 
-        # add global information about the file and species for all rois (rows)
+        # add global information about the file and categories for all rois (rows)
         df_rois.insert(0, "filename_ts", filename)
-        df_rois.insert(1, "fullfilename_ts", audio_fullfilename)
+        df_rois.insert(1, "fullfilename_ts", audio_path)
 
-        # 10. concat df_rois and df_shape
+        # 8. concat df_rois and df_shape
+        #----------------------------------------------
         df_features = pd.concat([df_rois, df_shape], axis=1)
 
     except Exception as e:
@@ -238,7 +248,52 @@ def multicpu_compute_features(
                 save_csv_filename=None,
                 nb_cpu=None,
                 overwrite=False,
-                verbose=True):
+                verbose=True): 
+    """
+    Parameters
+    ----------
+    dataset : string or pandas dataframe
+        if it's a string it should be either a directory where are the ROIs
+        files to process or a full path to a csv file containing a column
+        "filename_ts" and a column "fullfilename_ts" with the full path to the 
+        ROIS files to process
+        if it's a dataframe, the dataframe should contain a column
+        "filename_ts" and a column "fullfilename_ts" with the full path to the audio
+        files to process. This dataframe can be obtained by called the function
+        grab_audio_to_df        
+    params : dictionnary, optional
+        contains all the parameters to compute the features
+    save_path : string, default is None
+        Path to the directory where the csv file with the features will be saved    
+    save_csv_filename: string, optional
+        csv filename that contains all the features that will be saved. The default
+        is None, meaning that the name will be automatically created from the
+        parameters to compute the features as :
+            'features_'
+            + params["SHAPE_RES"]
+            + "_NFFT"
+            + str(params["NFFT"])
+            + "_SR"
+            + str(params["SAMPLE_RATE"])
+            + ".csv"
+    overwrite : boolean, optional
+        if a directory already exists with the rois, if false, the process is 
+        aborted, if true, new features will eventually be added in the directory and
+        in the csv file.
+    nb_cpu : integer, optional
+        number of cpus used to compute the features. The default is None which means
+        that all cpus will be used
+    verbose : boolean, optional
+        if true, print information. The default is False.
+        
+    Returns
+    -------
+    df_features_sorted : pandas dataframe
+        dataframe containing all the features computed for each roi. 
+    csv_fullfilename : string
+        full path the csv file with all the features computed for each roi. 
+        if the file already exists, the new features will be appended to the file.
+    """
 
     if verbose :
         print('\n')
@@ -258,8 +313,8 @@ def multicpu_compute_features(
     
             # create a dataframe with all recordings in the directory
             df_rois = grab_audio_to_df(path         =dataset, 
-                                        audio_format ='wav', 
-                                        verbose      =verbose)
+                                       audio_format ='wav', 
+                                       verbose      =verbose)
             
             # change the default name of the column fullfilename when using
             # grab_audio_to_df
@@ -280,11 +335,7 @@ def multicpu_compute_features(
         elif os.path.isfile(dataset):
             # load the data from the csv
             df_rois = pd.read_csv(dataset, sep = ';')
-            
-            # # change the default name of the column fullfilename
-            # df_rois = df_rois.rename(columns={"fullfilename":"fullfilename_ts",
-            #                                   "filename":"filename_ts"})
-            
+                    
             # Default directory to save the dataframe with all features
             #----------------------------------------------------------
             if save_path is None :
@@ -320,45 +371,46 @@ def multicpu_compute_features(
             + ".csv"
         )
                 
-    # Test if the csv with features already exists and if we want to overwrite it.
-    #-------------------------------------------------------------------------
     # format save_path into Path
     save_path = Path(save_path)
-    file_exist = (save_path / save_csv_filename).exists()
-    if (file_exist == False) or ((file_exist == True) and (overwrite == True)) : 
-        if ((file_exist == True) and (overwrite == True))  :
-            if verbose :
-                print(('{} already exists. \n'+
-                      '***BE CAREFULL*** csv file will be overwritten').format(save_csv_filename)) 
-                
-        #----------------------------------------------------------------------
-        try :
-            # load the dataframe with all ROIs already extracted
-            df_features = pd.read_csv(save_path / save_csv_filename, 
-                                      sep=';')
-            # create a mask to select or not the audio files that were already segmented
-            mask = df_rois['filename'].isin(df_features['filename'].unique().tolist())
-            
-        except :
-            # create an empty dataframe. It will contain all ROIs found for each
-            # audio file in the directory
-            df_features = pd.DataFrame()  
-            
-            # create a mask full of false
-            mask = np.zeros(len(df_rois), bool)
-        
-        INITIAL_NUM_ROIS = len(df_features)
     
-        # Compute features using multicpu  
-        #---------------------------------
-        # test if the dataframe contains files to compute the features
-        if len(df_rois[~mask]) > 0 :
-            
+    try :
+        # load the dataframe with all ROIs already extracted
+        df_features = pd.read_csv(save_path / save_csv_filename, 
+                                  sep=';')
+        # create a mask to select or not the audio files that were already segmented
+        mask = df_rois['filename'].isin(df_features['filename'].unique().tolist())
+        
+    except :
+        # create an empty dataframe. It will contain all ROIs found for each
+        # audio file in the directory
+        df_features = pd.DataFrame()  
+        
+        # create a mask full of false
+        mask = np.zeros(len(df_rois), bool)
+    
+    INITIAL_NUM_ROIS = len(df_features)
+
+    # if necessary compute features using multicpu  
+    #-----------------------------------------------
+    # test if the dataframe contains files to compute the features
+    if len(df_rois[~mask]) > 0 :
+        
+        # Test if the csv with features already exists and if we want to overwrite it.
+        #-----------------------------------------------------------------------------
+        file_exist = (save_path / save_csv_filename).exists()
+        if (file_exist == False) or ((file_exist == True) and (overwrite == True)) : 
+        
+            if ((file_exist == True) and (overwrite == True))  :
+                if verbose :
+                    print(('{} already exists. \n'+
+                          '***BE CAREFULL*** csv file will be overwritten').format(save_csv_filename)) 
+        
             if verbose :
                 print('Composition of the dataset : ')
                 print('   -number of files : %2.0f' % len(df_rois[~mask]))
-                print('   -number of species : %2.0f' % len(df_rois[~mask].species.unique()))
-                print('   -unique species code : {}'.format(df_rois[~mask]['code'].unique()))
+                print('   -number of categories : %2.0f' % len(df_rois[~mask].categories.unique()))
+                print('   -unique categories : {}'.format(df_rois[~mask]['categories'].unique()))
             
             # Number of CPU used for the calculation. By default, set to all available
             # CPUs
@@ -402,12 +454,12 @@ def multicpu_compute_features(
                 right_index=True,
             )
             
-            # sort filename for each species
+            # sort filename for each categories
             #-------------------------------
             df_features_sorted = pd.DataFrame()
-            for code in df_features["code"].unique():
+            for categories in df_features["categories"].unique():
                 df_features_sorted = df_features_sorted.append(
-                    df_features[df_features["code"] == code].sort_index()
+                    df_features[df_features["categories"] == categories].sort_index()
                 )
            
             if verbose :
@@ -430,41 +482,23 @@ def multicpu_compute_features(
                                           header=True)
                 # reset index
                 df_features_sorted.reset_index(inplace=True)
-  
-        else :        
-            # reset the index
-            try:
-                df_features.reset_index('filename_ts', inplace = True)
-            except:
-                pass       
-                    
-            # remove from df_rois the audio files that were already computed
-            mask = df_features['filename'].isin(df_rois['filename'].unique().tolist())
-            df_features_sorted = df_features[mask]
-            csv_fullfilename = save_path / save_csv_filename
-            
-            if verbose :
-                print("No feature needs to be computed")
-                print(">>> FEATURES COMPUTING PROCESS ABORTED <<<")
+    
+    # otherwise, select the features rows to return
+    #----------------------------------------------
+    else :        
+        # reset the index
+        try:
+            df_features.reset_index('filename_ts', inplace = True)
+        except:
+            pass       
                 
-    # The csv file already exists
-    #-------------------------------      
-    else:
-        # Read the already existed file
-        csv_fullfilename =save_path / save_csv_filename
+        # remove from df_rois the audio files that were already computed
+        mask = df_features['filename'].isin(df_rois['filename'].unique().tolist())
+        df_features_sorted = df_features[mask]
+        csv_fullfilename = save_path / save_csv_filename
         
-        try :
-            df_features_sorted = pd.read_csv(csv_fullfilename, sep=";")
-        except :
-            df_features_sorted = pd.DataFrame()
-            
-            if verbose :
-                print(('***WARNING** The csv file {0} does not exist in the directory where are the ROIS. \n' +
-                      '====> Please, delete the directory {1} and restart the extraction process').format
-                      (save_csv_filename, save_path))
-                
-        if verbose:
-            print("The features file {} already exists".format(save_csv_filename))
-            print(">>> EXTRACTION PROCESS ABORTED <<<")
+        if verbose :
+            print("No feature needs to be computed")
+            print(">>> FEATURES COMPUTING PROCESS ABORTED <<<")
             
     return df_features_sorted, csv_fullfilename

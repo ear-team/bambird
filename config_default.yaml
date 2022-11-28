@@ -31,9 +31,9 @@ PARAMS_EXTRACT:
   LOW_FREQ: 250           # Low frequency in Hz of the bandpass filter applied to the audio
   HIGH_FREQ: 12000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
-  AUDIO_DURATION: 60      # Max duration of the audio file (in seconds)
+  AUDIO_DURATION: 30      # Max duration of the audio file (in seconds)
   SIGNAL_LENGTH: 10       # Split the audio signal in chunks of duration = SIGNAL_LENGTH (in seconds)
-  OVLP: 0.5               # Define the overlap ratio between each chunk (0=> no overlap, 0.75=> 75% of overlap between 2 consecutive chunks)
+  OVLP: 0               # Define the overlap ratio between each chunk (0=> no overlap, 0.75=> 75% of overlap between 2 consecutive chunks)
   # Spectrogram
   MODE_RMBCKG: median     # Mode to compute the remove_background {'mean', 'median'}
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
@@ -71,11 +71,14 @@ PARAMS_FEATURES:
 # CLUSTERING PARAMETERS
 ################################
 PARAMS_CLUSTER:
-  SCALER: MINMAXSCALER   # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
-  PERCENTAGE_PTS: 5      # minimum number of ROIs to form a cluster (in % of the total number of ROIs)
-  EPS: auto              # set the maximum distance between elements in a single clusters {a number or 'auto'}
-  METHOD: DBSCAN         # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
-  KEEP: BIGGEST          # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
+  FEATURES: ['shp', 'centroid_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
+  SCALER: MINMAXSCALER              # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
+  PERCENTAGE_PTS: 5                 # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
+  MIN_PTS:                          # minimum number of ROIs to form a cluster {integer or blank}
+  EPS: auto                         # set the maximum distance between elements in a single clusters {a number or 'auto'}
+  METHOD: DBSCAN                    # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
+  KEEP: BIGGEST                     # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
+
 
 
 
