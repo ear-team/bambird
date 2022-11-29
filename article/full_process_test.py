@@ -95,9 +95,10 @@ if __name__ == '__main__':
     # ---------------------------------------------------------------------
 
     # with dataframe or csv file
-    df_cluster = bambird.find_cluster(
+    df_cluster, csv_cluster = bambird.find_cluster(
                     dataset     =df_features,
                     params      =params['PARAMS_CLUSTER'],
+                    save_path           =DIR_DATA / ROIS_NAME,
                     display     =False,
                     verbose     =True
                     )

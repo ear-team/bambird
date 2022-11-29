@@ -196,7 +196,7 @@ def single_file_extract_rois(
     # extract audio filename from fullfilename
     path, filename_with_ext = os.path.split(audio_path)
     filename = filename_with_ext
-    # extract species and code from fullfilename 
+    # extract species and categories from fullfilename 
     try :
         _, species = os.path.split(path)
         categories = ((species.split(" ", 1)[0][0:3]).lower() + 
@@ -224,11 +224,11 @@ def single_file_extract_rois(
             fname="butter",
             ftype="bandpass")
 
-        # Split signal into SIGNAL_LENGTH second chunks
+        # Split signal into CHUNK_DURATION second chunks
         # Just like we did before (well, this could actually be a seperate function)
         # We also adjust the overlap (OVLP, ratio) between each chunk
         sig_splits = []
-        n_points_per_chunk = int(params["SIGNAL_LENGTH"]* params["SAMPLE_RATE"])
+        n_points_per_chunk = int(params["CHUNK_DURATION"]* params["SAMPLE_RATE"])
         for i in range(0,len(sig), int(n_points_per_chunk * (1 - params["OVLP"]))):
 
             split = sig[i: i + n_points_per_chunk]
@@ -242,7 +242,7 @@ def single_file_extract_rois(
         # print outputs
         if verbose:
             print("\n================================================================")
-            print("SPECIES : {}".format(species))
+            print("CATEGORIES : {}".format(categories))
             print("NUMBER OF CHUNKS : {}".format(len(sig_splits)))
 
         # if no chunk was found, pass
@@ -260,12 +260,12 @@ def single_file_extract_rois(
                                     params=params, 
                                     display=display, 
                                     verbose=verbose,
-                                    kwarg={'suptitle': filename + " " + species})
+                                    kwarg={'suptitle': filename + " " + categories})
                 
                 # test if at least 1 ROI was found
                 if len(current_df_rois) > 0 :
                     
-                    # Add global information about the file and species for 
+                    # Add global information about the file and categories for 
                     # all rois (rows)
                     filename_ts = [
                         filename.split(".",1)[0] + "_" +
@@ -282,7 +282,7 @@ def single_file_extract_rois(
                     current_df_rois.insert(4, "id", filename.split('.',1)[0][2:])
                     
                     # Save ROIs as raw audio file
-                    if save_path is not None:
+                    if save_path is not None:                        
                         if len(current_df_rois) > 0:
                             current_df_rois = _save_rois(
                                 chunk,
@@ -304,7 +304,7 @@ def single_file_extract_rois(
 
                 # Keep track of the end time of each chunk
                 # it there is an overlap between chunks, take it into account
-                seconds += params["SIGNAL_LENGTH"] * (1 - params["OVLP"])
+                seconds += params["CHUNK_DURATION"] * (1 - params["OVLP"])
 
     except Exception as e:
         if verbose:
@@ -416,7 +416,7 @@ def multicpu_extract_rois(
         
         # set default save_path and save_filename
         if save_path is None:
-            save_path = str(Path(df_data.fullfilename.iloc[0]).parent.parent) + "_ROIS"
+            save_path = str(Path(df_data['fullfilename'].iloc[0]).parent.parent) + "_ROIS"
             
     else:
         raise Exception(
@@ -465,7 +465,7 @@ def multicpu_extract_rois(
             # CPUs
             if nb_cpu is None:
                 nb_cpu = os.cpu_count()
-    
+                
             # define a new function with fixed parameters to give to the multicpu pool 
             #-------------------------------------------------------------------------
             multicpu_func = partial(
@@ -509,6 +509,10 @@ def multicpu_extract_rois(
                 except:
                     pass  
                 
+                # test if the directory exists if not, create it 
+                if os.path.exists(save_path) == False:
+                    save_path.mkdir(parents=True, exist_ok=True)
+                
                 # save and append dataframe 
                 csv_fullfilename = save_path / save_csv_filename
                 df_rois_sorted.to_csv(csv_fullfilename, 
@@ -545,9 +549,8 @@ def multicpu_extract_rois(
             df_rois_sorted = pd.DataFrame()
             
             if verbose :
-                print(('***WARNING** The csv file {0} does not exist in the directory where are the ROIS. \n' +
-                      '====> Please, delete the directory {1} and restart the extraction process').format
-                      (save_csv_filename, save_path))
+                print(('***WARNING** The csv file {0} does not exist in the directory {1}').format(
+                    save_csv_filename, save_path))
                 
         if verbose:
             print("The directory {} already exists".format(save_path))

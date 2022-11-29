@@ -32,7 +32,7 @@ PARAMS_EXTRACT:
   HIGH_FREQ: 12000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
   AUDIO_DURATION: 30      # Max duration of the audio file (in seconds)
-  SIGNAL_LENGTH: 10       # Split the audio signal in chunks of duration = SIGNAL_LENGTH (in seconds)
+  CHUNK_DURATION: 10       # Split the audio signal in chunks of duration = CHUNK_DURATION (in seconds)
   OVLP: 0               # Define the overlap ratio between each chunk (0=> no overlap, 0.75=> 75% of overlap between 2 consecutive chunks)
   # Spectrogram
   MODE_RMBCKG: median     # Mode to compute the remove_background {'mean', 'median'}

@@ -61,9 +61,32 @@ plt.style.use("default")
 # %%
 
 ###############################################################################
-def prepare_features(df_features,
+def _prepare_features(df_features,
                      scaler = "STANDARDSCALER",
                      features = ["shp", "centroid_f"]):
+    """
+
+    Prepare the features before clustering
+
+    Parameters
+    ----------
+    df_features : pandas dataframe
+        the dataframe should contain the features 
+    scaler : string, optional {"STANDARDSCALER", "ROBUSTSCALER", "MINMAXSCALER"}
+        Select the type of scaler uses to normalize the features.
+        The default is "STANDARDSCALER".
+    features : list of features, optional
+        List of features will be used for the clustering. The name of the features
+        should be the name of a column in the dataframe. In case of "shp", "shp"
+        means that all the shpxx will be used.
+        The default is ["shp","centroid_f"].
+
+    Returns
+    -------
+    X : pandas dataframe
+        the dataframe with the normalized features 
+
+    """
 
     # select the scaler
     #----------------------------------------------
@@ -119,6 +142,8 @@ def prepare_features(df_features,
 def find_cluster(
         dataset,
         params=cfg.DEFAULT_PARAMS_CLUSTER,
+        save_path=None,
+        save_csv_filename=None,
         display=False,
         verbose=False):
     """
@@ -147,6 +172,11 @@ def find_cluster(
     params : dictionnary, optional
         contains all the parameters to perform the clustering
         The default is DEFAULT_PARAMS_CLUSTER.
+    save_path : string, default is None
+        Path to the directory where the result of the clustering will be saved    
+    save_csv_filename: string, optional
+        csv filename that contains all the rois with their label and cluster number
+        that will be saved. The default is cluster.csv 
     display : boolean, optional
         if true, display the features vectors, the eps and 2D representation of 
         the DBSCAN or HDBSCAN results. The default is False.
@@ -163,13 +193,18 @@ def find_cluster(
     if verbose :
         print('\n')
         print('====================== CLUSTER FEATURES ======================\n')
-    
+            
     # test if dataset not a dataframe
     if isinstance(dataset, pd.DataFrame) == False:
         # test if dataset_path is a valid csv file
         if os.path.isfile(dataset):
             # load the data from the csv
             df_features = pd.read_csv(dataset, sep=';')
+            
+            # # Default directory to save the dataframe with all features
+            # #----------------------------------------------------------
+            # if save_path is None :
+            #     save_path = save_path = dataset.parent
                       
     elif isinstance(dataset, pd.DataFrame): 
         df_features = dataset.copy()
@@ -179,6 +214,11 @@ def find_cluster(
             df_features.reset_index('filename_ts', inplace = True)
         except:
             pass     
+        
+        # # Default directory to save the dataframe with all features
+        # #----------------------------------------------------------
+        # if save_path is None:
+        #     save_path = str(Path(df_features['fullfilename_ts'].iloc[0]).parent.parent)
 
     else:
         raise Exception(
@@ -188,6 +228,13 @@ def find_cluster(
 
     # drop NaN rows
     df_features = df_features.dropna(axis=0)
+    
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # HACK to DELETE in the future. For compliance with data of the article 
+    # The column categories does not exit
+    if ('categories' in df_features.columns) == False :
+        df_features["categories"] = df_features["species"]
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     if display:
         # Prepare the plots
@@ -224,10 +271,7 @@ def find_cluster(
     #-------------------------------------------------------
     df_cluster = df_features[['filename_ts',
                               'fullfilename_ts',
-                              # 'fullfilename', 
-                              # 'filename',
                               'categories',
-                              # 'abs_min_t',
                               'min_f',
                               'min_t',
                               'max_f',
@@ -242,7 +286,6 @@ def find_cluster(
         df_cluster['filename'] = df_features['filename']
     if 'abs_min_t' in df_features :
         df_cluster['abs_min_t'] = df_features['abs_min_t']
-        
         
     # find the cluster for each categories separately
     #-------------------------------------------------------  
@@ -265,7 +308,7 @@ def find_cluster(
 
             # Prepare the features of that categories
             #-------------------------------------------------------
-            X = prepare_features(df_single_categories, 
+            X = _prepare_features(df_single_categories, 
                                  scaler = params['SCALER'],
                                  features = params['FEATURES'])
     
@@ -341,7 +384,6 @@ def find_cluster(
                 cluster = DBSCAN(eps=eps, min_samples=min_points).fit(X)
                 
                 if verbose:
-                    print("filename {}".format(df_single_categories.filename))
                     print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
                             categories, np.unique(cluster.labels_).size))
                     
@@ -423,8 +465,49 @@ def find_cluster(
 
         # increment
         count += 1
+            
+    # Default name of the csv file with the cluster
+    #-------------------------------------------------------------------------
+    if save_path is not None : 
+        if save_csv_filename is None :
+            save_csv_filename = ('cluster.csv')
+            
+            # save_csv_filename = (
+            #     'cluster_'
+            #     'with_'
+            #     + '_'.join(str(elem) for elem in params["FEATURES"])
+            #     + "_min_points_"
+            #     + str(round(min_points,3))
+            #     + "_eps_"
+            #     + str(round(eps,3))
+            #     + "_method_"
+            #     + str(params["METHOD"])
+            #     + "_keep_"
+            #     + str(params["KEEP"])
+            #     + ".csv"
+            # )
+                    
+        # format save_path into Path
+        save_path = Path(save_path)
+        
+        if verbose :
+            print('Save csv file with cluster here {}'.format(save_path/save_csv_filename))
+        
+        # Set filename_ts to be the index before saving the dataframe
+        try:
+            df_cluster.set_index(['filename_ts'], inplace=True)
+        except:
+            pass  
+        
+        # save and append dataframe 
+        csv_fullfilename = save_path / save_csv_filename
+        df_cluster.to_csv(csv_fullfilename, 
+                                  sep=';', 
+                                  header=True)
+    else:
+        csv_fullfilename = None
 
-    return df_cluster
+    return df_cluster, csv_fullfilename
 
 ###############################################################################
 def cluster_eval(df_cluster,
@@ -432,6 +515,35 @@ def cluster_eval(df_cluster,
                  colname_label    = 'auto_label' ,
                  colname_label_gt = 'manual_label',
                  verbose=False):
+    """
+
+    Evalation of the clustering (requires annotations or any other files to 
+                                 compare with the result of the clustering)
+
+    Parameters
+    ----------
+    df_cluster : string or pandas dataframe
+        if it's a string it should be a full path to a csv file with the features
+        containing a column "filename_ts" and a column "fullfilename_ts" with 
+        the full path to the roi
+        if it's a dataframe, the dataframe should contain the features and 
+        a column "filename_ts" and a column "fullfilename_ts" with the full 
+        path to the roi.    
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    display : boolean, optional
+        if true, display the features vectors, the eps and 2D representation of 
+        the DBSCAN or HDBSCAN results. The default is False.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+
+    Returns
+    -------
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
+
+    """
 
     fp_initial = []
     tp_initial = []
@@ -446,6 +558,14 @@ def cluster_eval(df_cluster,
     number_rois_final = []
     
     df = df_cluster.copy()
+    
+    
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # HACK to DELETE in the future. For compliance with data of the article 
+    # The column categories does not exit
+    if ('categories' in df.columns) == False :
+        df["categories"] = df["species"]
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     try : 
         # load all annotations

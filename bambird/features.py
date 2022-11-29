@@ -142,7 +142,6 @@ def compute_features(
         #----------------------------------------------
         Sxx_clean_dB, _, _ = maad.sound.remove_background(Sxx_dB)
         Sxx_clean_dB = Sxx_clean_dB * (Sxx_clean_dB > 6)
-        
 
         if display:
             maad.util.plot_spectrogram(
@@ -351,7 +350,7 @@ def multicpu_compute_features(
         # Default directory to save the dataframe with all features
         #----------------------------------------------------------
         if save_path is None:
-            save_path = str(Path(df_rois['fullfilename_ts'].iloc[0]).parent.parent)
+            save_path = str(Path(df_rois['fullfilename_ts'].iloc[0]).parent.parent) 
 
     else:
         raise Exception(
@@ -418,7 +417,9 @@ def multicpu_compute_features(
             if nb_cpu is None:
                 nb_cpu = os.cpu_count()
         
-            # define a new function with fixed parameters to give to the multicpu pool
+            #================================================================================
+        
+            # # define a new function with fixed parameters to give to the multicpu pool
             multicpu_func = partial(
                 compute_features,
                 params=params,
@@ -433,7 +434,7 @@ def multicpu_compute_features(
                     ):
                         pbar.update(1)
                         df_features = df_features.append(df_features_temp)
-        
+                                
             # Merge the result df_features with the df_rois
             #----------------------------------------------
             # Find the columns that are also in the first DataFrame

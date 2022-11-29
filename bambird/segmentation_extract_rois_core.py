@@ -174,8 +174,6 @@ def extract_rois_core(
         DESCRIPTION. 
     params : dictionnary
         contains all the parameters to extract the rois 
-    save_path : string, default is None
-        Path to the directory where the segmented rois will be saved   
     display : TYPE, optional
         DESCRIPTION. The default is False.
     verbose : TYPE, optional
