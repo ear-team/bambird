@@ -36,7 +36,6 @@ def _select_rois(im_bin,
                  margins=(0,0), 
                  verbose=False, 
                  display=False, 
-                 savefig = None, 
                  **kwargs): 
     """ 
     Select regions of interest based on its dimensions.
@@ -66,16 +65,9 @@ def _select_rois(im_bin,
          
     display : boolean, optional, default is False 
         Display the signal if True 
-         
-    savefig : string, optional, default is None 
-        Root filename (with full path) is required to save the figures. Postfix 
-        is added to the root filename. 
-         
-    \*\*kwargs, optional. This parameter is used by plt.plot and savefig functions 
-            
-        - savefilename : str, optional, default :'_spectro_after_noise_subtraction.png' 
-            Postfix of the figure filename 
-         
+                  
+    \*\*kwargs, optional. This parameter is used by plt.plot  functions 
+                     
         - figsize : tuple of integers, optional, default: (4,10) 
             width, height in inches.   
          
@@ -108,9 +100,6 @@ def _select_rois(im_bin,
             Dot per inch.  
             For printed version, choose high dpi (i.e. dpi=300) => slow 
             For screen version, choose low dpi (i.e. dpi=96) => fast 
-         
-        - format : string, optional, default is 'png' 
-            Format to save the figure 
              
         ... and more, see matplotlib    
  
@@ -239,14 +228,6 @@ def _select_rois(im_bin,
                                 xlabel = xlabel,
                                 cmap   = cmap, 
                                 **kwargs) 
-        # SAVE FIGURE 
-        if savefig is not None :  
-            dpi   =kwargs.pop('dpi',96) 
-            format=kwargs.pop('format','png')  
-            filename=kwargs.pop('filename','_spectro_selectrois')                 
-            filename = savefig+filename+'.'+format 
-            fig.savefig(filename, bbox_inches='tight', dpi=dpi, format=format, 
-                        **kwargs)  
             
     return im_rois, rois 
 
@@ -366,11 +347,18 @@ def extract_rois_full_sig(
     # and an unique index for each rois => in the pandas dataframe rois
     margins = (round(params["MARGIN_F_BOTTOM"] / f_resolution),
                round(params["MARGIN_T_LEFT"] / t_resolution)) 
-    _, df_rois = _select_rois(im_mask, min_roi=None, margins = margins)
+    im_rois, df_rois = _select_rois(im_mask, min_roi=None, margins = margins)
     
     # and format ROis to initial tn and fn
     df_rois = maad.util.format_features(df_rois, tn, fn)
 
+    # 6Bis. found the centroid and add the centroid parameters ('centroid_y',
+    # 'centroid_x', 'duration_x', 'bandwidth_y', 'area_xy') into df_rois
+    df_rois =  maad.features.centroid_features(Sxx_clean_dB, df_rois, im_rois)
+    
+    # and format ROis to initial tn and fn
+    df_rois = maad.util.format_features(df_rois, tn, fn)
+    
     # Test if we found an ROI otherwise we pass to the next chunk
     if len(df_rois) > 0:    
 
@@ -395,7 +383,7 @@ def extract_rois_full_sig(
         # such as wind, ain or clipping)
         # add ratio x/y
         df_rois['ratio_yx'] = (df_rois.max_y -df_rois.min_y) / (df_rois.max_x -df_rois.min_x) 
-        print()
+        
         if params["MAX_RATIO_YX"] is not None :
             df_rois = df_rois[df_rois['ratio_yx'] < params["MAX_RATIO_YX"]] 
 
