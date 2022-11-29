@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 plt.close("all")
 
 import bambird
-
 # %%
 # Define constants
 # ----------------
@@ -53,7 +52,7 @@ if __name__ == '__main__':
     dataset_features = DIR_DATA / FEATURES_CSV_FILE
 
     # with dataframe or csv file
-    df_cluster = bambird.find_cluster(
+    df_cluster, _ = bambird.find_cluster(
                             dataset     =dataset_features,
                             params      =params['PARAMS_CLUSTER'],
                             display     =True,

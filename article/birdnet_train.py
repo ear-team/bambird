@@ -13,7 +13,6 @@ print(__doc__)
 get_ipython().magic('reset -sf')
 
 import yaml
-import os
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt

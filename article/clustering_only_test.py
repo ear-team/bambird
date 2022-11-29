@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 plt.close("all")
 
 import bambird
-
 # %%
 # Define constants
 # ----------------
@@ -52,14 +51,9 @@ if __name__ == '__main__':
 
     # Set the variable dataset to be a csv file containing the dataframe
     dataset_features = DIR_DATA / FEATURES_CSV_FILE
-    
-    
-    # dataset_features = DIR_DATA / 'features_a_virer.csv'
-    dataset_features = pd.read_csv(dataset_features, sep=';')
-    # dataset_features.drop('id', axis=1, inplace = True)
 
     # with dataframe or csv file
-    df_cluster = bambird.find_cluster(
+    df_cluster,_ = bambird.find_cluster(
                             dataset     =dataset_features,
                             params      =params['PARAMS_CLUSTER'],
                             display     =True,

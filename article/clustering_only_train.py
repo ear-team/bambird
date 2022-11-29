@@ -17,6 +17,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 plt.close("all")
 
+bambird_path = Path('/home/haupert/DATA/mes_projets/Z_THESE_FELIX_MICHAUD/CHAPITRE_1/bambird.git')
+import os
+os.sys.path.append(bambird_path.as_posix())
 import bambird
 
 # %%
@@ -53,7 +56,7 @@ if __name__ == '__main__':
     dataset_features = DIR_DATA / FEATURES_CSV_FILE
 
     # with dataframe or csv file
-    df_cluster = bambird.find_cluster(
+    df_cluster, _ = bambird.find_cluster(
                             dataset     =dataset_features,
                             params      =params['PARAMS_CLUSTER'],
                             display     =True,
