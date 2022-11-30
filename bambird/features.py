@@ -33,6 +33,7 @@ import maad
 
 #
 from bambird import config as cfg
+# cfg.get_config()
 from bambird import grab_audio_to_df
 
 
@@ -41,7 +42,7 @@ from bambird import grab_audio_to_df
 ###############################################################################
 def compute_features(
     audio_path,
-    params=cfg.DEFAULT_PARAMS_FEATURES,
+    params=cfg.PARAMS['PARAMS_FEATURES'],
     display=False,
     verbose=False):
     """ 
@@ -243,7 +244,7 @@ def compute_features(
 ###############################################################################
 def multicpu_compute_features(
                 dataset, 
-                params=cfg.DEFAULT_PARAMS_FEATURES,
+                params=cfg.PARAMS['PARAMS_FEATURES'],
                 save_path=None,
                 save_csv_filename=None,
                 nb_cpu=None,

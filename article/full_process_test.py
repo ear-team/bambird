@@ -12,13 +12,13 @@ print(__doc__)
 # Clear all the variables
 get_ipython().magic('reset -sf')
 
-import yaml
 from pathlib import Path
 import matplotlib.pyplot as plt
 plt.close("all")
 import pandas as pd
 
 import bambird
+import bambird.config as cfg
 
 # %%
 # Define constants
@@ -42,8 +42,8 @@ CONFIG_FILE     = 'config_article.yaml'
 # %%
 if __name__ == '__main__':
 
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
         
     # load the inital dataset with the metadata stored from XC
     df_dataset = pd.read_csv(XC_CSV_FILE, sep=';')
@@ -69,7 +69,6 @@ if __name__ == '__main__':
     # extract ROIS
     df_rois, csv_rois = bambird.multicpu_extract_rois(
                     dataset             =df_xc,
-                    fun                 =params['PARAMS_EXTRACT']['FUNC'],
                     params              =params['PARAMS_EXTRACT'],
                     save_path           =DIR_DATA / ROIS_NAME,
                     overwrite           =True,
@@ -98,7 +97,7 @@ if __name__ == '__main__':
     df_cluster, csv_cluster = bambird.find_cluster(
                     dataset     =df_features,
                     params      =params['PARAMS_CLUSTER'],
-                    save_path           =DIR_DATA / ROIS_NAME,
+                    save_path   =DIR_DATA / ROIS_NAME,
                     display     =False,
                     verbose     =True
                     )

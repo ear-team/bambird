@@ -28,16 +28,10 @@ RANDOM_SEED = 1979
 DIR_DATA        = Path('./data/validation')               
 ANNOT_CSV_FILE  = 'manual_annotations.csv' 
 BIRDNET_CSV_FILE= "birdnet_annotations.csv" 
-CONFIG_FILE     = 'config_article.yaml' 
 
 # %%
 if __name__ == '__main__':
-
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
-    
-# %%         
-         
+   
     # BirdNET on ROIS 
     # ---------------------------------------------------------------------
     # Load the dataframe with the result from BirdNET

@@ -162,7 +162,7 @@ def _merge_bbox(df_rois, margins):
 ###############################################################################
 def extract_rois_core(
     sig,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
+    params=cfg.PARAMS_EXTRACT,
     display=False,
     verbose=False,
     **kwargs):

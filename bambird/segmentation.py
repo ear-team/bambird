@@ -166,7 +166,7 @@ def _save_rois(
 def single_file_extract_rois(
     audio_path,
     fun,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
+    params=cfg.PARAMS['PARAMS_EXTRACT'],
     save_path=None,
     display=False,
     verbose=False):
@@ -316,8 +316,7 @@ def single_file_extract_rois(
 ###############################################################################
 def multicpu_extract_rois(
     dataset, 
-    fun,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
+    params=cfg.PARAMS['PARAMS_EXTRACT'],
     save_path=None,
     save_csv_filename='rois.csv',
     overwrite=False,
@@ -337,8 +336,6 @@ def multicpu_extract_rois(
         "filename" and a column "fullfilename" with the full path to the audio
         files to process. This dataframe can be obtained by called the function
         grab_audio_to_df        
-    fun : function
-        name of the function that is called to segment the rois
     params : dictionnary, optioanl
         contains all the parameters to extract the rois 
     save_path : string, default is None
@@ -467,10 +464,15 @@ def multicpu_extract_rois(
                 nb_cpu = os.cpu_count()
                 
             # define a new function with fixed parameters to give to the multicpu pool 
-            #-------------------------------------------------------------------------
+            #-------------------------------------------------------------------------        
+            
+            # Print the characteristics of the function used to segment the files
+            if verbose :
+                print(params['FUNC'])
+            
             multicpu_func = partial(
                 single_file_extract_rois,
-                fun=fun,
+                fun=params['FUNC'],
                 params=params,
                 save_path=save_path,
                 display=False,

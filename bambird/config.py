@@ -12,20 +12,25 @@ Collection of functions to load the configuration file
 #%%
 # general packages
 import sys
+import os
 
 # basic packages
 import yaml
+
+import bambird
 
 #%%
 
 RANDOM_SEED = 1979  # Fix the random seed to be able to repeat the results
 
-DEFAULT_PARAMS_XC = {
-    'PARAM_XC_LIST': ['len:"20-180"', 'q:">C"'],
-    'NUM_FILES': 10
+PARAMS_XC = {
+    'PARAM_XC_LIST': ['len:"20-60"', 'q:">C"', 'type:"song"'],
+    'NUM_FILES': 20,
+    'CSV_XC_FILE': 'xc_metadata.csv'
 }
 
-DEFAULT_PARAMS_EXTRACT = {
+PARAMS_EXTRACT = {
+    "FUNC" : bambird.extract_rois_full_sig,
     # Extract Audio resampling
     "SAMPLE_RATE": 48000,  # Sampling frequency in Hz
     # Audio preprocess
@@ -34,10 +39,10 @@ DEFAULT_PARAMS_EXTRACT = {
     # butterworth filter order to select the bandwidth corresponding to the ROI
     "BUTTER_ORDER": 1,
     # Max duration of the audio files that we will use to compute the features
-    "AUDIO_DURATION": 60,
+    "AUDIO_DURATION": 30,
     # Split the audio signal of chunk with duration = SIGNAL LENGTH (in second)
-    "SIGNAL_LENGTH": 10,
-    "OVLP": 0.5,  # Define the overlap ratio between each chunk
+    "CHUNK_DURATION": 10,
+    "OVLP": 0,  # Define the overlap ratio between each chunk
     # Spectrogram
     # Mode to compute the remove_background ('mean', 'median')
     "MODE_RMBCKG": "median",
@@ -61,7 +66,7 @@ DEFAULT_PARAMS_EXTRACT = {
     "FILTER_ORDER": 5,
 }
 
-DEFAULT_PARAMS_FEATURES = {
+PARAMS_FEATURES = {
     # Extract Audio resampling
     "SAMPLE_RATE": 48000,  # Sampling frequency in Hz
     # Audio preprocess
@@ -75,14 +80,22 @@ DEFAULT_PARAMS_FEATURES = {
     "SHAPE_RES": "high",
 }
 
-DEFAULT_PARAMS_CLUSTER = {
-    "PERCENTAGE_PTS": 5,       # in %
-    "METHOD": "DBSCAN",        # HDBSCAN or DBSCAN
-    "SCALER": "MINMAXSCALER", # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
-    "KEEP":   "BIGGEST",         # ALL or BIGGEST
-    "EPS":    "auto"            # set the maximum distance between elements in a single clusters {a number or 'auto'}
+PARAMS_CLUSTER = {
+    "FEATURES": ['shp', 'centroid_f'],  # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' } 
+    "PERCENTAGE_PTS": 5,                 # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
+    "MIN_PTS": None,                     # minimum number of ROIs to form a cluster {integer or blank}
+    "METHOD": "DBSCAN",                 # HDBSCAN or DBSCAN
+    "SCALER": "MINMAXSCALER",           # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
+    "KEEP":   "BIGGEST",                # ALL or BIGGEST
+    "EPS":    "auto"                    # set the maximum distance between elements in a single clusters {a number or 'auto'}
 }
 
+PARAMS = {
+    'PARAMS_XC' : PARAMS_XC,
+    'PARAMS_EXTRACT' : PARAMS_EXTRACT,
+    'PARAMS_FEATURES' : PARAMS_FEATURES,
+    'PARAMS_CLUSTER' : PARAMS_CLUSTER
+    }
 
 #%%
 
@@ -113,14 +126,61 @@ def _fun_constructor(loader, node):
     print(val)
     return _fun_call_by_name(val)
 
+def _get_loader():
+    """Add constructors to PyYAML loader."""
+    loader = yaml.SafeLoader
+    loader.add_constructor("!FUNC", _fun_constructor)
+    return loader
+
 """ ===========================================================================
 
                     Public function 
 
 ============================================================================"""
 
-def get_loader():
-  """Add constructors to PyYAML loader."""
-  loader = yaml.SafeLoader
-  loader.add_constructor("!fun", _fun_constructor)
-  return loader
+def load_config(fullfilename = None):
+    """
+    Load the configuration file to set all the parameters of bambird
+
+    Parameters
+    ----------
+    fullfilename : string, optional
+        Path to the configuration file.
+        if no valid configuration file is given, the parameters are set to the
+        default values.
+
+    Returns
+    -------
+    PARAMS : dictionary
+        Dictionary with all the parameters that are required for the bambird's
+        functions
+    """    
+    
+    global PARAMS  
+    global PARAMS_XC
+    global PARAMS_EXTRACT
+    global PARAMS_FEATURES
+    global PARAMS_CLUSTER
+    
+    if os.path.isfile(str(fullfilename)): 
+        with open(fullfilename) as f:
+            PARAMS = yaml.load(f, Loader=_get_loader())
+            PARAMS_XC = PARAMS['PARAMS_XC']
+            PARAMS_EXTRACT = PARAMS['PARAMS_EXTRACT']
+            PARAMS_FEATURES = PARAMS['PARAMS_FEATURES']
+            PARAMS_CLUSTER = PARAMS['PARAMS_CLUSTER']
+    else :
+        print("The config file {} could not be loaded. Default parameters are loaded".format(fullfilename))
+        
+    return PARAMS
+
+def get_config() :
+    PARAMS = {
+        'PARAMS_XC' : PARAMS_XC,
+        'PARAMS_EXTRACT' : PARAMS_EXTRACT,
+        'PARAMS_FEATURES' : PARAMS_FEATURES,
+        'PARAMS_CLUSTER' : PARAMS_CLUSTER
+        }
+    return PARAMS
+
+

@@ -15,7 +15,7 @@ Config yaml
 -----------
 .. autosummary::
     :toctree: generated/
-    get_loader
+    load_config
 
 Dataset
 -------
@@ -39,7 +39,6 @@ ROIs features
 -------------
 .. autosummary::
     :toctree: generated/
-    
     compute_features
     multicpu_compute_features
     
@@ -47,8 +46,6 @@ ROIs clustering
 ---------------
 .. autosummary::
     :toctree: generated/
-    
-    prepare_features
     find_cluster
     cluster_eval
     overlay_rois
@@ -57,8 +54,20 @@ ROIs clustering
 
 """
 
+from .segmentation_extract_rois_full_sig import(       
+    extract_rois_full_sig,
+    )
+
+from .segmentation_extract_rois_core import(       
+    extract_rois_core,
+    )
+
+from .segmentation_extract_rois_in_soundscape import(       
+    extract_rois_in_soundscape,
+    )
+
 from .config import (
-    get_loader
+    load_config
     )
 
 from .dataset import(
@@ -73,13 +82,6 @@ from .segmentation import(
     multicpu_extract_rois,
     )
 
-from .segmentation_extract_rois_full_sig import(       
-    extract_rois_full_sig,
-    )
-
-from .segmentation_extract_rois_core import(       
-    extract_rois_core,
-    )
 
 from .features import(
     compute_features,
@@ -87,7 +89,6 @@ from .features import(
     )
                  
 from .cluster import (
-    prepare_features,
     find_cluster,
     cluster_eval,
     overlay_rois,
@@ -98,7 +99,7 @@ from .cluster import (
 
 __all__ = [
         # config.py
-        'get_loader',
+        'load_config',
         # dataset.py
         'grab_audio_to_df',
         'change_path',
@@ -108,12 +109,12 @@ __all__ = [
         'extract_rois_core',
         'extract_rois_full_sig',
         'single_file_extract_rois',
+        'extract_rois_in_soundscape',
         'multicpu_extract_rois',
         # features.py
         'compute_features',
         'multicpu_compute_features',
         # cluster.py
-        'prepare_features',
         'find_cluster',
         'cluster_eval',
         'overlay_rois',

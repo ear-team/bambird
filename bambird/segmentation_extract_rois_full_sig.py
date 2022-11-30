@@ -24,8 +24,27 @@ from skimage.morphology import closing
 # Scikit-Maad (ecoacoustics functions) package
 import maad
 
-# import bamx
-from bambird import config as cfg
+PARAMS_EXTRACT = {'SAMPLE_RATE': 48000,
+                 'LOW_FREQ': 250,
+                 'HIGH_FREQ': 12000,
+                 'BUTTER_ORDER': 1,
+                 'AUDIO_DURATION': 30,
+                 'CHUNK_DURATION': 10,
+                 'OVLP': 0,
+                 'MODE_RMBCKG': 'median',
+                 'N_RUNNING_MEAN': 10,
+                 'NFFT': 1024,
+                 'MASK_PARAM1': 26,
+                 'MASK_PARAM2': 10,
+                 'MAX_RATIO_YX': 7,
+                 'MIN_DURATION': 0.1,
+                 'MARGIN_T_LEFT': 0.2,
+                 'MARGIN_T_RIGHT': 0.2,
+                 'MARGIN_F_TOP': 250,
+                 'MARGIN_F_BOTTOM': 250,
+                 'MARGIN_T': 0.1,
+                 'MARGIN_F': 250,
+                 'FILTER_ORDER': 5}
 
 #%%
 
@@ -235,7 +254,7 @@ def _select_rois(im_bin,
 ###############################################################################
 def extract_rois_full_sig(
     sig,
-    params=cfg.DEFAULT_PARAMS_EXTRACT,
+    params=PARAMS_EXTRACT,
     display=False,
     verbose=False,
     **kwargs):

@@ -12,13 +12,13 @@ print(__doc__)
 # Clear all the variables
 get_ipython().magic('reset -sf')
 
-import yaml
 from pathlib import Path
-import pandas as pd
 import matplotlib.pyplot as plt
 plt.close("all")
 
 import bambird
+import bambird.config as cfg
+
 # %%
 # Define constants
 # ----------------
@@ -32,8 +32,8 @@ CONFIG_FILE     = 'config_article.yaml'
 # %%
 if __name__ == '__main__':
 
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
     
     # Name of the csv file with feaetures
     FEATURES_CSV_FILE = (

@@ -24,12 +24,13 @@ import maad
 
 #
 from bambird import config as cfg
+# cfg.get_config()
 
 #%%
 
 ###############################################################################
 def query_xc (species_list, 
-           params=cfg.DEFAULT_PARAMS_XC,
+           params=cfg.PARAMS['PARAMS_XC'],
            format_time=False,
            format_date=False,
            random_seed=cfg.RANDOM_SEED, 

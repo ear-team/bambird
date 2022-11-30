@@ -17,10 +17,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 plt.close("all")
 
-bambird_path = Path('/home/haupert/DATA/mes_projets/Z_THESE_FELIX_MICHAUD/CHAPITRE_1/bambird.git')
-import os
-os.sys.path.append(bambird_path.as_posix())
 import bambird
+import bambird.config as cfg
 
 # %%
 # Define constants
@@ -34,9 +32,9 @@ CONFIG_FILE     = 'config_article.yaml'
 
 # %%
 if __name__ == '__main__':
-
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
     
     # Name of the csv file with feaetures
     FEATURES_CSV_FILE = (
