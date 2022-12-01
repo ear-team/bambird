@@ -517,7 +517,35 @@ def cluster_eval(df_cluster,
                  colname_label    = 'auto_label' ,
                  colname_label_gt = 'manual_label',
                  verbose=False):
+    """
 
+    Evalation of the clustering (requires annotations or any other files to 
+                                 compare with the result of the clustering)
+
+    Parameters
+    ----------
+    df_cluster : string or pandas dataframe
+        if it's a string it should be a full path to a csv file with the features
+        containing a column "filename_ts" and a column "fullfilename_ts" with 
+        the full path to the roi
+        if it's a dataframe, the dataframe should contain the features and 
+        a column "filename_ts" and a column "fullfilename_ts" with the full 
+        path to the roi.    
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    display : boolean, optional
+        if true, display the features vectors, the eps and 2D representation of 
+        the DBSCAN or HDBSCAN results. The default is False.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+
+    Returns
+    -------
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
+
+    """
     fp_initial = []
     tp_initial = []
     precision_initial = []
@@ -674,201 +702,6 @@ def cluster_eval(df_cluster,
         print("******************************************************")
 
     return df_scores, p, r, f, df.marker
-
-###############################################################################
-def cluster_eval_(df_cluster,
-                 path_to_csv_with_gt,
-                 colname_label    = 'auto_label' ,
-                 colname_label_gt = 'manual_label',
-                 verbose=False):
-    """
-
-    Evalation of the clustering (requires annotations or any other files to 
-                                 compare with the result of the clustering)
-
-    Parameters
-    ----------
-    df_cluster : string or pandas dataframe
-        if it's a string it should be a full path to a csv file with the features
-        containing a column "filename_ts" and a column "fullfilename_ts" with 
-        the full path to the roi
-        if it's a dataframe, the dataframe should contain the features and 
-        a column "filename_ts" and a column "fullfilename_ts" with the full 
-        path to the roi.    
-    params : dictionnary, optional
-        contains all the parameters to perform the clustering
-        The default is DEFAULT_PARAMS_CLUSTER.
-    display : boolean, optional
-        if true, display the features vectors, the eps and 2D representation of 
-        the DBSCAN or HDBSCAN results. The default is False.
-    verbose : boolean, optional
-        if true, print information. The default is False.
-
-    Returns
-    -------
-    df_cluster : pandas dataframe
-        Dataframe with the label found for each roi.
-
-    """
-
-    fp_initial = []
-    tp_initial = []
-    precision_initial = []
-    precision = []
-    recall = []
-    tp = []
-    fp = []
-    tn = []
-    fn = []
-    number_rois_initial = []
-    number_rois_final = []
-    
-    df = df_cluster.copy()
-    
-    
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # HACK to DELETE in the future. For compliance with data of the article 
-    # The column categories does not exit
-    if ('categories' in df.columns) == False :
-        df["categories"] = df["species"]
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-    try : 
-        # load all annotations
-        df_labels = pd.read_csv(path_to_csv_with_gt, sep=';')
-        try :
-            df_labels.drop('species', axis=1, inplace=True)
-        except:
-            pass
-        try : 
-            df_labels.drop('code', axis=1, inplace=True)
-        except:
-            pass
-        df_labels.set_index('filename_ts', inplace=True)
-        df_labels.loc[df_labels[colname_label_gt] == '0', colname_label_gt] = 0
-        df_labels.loc[df_labels[colname_label_gt] == '1', colname_label_gt] = 1
-    
-        # join df_label and df then drop rows with NaN
-        if 'filename_ts' in df :
-            df.set_index('filename_ts', inplace=True)    
-        df = df.join(df_labels[colname_label_gt])
-        df = df.dropna(axis=0)
-        
-    except :
-        raise Exception("WARNING: path_to_csv_with_gt must be a valid path to a csv ")
-        
-    # Create a new column 'marker' with tp, tn, fp, fn
-    df['marker'] = None
-    #TP
-    df.loc[(df[colname_label]==1) * (df[colname_label_gt]==1), 'marker'] = 'TP'
-    #TN
-    df.loc[(df[colname_label]==0) * (df[colname_label_gt]==0), 'marker'] = 'TN'
-    #FP
-    df.loc[(df[colname_label]==1) * (df[colname_label_gt]==0), 'marker'] = 'FP'
-    #FN
-    df.loc[(df[colname_label]==0) * (df[colname_label_gt]==1), 'marker'] = 'FN'
-
-    # select Rois that belongs to the categories depending on the clustering
-    
-    for categories in np.sort(df.categories.unique()):
-
-        number_rois_initial += [len(df[df["categories"] == categories])]
-        number_rois_final += [np.sum((df["categories"] == categories) & (df[colname_label] == 1))]
-
-        fp_initial += [np.sum(df[df["categories"] == categories][colname_label_gt] == 0)]
-        tp_initial += [np.sum( df[df["categories"] == categories][colname_label_gt] == 1)]
-
-        precision_initial += [round(tp_initial[-1] / (tp_initial[-1] + fp_initial[-1]) * 100)]
-
-        _tn, _fp, _fn, _tp = confusion_matrix(
-            df.dropna()[df["categories"] == categories][colname_label_gt].to_list(),
-            df.dropna()[df["categories"] == categories][colname_label].to_list()).ravel()
-        
-        tp += [_tp]
-        fp += [_fp]
-        tn += [_tn]
-        fn += [_fn]
-
-        if (_tp + _fp) > 0:
-            precision += [round(_tp / (_tp + _fp) * 100)]
-        else:
-            precision += [0]
-        if (_tp + _fn) > 0:
-            recall += [round(_tp / (_tp + _fn) * 100)]
-        else:
-            recall += [0]
-
-        if verbose:
-            print(
-                "Initial number of ROIs is {} / Final number of ROIs is {} => {}% reduction / noise {}% => {}%  / recall {}% ({})".format(
-                    number_rois_initial[-1],
-                    number_rois_final[-1],
-                    round(100 - number_rois_final[-1] /
-                          number_rois_initial[-1] * 100, 1),
-                    100 - precision_initial[-1],
-                    100 - precision[-1],
-                    recall[-1],
-                    categories,
-                )
-            )
-
-    # dataframe with scores
-    df_scores = pd.DataFrame(list(zip(np.sort(df.categories.unique()),
-                                      number_rois_initial,
-                                      number_rois_final,
-                                      tp_initial,
-                                      fp_initial,
-                                      tp,
-                                      fp,
-                                      tn,
-                                      fn,
-                                      precision_initial,
-                                      precision,
-                                      recall)),
-                             columns=['categories',
-                                      'number_rois_initial',
-                                      'number_rois_final',
-                                      'tp_initial',
-                                      'fp_initial',
-                                      'tp',
-                                      'fp',
-                                      'tn',
-                                      'fn',
-                                      'precision_initial',
-                                      'precision',
-                                      'recall'])
-    # set categories as index
-    df_scores.set_index('categories', inplace = True)
-    
-    if verbose:
-        print("------------------------------------------------------")
-        print("------->Median initial noise {:.1f}%".format(
-            100-np.percentile(precision_initial, 50)))
-        print("Lower outlier Initial noise  {:.1f}%".format(
-            100-np.percentile(precision_initial, 95)))
-        print("Higher outlier Initial noise {:.1f}%".format(
-            100-np.percentile(precision_initial, 5)))
-        print("------->  Median Final noise {:.1f}%".format(
-            100-np.percentile(precision, 50)))
-        print("Lower outlier Final noise    {:.1f}%".format(
-            100-np.percentile(precision,95)))
-        print("Higher outlier Final noise   {:.1f}%".format(
-            100-np.percentile(precision,5)))
-        print("------------------------------------------------------")
-        # calculate the F1-SCORE (macro and micro)
-        y_true = (df.categories * df[colname_label_gt].apply(np.int64))
-        y_pred = (df.categories * df[colname_label].apply(np.int64))
-        print("******************************************************")
-        print("avg intial noise {:2.1f}% >>> avg final noise {:2.1f}%".format(100-np.mean(precision_initial),
-                                                                    100-np.mean(precision)))
-        p, r, f, _ = precision_recall_fscore_support( y_true, 
-                                                      y_pred, 
-                                                      average='macro')
-        print("MACRO precision {:.2f} | recall {:.2f} | F {:.2f}".format(p,r,f))
-        print("******************************************************")
-
-    return df_scores, p, r, f, df.marker
-      
 
 ###############################################################################
 def overlay_rois (cluster,
