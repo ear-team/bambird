@@ -24,7 +24,7 @@ PARAMS_XC:
 ################################
 PARAMS_EXTRACT:
   # function
-  FUNC: !fun bambird.extract_rois_full_sig  # select the function used to extract the rois {bambird.extract_rois_core, bambird.extract_rois_full_sig}
+  FUNC: !FUNC bambird.extract_rois_full_sig  # select the function used to extract the rois {bambird.extract_rois_core, bambird.extract_rois_full_sig}
   # Extract Audio resampling
   SAMPLE_RATE: 48000      # Sampling frequency in Hz
   # Audio preprocess
