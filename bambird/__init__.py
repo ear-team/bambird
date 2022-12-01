@@ -62,10 +62,6 @@ from .segmentation_extract_rois_core import(
     extract_rois_core,
     )
 
-from .segmentation_extract_rois_in_soundscape import(       
-    extract_rois_in_soundscape,
-    )
-
 from .config import (
     load_config
     )
@@ -109,7 +105,6 @@ __all__ = [
         'extract_rois_core',
         'extract_rois_full_sig',
         'single_file_extract_rois',
-        'extract_rois_in_soundscape',
         'multicpu_extract_rois',
         # features.py
         'compute_features',
