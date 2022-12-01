@@ -24,9 +24,6 @@ import numpy as np
 # audio package
 import librosa
 
-# Scikit-Maad (ecoacoustics functions) package
-import maad
-
 # scikit-learn (machine learning) package
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.neighbors import NearestNeighbors
@@ -42,7 +39,17 @@ from kneed import KneeLocator
 # HDBSCAN package (clustering)
 import hdbscan
 
+# # import metrics for Density Clustering such as DBSCAN or HDBSCAN
+# spec = importlib.util.spec_from_file_location(
+#     "DBCV", "../../dist-packages/DBCV/DBCV/DBCV.py")
+# DBCV = importlib.util.module_from_spec(spec)
+# spec.loader.exec_module(DBCV)  # the module is called DBCV
+
+# Scikit-Maad (ecoacoustics functions) package
+import maad
+
 from bambird import config as cfg
+# cfg.get_config()
 
 warnings.filterwarnings("ignore", module="librosa")
 warnings.filterwarnings("ignore", module="maad")
@@ -53,109 +60,152 @@ plt.style.use("default")
 
 
 # %%
-""" ===========================================================================
-
-                                    Clustering
-
-============================================================================"""
 
 ###############################################################################
-def prepare_features(df_features,
-                     scaler = "STANDARDSCALER"):
+def _prepare_features(df_features,
+                     scaler = "STANDARDSCALER",
+                     features = ["shp", "centroid_f"]):
+    """
 
-    # selec the scaler
+    Prepare the features before clustering
+
+    Parameters
+    ----------
+    df_features : pandas dataframe
+        the dataframe should contain the features 
+    scaler : string, optional {"STANDARDSCALER", "ROBUSTSCALER", "MINMAXSCALER"}
+        Select the type of scaler uses to normalize the features.
+        The default is "STANDARDSCALER".
+    features : list of features, optional
+        List of features will be used for the clustering. The name of the features
+        should be the name of a column in the dataframe. In case of "shp", "shp"
+        means that all the shpxx will be used.
+        The default is ["shp","centroid_f"].
+
+    Returns
+    -------
+    X : pandas dataframe
+        the dataframe with the normalized features 
+
+    """
+
+    # select the scaler
+    #----------------------------------------------
     if scaler == "STANDARDSCALER":
         scaler = StandardScaler() #
     elif scaler == "ROBUSTSCALER":
         scaler = RobustScaler()
     elif scaler == "MINMAXSCALER" :
-        scaler = MinMaxScaler()    
-        
-    # with shapes
-    # create a vector with X in order to scale all features together
-    X = pd.DataFrame()
-    X = df_features.loc[:, df_features.columns.str.startswith("shp")]
-    X_vect = X.to_numpy()
-    X_shape = X_vect.shape
-    X_vect = X_vect.reshape(X_vect.size, -1)
-    X_vect = scaler.fit_transform(X_vect)
-    X = X_vect.reshape(X_shape)
-
-    # add other features like frequency centroid
-    X2 = pd.DataFrame()
-    X2 = df_features[
-        [
-            "centroid_f",
-            # "peak_f",
-            # "bandwidth_f",
-            # "bandwidth_min_f",
-            # "bandwidth_max_f",
-            # "duration_t",
-            # "min_f",
-            # "max_f"
-        ]
-    ]
+        scaler = MinMaxScaler() 
+    else :
+        scaler = StandardScaler()
+        print ("*** WARNING *** the scaler {} does not exist. StandarScaler was choosen".format(scaler))
     
-    # Preprocess data : data scaler
-    X2 = scaler.fit_transform(X2)
+    X = pd.DataFrame()
+    f = features.copy() #copy the list otherwise the suppression of a feature is kept
+    
+    # Normalize the shapes
+    #----------------------------------------------
+    if "shp" in f :
+        # with shapes
+        # create a vector with X in order to scale all features together
+        X = df_features.loc[:, df_features.columns.str.startswith("shp")]
+        X_vect = X.to_numpy()
+        X_shape = X_vect.shape
+        X_vect = X_vect.reshape(X_vect.size, -1)
+        X_vect = scaler.fit_transform(X_vect)
+        X = X_vect.reshape(X_shape)
+        # remove "shp" from the list
+        f.remove('shp')
+    
+    X2 = pd.DataFrame()
+    
+    # Normalize the other features (centroid, bandwidth...)
+    #-------------------------------------------------------
+    # test if the features list is not null
+    if len(f) > 0 :
+        # add other features like frequency centroid
+        X2 = df_features[f]
+        # Preprocess data : data scaler
+        X2 = scaler.fit_transform(X2)
 
-    # create a matrix with all features after rescaling
-    X = np.concatenate((X, X2), axis=1)
+    # Concatenate the features after normalization
+    #-------------------------------------------------------
+    if len(X) == len(X2)  :
+        # create a matrix with all features after rescaling
+        X = np.concatenate((X, X2), axis=1)
+    elif len(X2) > len(X) :
+        X2 = X
     
     return X
+
 ###############################################################################
 def find_cluster(
         dataset,
-        params=cfg.DEFAULT_PARAMS_CLUSTER,
+        params=cfg.PARAMS['PARAMS_CLUSTER'],
+        save_path=None,
+        save_csv_filename=None,
         display=False,
         verbose=False):
     """
 
-    Clustering of ROIs of each species
+    Clustering of ROIs
 
-    We will use DBSCAN clustering method for several reasons :
+    We will use DBSCAN or HDSCAN clustering method for several reasons :
         * DBSCAN does not need the number of clusters to do the clustering
         * DBSCAN is able to deal with noise and keep them outside any clusters.
 
-    So, the goal of the clustering is to aggregate similar ROIs for a species 
-    which might correspond to the main call or song of the bird. If several 
+    So, the goal of the clustering is to aggregate similar ROIs
+    which might correspond to the main call or song of a species. If several 
     clusters are found, which means that we might have ROIs corresponding to 
-    different calls and/or songs for the species, we will keep the cluster with 
-    the highest number of ROIs.
+    different calls and/or songs for the species, we can keep the cluster with 
+    the highest number of ROIs or all the clusters.
 
     Parameters
     ----------
-    dataset : TYPE
-        DESCRIPTION.
-    params : TYPE, optional
-        DESCRIPTION. The default is DEFAULT_PARAMS_CLUSTER.
-    display : TYPE, optional
-        DESCRIPTION. The default is False.
-    verbose : TYPE, optional
-        DESCRIPTION. The default is False.
-
-    Raises
-    ------
-    Exception
-        DESCRIPTION.
+    dataset : string or pandas dataframe
+        if it's a string it should be a full path to a csv file with the features
+        containing a column "filename_ts" and a column "fullfilename_ts" with 
+        the full path to the roi
+        if it's a dataframe, the dataframe should contain the features and 
+        a column "filename_ts" and a column "fullfilename_ts" with the full 
+        path to the roi.    
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    save_path : string, default is None
+        Path to the directory where the result of the clustering will be saved    
+    save_csv_filename: string, optional
+        csv filename that contains all the rois with their label and cluster number
+        that will be saved. The default is cluster.csv 
+    display : boolean, optional
+        if true, display the features vectors, the eps and 2D representation of 
+        the DBSCAN or HDBSCAN results. The default is False.
+    verbose : boolean, optional
+        if true, print information. The default is False.
 
     Returns
     -------
-    df_cluster : TYPE
-        DESCRIPTION.
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
 
     """
 
     if verbose :
         print('\n')
         print('====================== CLUSTER FEATURES ======================\n')
-    
+            
     # test if dataset not a dataframe
     if isinstance(dataset, pd.DataFrame) == False:
         # test if dataset_path is a valid csv file
         if os.path.isfile(dataset):
             # load the data from the csv
             df_features = pd.read_csv(dataset, sep=';')
+            
+            # # Default directory to save the dataframe with all features
+            # #----------------------------------------------------------
+            # if save_path is None :
+            #     save_path = save_path = dataset.parent
                       
     elif isinstance(dataset, pd.DataFrame): 
         df_features = dataset.copy()
@@ -165,6 +215,11 @@ def find_cluster(
             df_features.reset_index('filename_ts', inplace = True)
         except:
             pass     
+        
+        # # Default directory to save the dataframe with all features
+        # #----------------------------------------------------------
+        # if save_path is None:
+        #     save_path = str(Path(df_features['fullfilename_ts'].iloc[0]).parent.parent)
 
     else:
         raise Exception(
@@ -175,16 +230,23 @@ def find_cluster(
     # drop NaN rows
     df_features = df_features.dropna(axis=0)
     
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # HACK to DELETE in the future. For compliance with data of the article 
+    # The column categories does not exit
+    if ('categories' in df_features.columns) == False :
+        df_features["categories"] = df_features["species"]
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
     if display:
         # Prepare the plots
-        fig, ax = plt.subplots(1, len(df_features.species.unique()))
-        fig.set_size_inches(len(df_features.species.unique()) * 6, 5)
+        fig, ax = plt.subplots(1, len(df_features.categories.unique()))
+        fig.set_size_inches(len(df_features.categories.unique()) * 6, 5)
 
-        fig2, ax2 = plt.subplots(1, len(df_features.species.unique()))
-        fig2.set_size_inches(len(df_features.species.unique()) * 6, 5)
+        fig2, ax2 = plt.subplots(1, len(df_features.categories.unique()))
+        fig2.set_size_inches(len(df_features.categories.unique()) * 6, 5)
 
-        fig3, ax3 = plt.subplots(1, len(df_features.species.unique()))
-        fig3.set_size_inches(len(df_features.species.unique()) * 6, 5)
+        fig3, ax3 = plt.subplots(1, len(df_features.categories.unique()))
+        fig3.set_size_inches(len(df_features.categories.unique()) * 6, 5)
         
         # in case the number of species is 1, ax, ax2, ax3 must be converted
         # into list       
@@ -203,17 +265,14 @@ def find_cluster(
         except:
             ax3 = [ax3]
 
-    # count the species
+    # count the categories
     count = 0
 
     # initialize df_cluster
+    #-------------------------------------------------------
     df_cluster = df_features[['filename_ts',
                               'fullfilename_ts',
-                              # 'fullfilename', 
-                              # 'filename',
-                              'code',
-                              'species',
-                              # 'abs_min_t',
+                              'categories',
                               'min_f',
                               'min_t',
                               'max_f',
@@ -229,29 +288,30 @@ def find_cluster(
     if 'abs_min_t' in df_features :
         df_cluster['abs_min_t'] = df_features['abs_min_t']
         
-    # find the cluster for each species separately
-    #------------------------------------------------------- 
-    for species in np.sort(df_features.species.unique()):
+    # find the cluster for each categories separately
+    #-------------------------------------------------------  
+    for categories in np.sort(df_features.categories.unique()):
 
-        # select the ROIs of the current species
-        df_single_species = df_features[df_features["species"] == species]
+        # select the ROIs of the current categories
+        df_single_categories = df_features[df_features["categories"] == categories]
         
         # test if the number of ROIs is higher than 2.
         # If not, it is impossible to cluster ROIs. It requires at least 3 ROIS
-        if len(df_single_species) <3 :
+        if len(df_single_categories) <3 :
             df_cluster["cluster_number"] = -1 # noise
             df_cluster["auto_label"] = 0 # noise
             
             if verbose:
                 print("Only {} ROIs. It requires at least 3 ROIs to perform clustering".format(
-                        len(df_single_species)))
+                        len(df_single_categories)))
                 
         else:
 
-            # Prepare the features of that species
+            # Prepare the features of that categories
             #-------------------------------------------------------
-            X = prepare_features(df_single_species, 
-                                 scaler = params['SCALER'])
+            X = _prepare_features(df_single_categories, 
+                                 scaler = params['SCALER'],
+                                 features = params['FEATURES'])
     
             if display:
                 # Plot the features
@@ -267,7 +327,13 @@ def find_cluster(
     
             # Select the minimum of points for a cluster
             #-------------------------------------------------------
-            min_points = round(params["PERCENTAGE_PTS"] / 100 * len(df_single_species))
+            if params["PERCENTAGE_PTS"] is not None :
+                min_points = round(params["PERCENTAGE_PTS"] / 100 * len(df_single_categories))
+            elif params["MIN_PTS"] is not None :
+                min_points = round(params["MIN_PTS"])
+            else :
+                min_points = 2  
+                
             if min_points < 2: min_points = 2  
     
             # automatic estimation of the maximum distance eps
@@ -303,11 +369,11 @@ def find_cluster(
                     ax2[count].plot(distances)
         
                 # first find the maximum distance that corresponds to 95% of observations
-                eps = kneedle.knee_y
+                eps = kneedle.knee_y  
                 
                 if eps == 0:
                     eps = distances.max()
-    
+           
             # set eps manually 
             #-------------------------------------------------------
             else :
@@ -320,27 +386,28 @@ def find_cluster(
                 
                 if verbose:
                     print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
-                            species, np.unique(cluster.labels_).size))
+                            categories, np.unique(cluster.labels_).size))
                     
             elif params["METHOD"] == "HDBSCAN":
                 cluster = hdbscan.HDBSCAN(
                     min_cluster_size=min_points,
                     min_samples=round(min_points / 2),
                     cluster_selection_epsilon=float(eps),
-                    cluster_selection_method="eom",
-                    allow_single_cluster=True,
+                    # cluster_selection_method = 'leaf',
+                    #allow_single_cluster=True,
                 ).fit(X)
                 
                 if verbose:
-                    print("HDBSCAN Number of soundtypes found for {} : {}".format(
-                            species, np.unique(cluster.labels_).size))
+                    print("filename {}".format(df_single_categories.filename))
+                    print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
+                            categories, np.unique(cluster.labels_).size))
     
                 # metric DBCV
                 """DBCV_score = DBCV.DBCV(X, cluster.labels_, dist_function=euclidean)
                 
                 print('Number of soundtypes found for {} : {} \
                       / DBCV score {:.2f} \
-                      / DBCV relative {:.2f}'.format(species,
+                      / DBCV relative {:.2f}'.format(categories,
                                                    np.unique(cluster.labels_).size,
                                                    DBCV_score,
                                                    cluster.relative_validity_))"""
@@ -348,7 +415,7 @@ def find_cluster(
             # add the label found with the clustering
             #-------------------------------------------------------
             # add the cluster label into the label's column of the dataframe
-            df_cluster.loc[df_cluster["species"] == species, "cluster_number"] = cluster.labels_.reshape(-1, 1)
+            df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
     
             # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
             # the dataframe
@@ -356,13 +423,13 @@ def find_cluster(
             # that are not noise (-1) to be signal
             if params["KEEP"] == 'BIGGEST' :
                 # set by default to 0 the auto_label of all
-                df_cluster.loc[df_cluster["species"] == species, "auto_label"] = int(0)
+                df_cluster.loc[df_cluster["categories"] == categories, "auto_label"] = int(0)
                 # find the cluster ID of the biggest cluster that is not noise
                 try :
-                    biggest_cluster_ID = df_cluster.loc[(df_cluster["species"] == species) & (
+                    biggest_cluster_ID = df_cluster.loc[(df_cluster["categories"] == categories) & (
                                                      df_cluster["cluster_number"] >= 0)]["cluster_number"].value_counts().argmax()
                     # set by default to 1 the auto_label of the biggest cluster
-                    df_cluster.loc[(df_cluster["species"] == species) & (
+                    df_cluster.loc[(df_cluster["categories"] == categories) & (
                                     df_cluster["cluster_number"] == biggest_cluster_ID), "auto_label"] = int(1)
                 except:
                     # if there is only noise
@@ -370,10 +437,10 @@ def find_cluster(
                 
             elif params["KEEP"] == 'ALL' :
                 # set by to 0 the auto_label of the noise (cluster ID = -1)
-                df_cluster.loc[(df_cluster["species"] == species) & (
+                df_cluster.loc[(df_cluster["categories"] == categories) & (
                                 df_cluster["cluster_number"] < 0), "auto_label"] = int(0)
                 # set by to 1 the auto_label of the signal (cluster ID >= 0)
-                df_cluster.loc[(df_cluster["species"] == species) & (
+                df_cluster.loc[(df_cluster["categories"] == categories) & (
                                 df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
             
                         
@@ -387,7 +454,7 @@ def find_cluster(
                 )
                 ax[count].set_xlabel("PC 1", fontsize=10)
                 ax[count].set_ylabel("PC 2", fontsize=10)
-                ax[count].set_title(species, fontsize=12)
+                ax[count].set_title(categories, fontsize=12)
     
                 ax[count].scatter(
                     df_PCA["principal component 1"],
@@ -399,8 +466,50 @@ def find_cluster(
 
         # increment
         count += 1
+            
+    # Default name of the csv file with the cluster
+    #-------------------------------------------------------------------------
+    if save_path is not None : 
+        if save_csv_filename is None :
+            save_csv_filename = ('cluster.csv')
+            
+            # save_csv_filename = (
+            #     'cluster_'
+            #     'with_'
+            #     + '_'.join(str(elem) for elem in params["FEATURES"])
+            #     + "_min_points_"
+            #     + str(round(min_points,3))
+            #     + "_eps_"
+            #     + str(round(eps,3))
+            #     + "_method_"
+            #     + str(params["METHOD"])
+            #     + "_keep_"
+            #     + str(params["KEEP"])
+            #     + ".csv"
+            # )
+                    
+        # format save_path into Path
+        save_path = Path(save_path)
+        
+        if verbose :
+            print('Save csv file with cluster here {}'.format(save_path/save_csv_filename))
+        
+        # Set filename_ts to be the index before saving the dataframe
+        try:
+            df_cluster.set_index(['filename_ts'], inplace=True)
+        except:
+            pass  
+        
+        # save and append dataframe 
+        csv_fullfilename = save_path / save_csv_filename
+        df_cluster.to_csv(csv_fullfilename, 
+                                  sep=';', 
+                                  header=True)
+    else:
+        csv_fullfilename = None
 
-    return df_cluster
+    return df_cluster, csv_fullfilename
+
 
 ###############################################################################
 def cluster_eval(df_cluster,
@@ -423,6 +532,13 @@ def cluster_eval(df_cluster,
     
     df = df_cluster.copy()
     
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # HACK to DELETE in the future. For compliance with data of the article 
+    # The column categories does not exit
+    if ('categories' in df.columns) == False :
+        df["categories"] = df["species"]
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
     try : 
         # load all annotations
         df_labels = pd.read_csv(path_to_csv_with_gt, sep=';')
@@ -431,7 +547,7 @@ def cluster_eval(df_cluster,
         except:
             pass
         try : 
-            df_labels.drop('species', axis=1, inplace=True)
+            df_labels.drop('code', axis=1, inplace=True)
         except:
             pass
         df_labels.set_index('filename_ts', inplace=True)
@@ -460,19 +576,19 @@ def cluster_eval(df_cluster,
 
     # select Rois that belongs to the species depending on the clustering
     
-    for species in np.sort(df.species.unique()):
+    for categories in np.sort(df.categories.unique()):
 
-        number_rois_initial += [len(df[df["species"] == species])]
-        number_rois_final += [np.sum((df["species"] == species) & (df[colname_label] == 1))]
+        number_rois_initial += [len(df[df["categories"] == categories])]
+        number_rois_final += [np.sum((df["categories"] == categories) & (df[colname_label] == 1))]
 
-        fp_initial += [np.sum(df[df["species"] == species][colname_label_gt] == 0)]
-        tp_initial += [np.sum( df[df["species"] == species][colname_label_gt] == 1)]
+        fp_initial += [np.sum(df[df["categories"] == categories][colname_label_gt] == 0)]
+        tp_initial += [np.sum( df[df["categories"] == categories][colname_label_gt] == 1)]
 
         precision_initial += [round(tp_initial[-1] / (tp_initial[-1] + fp_initial[-1]) * 100)]
 
         _tn, _fp, _fn, _tp = confusion_matrix(
-            df.dropna()[df["species"] == species][colname_label_gt].to_list(),
-            df.dropna()[df["species"] ==  species][colname_label].to_list()).ravel()
+            df.dropna()[df["categories"] == categories][colname_label_gt].to_list(),
+            df.dropna()[df["categories"] ==  categories][colname_label].to_list()).ravel()
         
         tp += [_tp]
         fp += [_fp]
@@ -498,12 +614,12 @@ def cluster_eval(df_cluster,
                     100 - precision_initial[-1],
                     100 - precision[-1],
                     recall[-1],
-                    species,
+                    categories,
                 )
             )
 
     # dataframe with scores
-    df_scores = pd.DataFrame(list(zip(np.sort(df.species.unique()),
+    df_scores = pd.DataFrame(list(zip(np.sort(df.categories.unique()),
                                       number_rois_initial,
                                       number_rois_final,
                                       tp_initial,
@@ -546,8 +662,202 @@ def cluster_eval(df_cluster,
             100-np.percentile(precision,5)))
         print("------------------------------------------------------")
         # calculate the F1-SCORE (macro and micro)
-        y_true = (df.species * df[colname_label_gt].apply(np.int64))
-        y_pred = (df.species * df[colname_label].apply(np.int64))
+        y_true = (df.categories * df[colname_label_gt].apply(np.int64))
+        y_pred = (df.categories * df[colname_label].apply(np.int64))
+        print("******************************************************")
+        print("avg intial noise {:2.1f}% >>> avg final noise {:2.1f}%".format(100-np.mean(precision_initial),
+                                                                    100-np.mean(precision)))
+        p, r, f, _ = precision_recall_fscore_support( y_true, 
+                                                      y_pred, 
+                                                      average='macro')
+        print("MACRO precision {:.2f} | recall {:.2f} | F {:.2f}".format(p,r,f))
+        print("******************************************************")
+
+    return df_scores, p, r, f, df.marker
+
+###############################################################################
+def cluster_eval_(df_cluster,
+                 path_to_csv_with_gt,
+                 colname_label    = 'auto_label' ,
+                 colname_label_gt = 'manual_label',
+                 verbose=False):
+    """
+
+    Evalation of the clustering (requires annotations or any other files to 
+                                 compare with the result of the clustering)
+
+    Parameters
+    ----------
+    df_cluster : string or pandas dataframe
+        if it's a string it should be a full path to a csv file with the features
+        containing a column "filename_ts" and a column "fullfilename_ts" with 
+        the full path to the roi
+        if it's a dataframe, the dataframe should contain the features and 
+        a column "filename_ts" and a column "fullfilename_ts" with the full 
+        path to the roi.    
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    display : boolean, optional
+        if true, display the features vectors, the eps and 2D representation of 
+        the DBSCAN or HDBSCAN results. The default is False.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+
+    Returns
+    -------
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
+
+    """
+
+    fp_initial = []
+    tp_initial = []
+    precision_initial = []
+    precision = []
+    recall = []
+    tp = []
+    fp = []
+    tn = []
+    fn = []
+    number_rois_initial = []
+    number_rois_final = []
+    
+    df = df_cluster.copy()
+    
+    
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # HACK to DELETE in the future. For compliance with data of the article 
+    # The column categories does not exit
+    if ('categories' in df.columns) == False :
+        df["categories"] = df["species"]
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    try : 
+        # load all annotations
+        df_labels = pd.read_csv(path_to_csv_with_gt, sep=';')
+        try :
+            df_labels.drop('species', axis=1, inplace=True)
+        except:
+            pass
+        try : 
+            df_labels.drop('code', axis=1, inplace=True)
+        except:
+            pass
+        df_labels.set_index('filename_ts', inplace=True)
+        df_labels.loc[df_labels[colname_label_gt] == '0', colname_label_gt] = 0
+        df_labels.loc[df_labels[colname_label_gt] == '1', colname_label_gt] = 1
+    
+        # join df_label and df then drop rows with NaN
+        if 'filename_ts' in df :
+            df.set_index('filename_ts', inplace=True)    
+        df = df.join(df_labels[colname_label_gt])
+        df = df.dropna(axis=0)
+        
+    except :
+        raise Exception("WARNING: path_to_csv_with_gt must be a valid path to a csv ")
+        
+    # Create a new column 'marker' with tp, tn, fp, fn
+    df['marker'] = None
+    #TP
+    df.loc[(df[colname_label]==1) * (df[colname_label_gt]==1), 'marker'] = 'TP'
+    #TN
+    df.loc[(df[colname_label]==0) * (df[colname_label_gt]==0), 'marker'] = 'TN'
+    #FP
+    df.loc[(df[colname_label]==1) * (df[colname_label_gt]==0), 'marker'] = 'FP'
+    #FN
+    df.loc[(df[colname_label]==0) * (df[colname_label_gt]==1), 'marker'] = 'FN'
+
+    # select Rois that belongs to the categories depending on the clustering
+    
+    for categories in np.sort(df.categories.unique()):
+
+        number_rois_initial += [len(df[df["categories"] == categories])]
+        number_rois_final += [np.sum((df["categories"] == categories) & (df[colname_label] == 1))]
+
+        fp_initial += [np.sum(df[df["categories"] == categories][colname_label_gt] == 0)]
+        tp_initial += [np.sum( df[df["categories"] == categories][colname_label_gt] == 1)]
+
+        precision_initial += [round(tp_initial[-1] / (tp_initial[-1] + fp_initial[-1]) * 100)]
+
+        _tn, _fp, _fn, _tp = confusion_matrix(
+            df.dropna()[df["categories"] == categories][colname_label_gt].to_list(),
+            df.dropna()[df["categories"] == categories][colname_label].to_list()).ravel()
+        
+        tp += [_tp]
+        fp += [_fp]
+        tn += [_tn]
+        fn += [_fn]
+
+        if (_tp + _fp) > 0:
+            precision += [round(_tp / (_tp + _fp) * 100)]
+        else:
+            precision += [0]
+        if (_tp + _fn) > 0:
+            recall += [round(_tp / (_tp + _fn) * 100)]
+        else:
+            recall += [0]
+
+        if verbose:
+            print(
+                "Initial number of ROIs is {} / Final number of ROIs is {} => {}% reduction / noise {}% => {}%  / recall {}% ({})".format(
+                    number_rois_initial[-1],
+                    number_rois_final[-1],
+                    round(100 - number_rois_final[-1] /
+                          number_rois_initial[-1] * 100, 1),
+                    100 - precision_initial[-1],
+                    100 - precision[-1],
+                    recall[-1],
+                    categories,
+                )
+            )
+
+    # dataframe with scores
+    df_scores = pd.DataFrame(list(zip(np.sort(df.categories.unique()),
+                                      number_rois_initial,
+                                      number_rois_final,
+                                      tp_initial,
+                                      fp_initial,
+                                      tp,
+                                      fp,
+                                      tn,
+                                      fn,
+                                      precision_initial,
+                                      precision,
+                                      recall)),
+                             columns=['categories',
+                                      'number_rois_initial',
+                                      'number_rois_final',
+                                      'tp_initial',
+                                      'fp_initial',
+                                      'tp',
+                                      'fp',
+                                      'tn',
+                                      'fn',
+                                      'precision_initial',
+                                      'precision',
+                                      'recall'])
+    # set categories as index
+    df_scores.set_index('categories', inplace = True)
+    
+    if verbose:
+        print("------------------------------------------------------")
+        print("------->Median initial noise {:.1f}%".format(
+            100-np.percentile(precision_initial, 50)))
+        print("Lower outlier Initial noise  {:.1f}%".format(
+            100-np.percentile(precision_initial, 95)))
+        print("Higher outlier Initial noise {:.1f}%".format(
+            100-np.percentile(precision_initial, 5)))
+        print("------->  Median Final noise {:.1f}%".format(
+            100-np.percentile(precision, 50)))
+        print("Lower outlier Final noise    {:.1f}%".format(
+            100-np.percentile(precision,95)))
+        print("Higher outlier Final noise   {:.1f}%".format(
+            100-np.percentile(precision,5)))
+        print("------------------------------------------------------")
+        # calculate the F1-SCORE (macro and micro)
+        y_true = (df.categories * df[colname_label_gt].apply(np.int64))
+        y_pred = (df.categories * df[colname_label].apply(np.int64))
         print("******************************************************")
         print("avg intial noise {:2.1f}% >>> avg final noise {:2.1f}%".format(100-np.mean(precision_initial),
                                                                     100-np.mean(precision)))
@@ -569,7 +879,7 @@ def overlay_rois (cluster,
                                  'tab:purple','tab:pink','tab:brown','tab:olive',
                                  'tab:cyan','tab:gray','yellow'],
                   textbox_label=True,
-                  params=cfg.DEFAULT_PARAMS_EXTRACT,
+                  params=cfg.PARAMS['PARAMS_EXTRACT'],
                   filename=None,
                   random_seed=None,
                   verbose=False,
@@ -703,9 +1013,9 @@ def overlay_rois (cluster,
 
         fig.suptitle((df_single_file.filename.unique()
                      + " " 
-                     + df_single_file.species.unique()))
+                     + df_single_file.categories.unique()))
         fig.tight_layout()
-
+        plt.show()
 
     except Exception as e:
         if verbose:

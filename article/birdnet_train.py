@@ -12,12 +12,11 @@ print(__doc__)
 # Clear all the variables
 get_ipython().magic('reset -sf')
 
-import yaml
-import os
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 plt.close("all")
+
 
 import bambird
 
@@ -29,16 +28,10 @@ RANDOM_SEED = 1979
 DIR_DATA        = Path('./data/train')               
 ANNOT_CSV_FILE  = 'manual_annotations.csv' 
 BIRDNET_CSV_FILE= "birdnet_annotations.csv" 
-CONFIG_FILE     = 'config_article.yaml' 
 
 # %%
 if __name__ == '__main__':
-
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
-        
-# %%         
-         
+       
     # BirdNET on ROIS 
     # ---------------------------------------------------------------------
     # Load the dataframe with the result from BirdNET

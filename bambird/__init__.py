@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """ 
 
-
-
 """
 from .version import __version__
 
@@ -17,14 +15,14 @@ Config yaml
 -----------
 .. autosummary::
     :toctree: generated/
-    get_loader
+    load_config
 
 Dataset
 -------
 .. autosummary::
     :toctree: generated/
-    query
-    download
+    query_xc
+    download_xc
     grab_audio_to_df
     change_path
     
@@ -32,21 +30,15 @@ ROIs segmentation
 -----------------
 .. autosummary::
     :toctree: generated/
-    
-    intersection_bbox
-    fusion_bbox
-    merge_bbox
     extract_rois_core
     extract_rois_full_sig    
     single_file_extract_rois
     multicpu_extract_rois
-    save_rois
 
 ROIs features
 -------------
 .. autosummary::
     :toctree: generated/
-    
     compute_features
     multicpu_compute_features
     
@@ -54,8 +46,6 @@ ROIs clustering
 ---------------
 .. autosummary::
     :toctree: generated/
-    
-    prepare_features
     find_cluster
     cluster_eval
     overlay_rois
@@ -64,8 +54,16 @@ ROIs clustering
 
 """
 
+from .segmentation_extract_rois_full_sig import(       
+    extract_rois_full_sig,
+    )
+
+from .segmentation_extract_rois_core import(       
+    extract_rois_core,
+    )
+
 from .config import (
-    get_loader
+    load_config
     )
 
 from .dataset import(
@@ -76,11 +74,10 @@ from .dataset import(
     )
 
 from .segmentation import(     
-    extract_rois_core,
-    extract_rois_full_sig,   
     single_file_extract_rois,
     multicpu_extract_rois,
     )
+
 
 from .features import(
     compute_features,
@@ -88,7 +85,6 @@ from .features import(
     )
                  
 from .cluster import (
-    prepare_features,
     find_cluster,
     cluster_eval,
     overlay_rois,
@@ -99,7 +95,7 @@ from .cluster import (
 
 __all__ = [
         # config.py
-        'get_loader',
+        'load_config',
         # dataset.py
         'grab_audio_to_df',
         'change_path',
@@ -114,7 +110,6 @@ __all__ = [
         'compute_features',
         'multicpu_compute_features',
         # cluster.py
-        'prepare_features',
         'find_cluster',
         'cluster_eval',
         'overlay_rois',

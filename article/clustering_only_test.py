@@ -12,13 +12,12 @@ print(__doc__)
 # Clear all the variables
 get_ipython().magic('reset -sf')
 
-import yaml
 from pathlib import Path
-import pandas as pd
 import matplotlib.pyplot as plt
 plt.close("all")
 
 import bambird
+import bambird.config as cfg
 
 # %%
 # Define constants
@@ -33,8 +32,8 @@ CONFIG_FILE     = 'config_article.yaml'
 # %%
 if __name__ == '__main__':
 
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
     
     # Name of the csv file with feaetures
     FEATURES_CSV_FILE = (
@@ -52,14 +51,9 @@ if __name__ == '__main__':
 
     # Set the variable dataset to be a csv file containing the dataframe
     dataset_features = DIR_DATA / FEATURES_CSV_FILE
-    
-    
-    # dataset_features = DIR_DATA / 'features_a_virer.csv'
-    dataset_features = pd.read_csv(dataset_features, sep=';')
-    # dataset_features.drop('id', axis=1, inplace = True)
 
     # with dataframe or csv file
-    df_cluster = bambird.find_cluster(
+    df_cluster,_ = bambird.find_cluster(
                             dataset     =dataset_features,
                             params      =params['PARAMS_CLUSTER'],
                             display     =True,
