@@ -13,7 +13,6 @@ print(__doc__)
 get_ipython().magic('reset -sf')
 
 import shutil
-import yaml
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -21,6 +20,7 @@ plt.close("all")
 
 import maad
 import bambird
+import bambird.config as cfg
 
 # %%
 # Define constants
@@ -43,8 +43,8 @@ CLEAN = True
 # %%
 if __name__ == '__main__':
 
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
 
 #%%    
     # Query Xeno-Canto
@@ -87,10 +87,10 @@ if __name__ == '__main__':
         path_to_unique_roi = df_rois_single.sample(n=1).fullfilename_ts.values[0]
         # Test the process on a single ROI file
         df_features_single_roi = bambird.compute_features(
-                        audio_fullfilename  = path_to_unique_roi,
-                        params              = params['PARAMS_FEATURES'],
-                        display             = True,
-                        verbose             = True
+                        audio_path  = path_to_unique_roi,
+                        params      = params['PARAMS_FEATURES'],
+                        display     = True,
+                        verbose     = True
                         )
         
         # Test the process the ROIs of a single file
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     dataset = df_features_single
     
     try : 
-        df_cluster = bambird.find_cluster(
+        df_cluster, csv_clusters = bambird.find_cluster(
                         dataset = dataset,
                         params  = params['PARAMS_CLUSTER'],
                         display = True,

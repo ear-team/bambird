@@ -13,7 +13,6 @@ print(__doc__)
 get_ipython().magic('reset -sf')
 
 import shutil
-import yaml
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -21,6 +20,7 @@ plt.close("all")
 
 # import the package bambird
 import bambird
+import bambird.config as cfg
 
 # %%
 # Define constants
@@ -51,8 +51,8 @@ CLEAN = False
 # %%
 if __name__ == '__main__':
 
-    with open(CONFIG_FILE) as f:
-        params = yaml.load(f, Loader=bambird.get_loader())
+    # Load the configuration file    
+    params = cfg.load_config(CONFIG_FILE)
 
 #%%    
     # Query Xeno-Canto
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     dataset = df_features 
     
     try : 
-        df_cluster = bambird.find_cluster(
+        df_cluster, csv_clusters = bambird.find_cluster(
                         dataset = dataset,
                         params  = params['PARAMS_CLUSTER'],
                         display = True,
