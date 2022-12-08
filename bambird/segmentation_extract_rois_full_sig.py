@@ -21,6 +21,8 @@ import pandas as pd
 from skimage import measure
 from skimage.morphology import closing
 
+from scipy import ndimage 
+
 # Scikit-Maad (ecoacoustics functions) package
 import maad
 
@@ -47,6 +49,123 @@ PARAMS_EXTRACT = {'SAMPLE_RATE': 48000,
                  'FILTER_ORDER': 5}
 
 #%%
+def _centroid_features(Sxx, rois=None, im_rois=None): 
+    """ 
+    Computes intensity centroid of a spectrogram. If regions of interest 
+    ``rois`` are provided, the centroid is computed for each region.
+    
+    Parameters 
+    ---------- 
+    Sxx :  2D array 
+        Spectrogram 
+    rois: pandas DataFrame, default is None 
+        Regions of interest where descriptors will be computed. Array must  
+        have a valid input format with column names: ``min_t``, ``min_f``, 
+        ``max_t``, and ``max_f``. Use the function ``maad.util.format_features``
+        before using centroid_features to format of the ``rois`` DataFrame 
+        correctly.
+    im_rois: 2d ndarray 
+        image with labels as values
+             
+    Returns 
+    ------- 
+    centroid: pandas DataFrame 
+        Centroid of each region of interest.
+        
+    See Also
+    --------
+    maad.features.shape_features, maad.util.overlay_rois, 
+    maad.util.format_features
+ 
+    Examples
+    --------
+ 
+    Get centroid from the whole power spectrogram 
+ 
+    >>> from maad.sound import load, spectrogram
+    >>> from maad.features import centroid_features
+    >>> from maad.util import (power2dB, format_features, overlay_rois, plot2d,
+                               overlay_centroid)
+     
+    Load audio and compute spectrogram 
+     
+    >>> s, fs = load('../data/spinetail.wav') 
+    >>> Sxx,tn,fn,ext = spectrogram(s, fs, db_range=80) 
+    >>> Sxx = power2dB(Sxx, db_range=80)
+     
+    Load annotations and plot
+    
+    >>> from maad.util import read_audacity_annot
+    >>> rois = read_audacity_annot('../data/spinetail.txt') 
+    >>> rois = format_features(rois, tn, fn) 
+    >>> ax, fig = plot2d (Sxx, extent=ext)
+    >>> ax, fig = overlay_rois(Sxx,rois, extent=ext, ax=ax, fig=fig)
+    
+    Compute the centroid of each rois, format to get results in the 
+    temporal and spectral domain and overlay the centroids.
+     
+    >>> centroid = centroid_features(Sxx, rois) 
+    >>> centroid = format_features(centroid, tn, fn)
+    >>> ax, fig = overlay_centroid(Sxx,centroid, extent=ext, ax=ax, fig=fig)
+    
+    """     
+     
+    # Check input data 
+    if type(Sxx) is not np.ndarray and len(Sxx.shape) != 2: 
+        raise TypeError('Sxx must be an numpy 2D array')       
+     
+    # check rois 
+    if rois is not None: 
+        if not(('min_t' and 'min_f' and 'max_t' and 'max_f') in rois): 
+            raise TypeError('Array must be a Pandas DataFrame with column names: min_t, min_f, max_t, max_f. Check example in documentation.') 
+     
+    centroid=[] 
+    area = []   
+    signal = []
+    if rois is None: 
+        centroid = ndimage.center_of_mass(Sxx) 
+        centroid = pd.DataFrame(np.asarray(centroid)).T 
+        centroid.columns = ['centroid_y', 'centroid_x'] 
+        centroid['area_xy'] = Sxx.shape[0] * Sxx.shape[1]
+        centroid['duration_x'] = Sxx.shape[1]
+        centroid['bandwidth_y'] = Sxx.shape[0]
+        centroid['signal'] = np.percentile(Sxx, 0.75)
+    else: 
+        if im_rois is not None : 
+            # real centroid and area
+            rprops = measure.regionprops(im_rois, intensity_image=Sxx)
+            centroid = [roi.weighted_centroid for roi in rprops]
+            area = [roi.area for roi in rprops]
+            signal = [maad.util.power2dB(np.percentile(roi.image_intensity,90)) for roi in rprops]
+            # signal = [maad.util.power2dB(roi.intensity_mean) for roi in rprops]
+        else:
+            # rectangular area (overestimation) 
+            area = (rois.max_y -rois.min_y) * (rois.max_x -rois.min_x)  
+            # centroid of rectangular roi
+            for _, row in rois.iterrows() : 
+                row = pd.DataFrame(row).T 
+                im_blobs = maad.rois.rois_to_imblobs(np.zeros(Sxx.shape), row)     
+                rprops = measure.regionprops(im_blobs, intensity_image=Sxx)
+                centroid.append(rprops.pop().weighted_centroid) 
+                signal.append(maad.util.power2dB(np.percentile(rprops.pop().image_intensity,90))) 
+                # signal.append(maad.util.power2dB(rprops.pop().intensity_mean)) 
+                
+        centroid = pd.DataFrame(centroid, columns=['centroid_y', 'centroid_x'], index=rois.index)
+        
+        ##### Energy of the signal (75th percentile of the ) n the bbox
+        centroid['signal'] = signal
+        ##### duration in number of pixels 
+        centroid['duration_x'] = (rois.max_x -rois.min_x)  
+        ##### bandwidth in number of pixels 
+        centroid['bandwidth_y'] = (rois.max_y -rois.min_y) 
+        ##### area
+        centroid['area_xy'] = area      
+     
+        # concat rois and centroid dataframes 
+        centroid = rois.join(pd.DataFrame(centroid, index=rois.index))  
+
+    return centroid 
+
 
 ###############################################################################
 def _select_rois(im_bin, 
@@ -315,7 +434,7 @@ def extract_rois_full_sig(
     Sxx_dB = maad.util.power2dB(Sxx, db_range=96) + 96
     
     # 2. Clean spectrogram : remove background)
-    Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB,
+    Sxx_clean_dB, noise_profile = maad.sound.remove_background_along_axis(Sxx_dB,
                                                       mode=params["MODE_RMBCKG"],
                                                       N=params["N_RUNNING_MEAN"],
                                                       display=False)
@@ -373,14 +492,14 @@ def extract_rois_full_sig(
 
     # 6Bis. found the centroid and add the centroid parameters ('centroid_y',
     # 'centroid_x', 'duration_x', 'bandwidth_y', 'area_xy') into df_rois
-    df_rois =  maad.features.centroid_features(Sxx_clean_dB, df_rois, im_rois)
+    df_rois = _centroid_features(maad.util.dB2power(Sxx_clean_dB), df_rois, im_rois)
     
     # and format ROis to initial tn and fn
     df_rois = maad.util.format_features(df_rois, tn, fn)
     
     # Test if we found an ROI otherwise we pass to the next chunk
     if len(df_rois) > 0:    
-
+        
         # 7. Remove ROIs with problems in the coordinates
         df_rois = df_rois[df_rois.min_x < df_rois.max_x]
         df_rois = df_rois[df_rois.min_y < df_rois.max_y]
