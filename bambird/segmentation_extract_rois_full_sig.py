@@ -25,6 +25,7 @@ from scipy import ndimage
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+from maad.util import mean_dB, add_dB, power2dB, dB2power
 
 PARAMS_EXTRACT = {'SAMPLE_RATE': 48000,
                  'LOW_FREQ': 250,
@@ -57,7 +58,7 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
     Parameters 
     ---------- 
     Sxx :  2D array 
-        Spectrogram 
+        Spectrogram in dB scale
     rois: pandas DataFrame, default is None 
         Regions of interest where descriptors will be computed. Array must  
         have a valid input format with column names: ``min_t``, ``min_f``, 
@@ -112,7 +113,13 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
      
     # Check input data 
     if type(Sxx) is not np.ndarray and len(Sxx.shape) != 2: 
-        raise TypeError('Sxx must be an numpy 2D array')       
+        raise TypeError('Sxx must be an numpy 2D array')  
+        
+    # Convert the spectrogram in linear scale
+    # This is necessary because we want to obtain the 90th percentile of the 
+    # the energy inside each bbox.
+    # if the spectrogram is a clean spectrogram, this is directly the SNR
+    Sxx = maad.util.dB2power(Sxx)
      
     # check rois 
     if rois is not None: 
@@ -121,7 +128,7 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
      
     centroid=[] 
     area = []   
-    signal = []
+    snr = []
     if rois is None: 
         centroid = ndimage.center_of_mass(Sxx) 
         centroid = pd.DataFrame(np.asarray(centroid)).T 
@@ -129,15 +136,15 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
         centroid['area_xy'] = Sxx.shape[0] * Sxx.shape[1]
         centroid['duration_x'] = Sxx.shape[1]
         centroid['bandwidth_y'] = Sxx.shape[0]
-        centroid['signal'] = np.percentile(Sxx, 0.75)
+        centroid['snr'] = np.percentile(Sxx, 0.99)
     else: 
         if im_rois is not None : 
             # real centroid and area
             rprops = measure.regionprops(im_rois, intensity_image=Sxx)
             centroid = [roi.weighted_centroid for roi in rprops]
             area = [roi.area for roi in rprops]
-            signal = [maad.util.power2dB(np.percentile(roi.image_intensity,90)) for roi in rprops]
-            # signal = [maad.util.power2dB(roi.intensity_mean) for roi in rprops]
+            snr = [power2dB(np.percentile(roi.image_intensity,99)) for roi in rprops]
+            # snr = [mean_dB(add_dB(roi.image_intensity,axis=0)) for roi in rprops]
         else:
             # rectangular area (overestimation) 
             area = (rois.max_y -rois.min_y) * (rois.max_x -rois.min_x)  
@@ -147,13 +154,13 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
                 im_blobs = maad.rois.rois_to_imblobs(np.zeros(Sxx.shape), row)     
                 rprops = measure.regionprops(im_blobs, intensity_image=Sxx)
                 centroid.append(rprops.pop().weighted_centroid) 
-                signal.append(maad.util.power2dB(np.percentile(rprops.pop().image_intensity,90))) 
-                # signal.append(maad.util.power2dB(rprops.pop().intensity_mean)) 
+                snr.append(power2dB(np.percentile(rprops.pop().image_intensity,99)))
+                # snr.append(mean_dB(add_dB(rprops.pop().image_intensity,axis=0))) 
                 
         centroid = pd.DataFrame(centroid, columns=['centroid_y', 'centroid_x'], index=rois.index)
         
-        ##### Energy of the signal (75th percentile of the ) n the bbox
-        centroid['signal'] = signal
+        ##### Energy of the signal (99th percentile of the bbox)
+        centroid['snr'] = snr
         ##### duration in number of pixels 
         centroid['duration_x'] = (rois.max_x -rois.min_x)  
         ##### bandwidth in number of pixels 
@@ -492,7 +499,7 @@ def extract_rois_full_sig(
 
     # 6Bis. found the centroid and add the centroid parameters ('centroid_y',
     # 'centroid_x', 'duration_x', 'bandwidth_y', 'area_xy') into df_rois
-    df_rois = _centroid_features(maad.util.dB2power(Sxx_clean_dB), df_rois, im_rois)
+    df_rois = _centroid_features(Sxx_clean_dB, df_rois, im_rois)
     
     # and format ROis to initial tn and fn
     df_rois = maad.util.format_features(df_rois, tn, fn)

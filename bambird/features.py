@@ -217,6 +217,7 @@ def compute_features(
         df_rois["bandwidth_f"] = f_peak_plus_6dB - f_peak_minus_6dB
         df_rois["bandwidth_min_f"] = f_peak_minus_6dB
         df_rois["bandwidth_max_f"] = f_peak_plus_6dB
+        df_rois["snr"] = maad.util.power2dB(np.percentile(mean_spectrum, 99))
         
         if display:
             maad.util.plot_spectrum(mean_spectrum_dB, fn, ax=ax[1, 1])
