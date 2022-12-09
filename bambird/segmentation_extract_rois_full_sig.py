@@ -524,14 +524,6 @@ def extract_rois_full_sig(
         # Keep only events with duration longer than MIN_DURATION
         df_rois = df_rois[((df_rois["max_t"]-df_rois["min_t"])>params["MIN_DURATION"])]
         
-        # 8. remove rois with ratio >max_ratio_xy (they are mostly artefact 
-        # such as wind, ain or clipping)
-        # add ratio x/y
-        df_rois['ratio_yx'] = (df_rois.max_y -df_rois.min_y) / (df_rois.max_x -df_rois.min_x) 
-        
-        if params["MAX_RATIO_YX"] is not None :
-            df_rois = df_rois[df_rois['ratio_yx'] < params["MAX_RATIO_YX"]] 
-
         if verbose:
             print("=> AFTER MERGING FOUND {} ROIS".format(len(df_rois)))
         
