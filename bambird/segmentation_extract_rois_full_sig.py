@@ -136,15 +136,16 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
         centroid['area_xy'] = Sxx.shape[0] * Sxx.shape[1]
         centroid['duration_x'] = Sxx.shape[1]
         centroid['bandwidth_y'] = Sxx.shape[0]
-        centroid['snr'] = np.percentile(Sxx, 0.99)
+        # centroid['snr'] = np.percentile(Sxx, 0.99)
+        centroid['snr'] = mean_dB(add_dB(Sxx,axis=0))
     else: 
         if im_rois is not None : 
             # real centroid and area
             rprops = measure.regionprops(im_rois, intensity_image=Sxx)
             centroid = [roi.weighted_centroid for roi in rprops]
             area = [roi.area for roi in rprops]
-            snr = [power2dB(np.percentile(roi.image_intensity,99)) for roi in rprops]
-            # snr = [mean_dB(add_dB(roi.image_intensity,axis=0)) for roi in rprops]
+            # snr = [power2dB(np.percentile(roi.image_intensity,99)) for roi in rprops]
+            snr = [power2dB(np.mean(np.sum(roi.image_intensity,axis=0))) for roi in rprops]
         else:
             # rectangular area (overestimation) 
             area = (rois.max_y -rois.min_y) * (rois.max_x -rois.min_x)  
@@ -154,8 +155,8 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
                 im_blobs = maad.rois.rois_to_imblobs(np.zeros(Sxx.shape), row)     
                 rprops = measure.regionprops(im_blobs, intensity_image=Sxx)
                 centroid.append(rprops.pop().weighted_centroid) 
-                snr.append(power2dB(np.percentile(rprops.pop().image_intensity,99)))
-                # snr.append(mean_dB(add_dB(rprops.pop().image_intensity,axis=0))) 
+                # snr.append(power2dB(np.percentile(rprops.pop().image_intensity,99)))
+                snr.append(power2dB(np.mean(np.sum(rprops.pop().image_intensity,axis=0)))) 
                 
         centroid = pd.DataFrame(centroid, columns=['centroid_y', 'centroid_x'], index=rois.index)
         
