@@ -31,9 +31,9 @@ TEMP_DIR        = "./build_dataset_temp"
 DATASET_NAME    = Path('WORKFLOW_SINGLE_FILE')
 ROIS_NAME       = Path(str(DATASET_NAME) +'_ROIS')
 
-# Xeno-Canto number (ie. 473724 for a audio of Columba palumbus https://xeno-canto.org/758652)
+# Xeno-Canto number (ie. 758652 for a audio of Columba palumbus https://xeno-canto.org/758652)
 # Without XC
-XC_NUMBER = 473724
+XC_NUMBER = 758652
 
 CONFIG_FILE = '../config_default.yaml' 
 

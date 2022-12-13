@@ -32,15 +32,16 @@ DATASET_NAME    = Path('WORKFLOW_MULTIPLE_SPECIES')
 ROIS_NAME       = Path(str(DATASET_NAME) +'_ROIS')
 
 # List of species to build a clean dataset
-SCIENTIC_NAME_LIST = [
-                        "Regulus regulus",
+SCIENTIC_NAME_LIST = [ 
+                        "Columba palumbus",
+                        # "Regulus regulus",
                         "Phylloscopus collybita",
-                        "Anthus triviali", 
+                        # "Anthus triviali", 
                         "Fringilla coelebs", 
-                        "Troglodytes troglodytes", 
-                        "Phoenicurus phoenicurus", 
-                        "Strix aluco", 
-                        "Aegithalos caudatus",
+                        # "Troglodytes troglodytes", 
+                        # "Phoenicurus phoenicurus", 
+                        # "Strix aluco", 
+                        # "Aegithalos caudatus",
                       ]
 
 CONFIG_FILE = '../config_default.yaml' 
@@ -83,7 +84,6 @@ if __name__ == '__main__':
     # ROIS extraction of the full dataset
     df_rois, csv_rois = bambird.multicpu_extract_rois(
                         dataset     = df_xc,
-                        fun         = params['PARAMS_EXTRACT']['FUNC'],
                         params      = params['PARAMS_EXTRACT'],
                         save_path   = TEMP_DIR / ROIS_NAME,
                         overwrite   = True,

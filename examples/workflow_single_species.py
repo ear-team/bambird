@@ -98,7 +98,6 @@ if __name__ == '__main__':
     # ROIS extraction of the full dataset
     df_rois, csv_rois = bambird.multicpu_extract_rois(
                         dataset     = df_xc,
-                        fun         = params['PARAMS_EXTRACT']['FUNC'],
                         params      = params['PARAMS_EXTRACT'],
                         save_path   = TEMP_DIR / ROIS_NAME,
                         overwrite   = True,
