@@ -52,6 +52,7 @@ setup(
                           'scikit-learn>=1.0',
                           'hdbscan',
                           'matplotlib', 
+                          'umap-learn',
                           'tqdm',
                           'kneed',
                           'pyyaml'],

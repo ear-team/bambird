@@ -29,9 +29,12 @@ from sklearn.metrics import precision_recall_fscore_support
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import confusion_matrix
-# from sklearn.manifold import TSNE
+from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
+
+# umap
+import umap 
 
 # Kneed package to find the knee of a curve
 from kneed import KneeLocator
@@ -398,7 +401,6 @@ def find_cluster(
                 ).fit(X)
                 
                 if verbose:
-                    print("filename {}".format(df_single_categories.filename))
                     print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
                             categories, np.unique(cluster.labels_).size))
     
@@ -427,7 +429,7 @@ def find_cluster(
                 # find the cluster ID of the biggest cluster that is not noise
                 try :
                     biggest_cluster_ID = df_cluster.loc[(df_cluster["categories"] == categories) & (
-                                                     df_cluster["cluster_number"] >= 0)]["cluster_number"].value_counts().argmax()
+                                                     df_cluster["cluster_number"] >= 0)]["cluster_number"].value_counts().idxmax()
                     # set by default to 1 the auto_label of the biggest cluster
                     df_cluster.loc[(df_cluster["categories"] == categories) & (
                                     df_cluster["cluster_number"] == biggest_cluster_ID), "auto_label"] = int(1)
@@ -444,25 +446,46 @@ def find_cluster(
                                 df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
             
                         
-            if display:
+            if display:                
                 # display the result in 2D (2D reduction of the dimension)
-                pca = PCA(n_components=2)
-                principalComponents = pca.fit_transform(X)
-                df_PCA = pd.DataFrame(
-                    data=principalComponents,
-                    columns=["principal component 1", "principal component 2"],
+                # compute the dimensionality reduction.
+                
+                ##### pca
+                # pca = PCA(n_components=2)
+                # principalComponents = pca.fit_transform(X)
+                # Y = pd.DataFrame(
+
+                ##### tsne
+                # tsne = TSNE(n_components=2, 
+                #             init='pca', 
+                #             n_jobs = -1)
+                # Y = tsne.fit_transform(X)
+                
+                ##### umap
+                umap_red = umap.UMAP(n_neighbors=min_points,
+                      n_components=2)
+
+                Y = umap_red.fit_transform(X)
+                
+                
+                df_reducdim = pd.DataFrame(
+                    data=Y,
+                    columns=["dim1", "dim2"],
                 )
-                ax[count].set_xlabel("PC 1", fontsize=10)
-                ax[count].set_ylabel("PC 2", fontsize=10)
+                
+                ax[count].set_xlabel("dim 1", fontsize=10)
+                ax[count].set_ylabel("dim 2", fontsize=10)
                 ax[count].set_title(categories, fontsize=12)
     
                 ax[count].scatter(
-                    df_PCA["principal component 1"],
-                    df_PCA["principal component 2"],
+                    df_reducdim["dim1"],
+                    df_reducdim["dim2"],
                     c=cluster.labels_,
                     s=50,
                     alpha=0.8,
-                )
+                )        
+                
+                
 
         # increment
         count += 1
