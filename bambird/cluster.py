@@ -456,15 +456,17 @@ def find_cluster(
                 # Y = pd.DataFrame(
 
                 ##### tsne
-                # tsne = TSNE(n_components=2, 
-                #             init='pca', 
-                #             n_jobs = -1)
-                # Y = tsne.fit_transform(X)
+                tsne = TSNE(n_components=2, 
+                            init='pca', 
+                            n_jobs = -1,
+                            random_state=cfg.RANDOM_SEED)
+                Y = tsne.fit_transform(X)
                 
                 ##### umap
-                umap_red = umap.UMAP(n_neighbors=min_points,
-                      n_components=2)
-
+                umap_red = umap.UMAP(
+                        n_neighbors=min_points,
+                        n_components=2,
+                        random_state=cfg.RANDOM_SEED)
                 Y = umap_red.fit_transform(X)
                 
                 
