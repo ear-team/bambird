@@ -157,6 +157,7 @@ def load_config(fullfilename = None):
     """    
     
     global PARAMS  
+    global RANDOM_SEED
     global PARAMS_XC
     global PARAMS_EXTRACT
     global PARAMS_FEATURES
@@ -165,6 +166,7 @@ def load_config(fullfilename = None):
     if os.path.isfile(str(fullfilename)): 
         with open(fullfilename) as f:
             PARAMS = yaml.load(f, Loader=_get_loader())
+            RANDOM_SEED = PARAMS['RANDOM_SEED']
             PARAMS_XC = PARAMS['PARAMS_XC']
             PARAMS_EXTRACT = PARAMS['PARAMS_EXTRACT']
             PARAMS_FEATURES = PARAMS['PARAMS_FEATURES']
@@ -176,6 +178,7 @@ def load_config(fullfilename = None):
 
 def get_config() :
     PARAMS = {
+        'RANDOM_SEED' : RANDOM_SEED,
         'PARAMS_XC' : PARAMS_XC,
         'PARAMS_EXTRACT' : PARAMS_EXTRACT,
         'PARAMS_FEATURES' : PARAMS_FEATURES,
