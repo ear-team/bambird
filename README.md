@@ -27,6 +27,7 @@ bambird dependencies:
 - kneed
 - hdbscan
 - tqdm
+- umap-learn
 
 **bambird** is hosted on PyPI. To install, run the following command in your Python environment:
 
