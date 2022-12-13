@@ -131,8 +131,8 @@ if __name__ == '__main__':
     bambird.overlay_rois(
                         cluster         = df_cluster,
                         params          = params['PARAMS_EXTRACT'],
-                        column_labels   = 'auto_label', #auto_label cluster_number
-                        unique_labels   = np.sort(df_cluster.auto_label.unique()),
+                        column_labels   = 'cluster_number', #auto_label cluster_number
+                        unique_labels   = np.sort(df_cluster.cluster_number.unique()),
                         filename        = None,
                         random_seed     = None,
                         verbose         = True
