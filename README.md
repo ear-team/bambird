@@ -80,7 +80,7 @@ from cluster.py
 ## Examples and documentation
 
 - See the directory "example" to find scripts to run the labelling function on a collection of birds species or on a single file
-- All scripts to reproduce the results found the article as well as the examples are also on [colab](https://colab.research.google.com/)
+- All scripts to reproduce the results in the article as well as the examples are also on [colab](https://colab.research.google.com/)
   - [clustering_only_train](https://colab.research.google.com/drive/1RTRo3DQ1czDAb4QaOsE30eK2JKSZlbZQ)
   - [clustering_only_validation](https://colab.research.google.com/drive/1fTPK8LAt97jcXP0XuyY09J4ZbxvFHO4i)
   - [clustering_only_test](https://colab.research.google.com/drive/1K-Os_ZVivtk_-REsAYNmpzKiaxYa0AvO)
