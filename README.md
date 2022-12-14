@@ -80,8 +80,17 @@ from cluster.py
 ## Examples and documentation
 
 - See the directory "example" to find scripts to run the labelling function on a collection of birds species or on a single file
-- More example scripts will be available soon on [colab](https://colab.research.google.com/)
-  - [workflow single species](https://colab.research.google.com/drive/18tglsE1JciyD1xpTryX3JIenHKGScLSq#scrollTo=bzlosQhqt7vf)
+- All scripts to reproduce the results found the article as well as the examples are also on [colab](https://colab.research.google.com/)
+  - [clustering_only_train](https://colab.research.google.com/drive/1RTRo3DQ1czDAb4QaOsE30eK2JKSZlbZQ)
+  - [clustering_only_validation](https://colab.research.google.com/drive/1fTPK8LAt97jcXP0XuyY09J4ZbxvFHO4i)
+  - [clustering_only_test](https://colab.research.google.com/drive/1K-Os_ZVivtk_-REsAYNmpzKiaxYa0AvO)
+  - [birdnet_train](https://colab.research.google.com/drive/1Ev-Xjc4evEIhT3HlqeGKrEoTPsUPc4fF)
+  - [birdnet_validations](https://colab.research.google.com/drive/19jvks3rv678ZJF4nAdNTD69C6lGc7V44)
+  - [birdnet_test](https://colab.research.google.com/drive/1So-L8LE5duk7EavSb9kY_ecDlr4zOT8s)
+  - [full_process_validation](https://colab.research.google.com/drive/1gR8ECKZBzf50y7A_JEj-eLTx7p_IzmIt)
+  - [full_process_test](https://colab.research.google.com/drive/1oKYt548aroTuILoM5AACd2sNJ954X1G_)
+  - [workflow_single_file](https://colab.research.google.com/drive/1DgK-LlovEv_0jh70dggqlV2G0jbJCfKi)
+  - [workflow_multiple_species](https://colab.research.google.com/drive/18tglsE1JciyD1xpTryX3JIenHKGScLSq)  
 - Full description of the package **scikit-maad**: https://doi.org/10.1111/2041-210X.13711
 - Online reference manual and example gallery of **scikit-maad** [here](https://scikit-maad.github.io/).
 - In depth information related to the Multiresolution Analysis of Acoustic Diversity implemented in scikit-maad was published in: Ulloa, J. S., Aubin, T., Llusia, D., Bouveyron, C., & Sueur, J. (2018). [Estimating animal acoustic diversity in tropical environments using unsupervised multiresolution analysis](https://doi.org/10.1016/j.ecolind.2018.03.026). Ecological Indicators, 90, 346–355
