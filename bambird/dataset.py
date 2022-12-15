@@ -111,7 +111,7 @@ def query_xc (species_list,
 def download_xc (df_dataset,
                 rootdir, 
                 dataset_name, 
-                csv_filename="bam_metadata.csv",
+                csv_filename="bambird_metadata.csv",
                 overwrite=False,
                 verbose=True):
     """
@@ -131,7 +131,7 @@ def download_xc (df_dataset,
     csv_filename : string, optional
         Name of the csv file where the dataframe (df_dataset) will be saved. if
         the file already exists, data will be appended at the end of the csv file.
-        The default is bam_metadata.csv
+        The default is bambird_metadata.csv
     overwrite : boolean, optional
         Test if the directory where the audio files will be downloaded already
         exists. if True, it will download the data in the directory anyway.
@@ -181,9 +181,9 @@ def download_xc (df_dataset,
         try :
                                                                    
             # remove from df_data the audio files that were already downloaded
-            mask = df_dataset['filename'].isin(pd.read_csv(os.path.join(csv_fullfilename),
-                                                           sep=';',
-                                                           index_col='id')['filename'].unique().tolist())
+            mask = df_dataset['filename'].isin(pd.read_csv(csv_fullfilename,
+                                                            sep=';',
+                                                            index_col='id')['filename'].unique().tolist())
             # append the new audio to the dataframe and save it
             df_dataset[~mask].to_csv(csv_fullfilename, 
                                      sep=";", 
@@ -216,6 +216,244 @@ def download_xc (df_dataset,
             print('*** WARNING *** The dataframe is empty.')  
                         
     return df_dataset, csv_fullfilename
+
+#%%
+
+def query_download_xc(
+        species_list, 
+        rootdir, 
+        dataset_name, 
+        params=cfg.PARAMS['PARAMS_XC'],
+        csv_filename="bambird_metadata.csv",
+        increment=True,
+        only_new=True,
+        format_time=False,
+        format_date=False,
+        random_seed=cfg.RANDOM_SEED,  
+        overwrite=False,
+        verbose=False
+        ):
+    """
+    
+
+    Parameters
+    ----------
+    species_list : TYPE
+        DESCRIPTION.
+    rootdir : TYPE
+        DESCRIPTION.
+    dataset_name : TYPE
+        DESCRIPTION.
+    params : TYPE, optional
+        DESCRIPTION. The default is cfg.PARAMS['PARAMS_XC'].
+    csv_filename : TYPE, optional
+        DESCRIPTION. The default is "bambird_metadata.csv".
+    format_time : TYPE, optional
+        DESCRIPTION. The default is False.
+    format_date : TYPE, optional
+        DESCRIPTION. The default is False.
+    random_seed : TYPE, optional
+        DESCRIPTION. The default is cfg.RANDOM_SEED.
+    overwrite : TYPE, optional
+        DESCRIPTION. The default is False.
+    verbose : TYPE, optional
+        DESCRIPTION. The default is False.
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    # Set the full path to the dataset containing all the metadata downloaded
+    # from XC and then, the filename and fullfilename of the recordings downloaded
+    # with the function download_xc
+    csv_fullfilename = Path(rootdir) / Path(dataset_name) / csv_filename
+    
+    # number of file to download
+    NUM_FILES = params['NUM_FILES']
+
+    # Test if a csv with the metadata already exists
+    # if not :
+    if os.path.isfile(csv_fullfilename) == False :
+        # set NUM_FILES to None in order to grab all the metadata for the species
+        params['NUM_FILES'] = None
+        df_dataset = query_xc (species_list  =species_list, 
+                                params       =params,
+                                format_time  =format_time,
+                                format_date  =format_date,
+                                random_seed  =random_seed, 
+                                verbose      =verbose)
+        # set NUM_FILES to it original value
+        params['NUM_FILES'] = NUM_FILES
+        
+        # add a new column fullfilename with default value : None
+        df_dataset['fullfilename'] = None
+        df_dataset['filename'] = None
+        df_dataset['categories'] = None
+        
+        # save the csv with all the requested metadata
+        # first create the directory where to save the csv if it does not exist
+        os.makedirs(os.path.split(csv_fullfilename)[0])
+        df_dataset.set_index('id', inplace=True)
+        df_dataset.to_csv(csv_fullfilename, sep=";", index=True, index_label='id') 
+        
+        if (NUM_FILES is not None) and (len(df_dataset)>0): 
+               
+            # number of audio files per species
+            df_num = df_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
+            
+            # extract the combination (gen, sp) from df_groups
+            keys = df_num.keys()
+            
+            # init the subdf_dataset
+            subdf_dataset = pd.DataFrame()
+            
+            # test if the number of files is greater than the maximum number of
+            # resquested files per species
+            # Do a stratified sampling in order to download the same number of files
+            # for each species (combination of gen and sp).
+            # If the number of files is lower than the requested number, take all the files
+            for n, k in zip( df_num, keys):
+                mask = df_dataset[(df_dataset[['gen','sp']] == k)['gen']]
+                if n >= NUM_FILES :
+                    subdf_dataset = subdf_dataset.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
+                                                                                       random_state=random_seed)))
+                else:
+                    subdf_dataset = subdf_dataset.append(mask)
+        else:
+            subdf_dataset = df_dataset
+       
+        # download all the audio files into a directory with a subdirectory for each
+        # species
+        try :
+            df_dl = maad.util.xc_download(df         =subdf_dataset,
+                                        rootdir      =rootdir,
+                                        dataset_name =dataset_name,
+                                        overwrite    =overwrite,
+                                        save_csv     =False,
+                                        verbose      =verbose)
+        except :
+            df_dl = pd.DataFrame()
+        
+        # add columns        
+        df_dl['filename']  = df_dl['fullfilename'].apply(os.path.basename)
+        df_dl['categories']= df_dl['fullfilename'].apply(lambda path : Path(path).parts[-2])
+                
+        # update df_dataset with df_dl
+        df_dataset.update(df_dl)
+        
+        # save the updated dataframe
+        df_dataset.to_csv(csv_fullfilename, sep=";", index=True, index_label='id') 
+        
+        # keep only the rows with audio already downloaded
+        df = df_dataset[~df_dataset['fullfilename'].isna()]
+        
+    # if the csv with metadata already exists
+    else:
+        # read the csv
+        df_dataset = pd.read_csv(csv_fullfilename, sep=';', index_col='id')
+        
+        if verbose:
+            print((("The metadata file {} already exits\n") +
+                  ("with a total of {} audio metadata\n") + 
+                  ("and with {} already downloaded audio recordings")).format(csv_fullfilename,
+                                                                             len(df_dataset),
+                                                                             len(df_dataset[~df_dataset['fullfilename'].isna()])))
+                                                    
+        # Test if we ask for new files to be downloaded (increment == True)
+        if increment :
+            
+            # Keep only the xc recordings that have not been yet downloaded
+            subdf_dataset = df_dataset[df_dataset['fullfilename'].isna()]
+            
+            # if limit in the number of files
+            if (NUM_FILES is not None) and (len(subdf_dataset)>0):
+               
+                # number of audio files per species
+                df_num = subdf_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
+                
+                # extract the combination (gen, sp) from df_groups
+                keys = df_num.keys()
+                
+                # init the subdf_dataset
+                df_to_dl = pd.DataFrame()
+                
+                # test if the number of files is greater than the maximum number of
+                # resquested files per species
+                # Do a stratified sampling in order to download the same number of files
+                # for each species (combination of gen and sp).
+                # If the number of files is lower than the requested number, take all the files
+                for n, k in zip( df_num, keys):
+                    mask = subdf_dataset[(subdf_dataset[['gen','sp']] == k)['gen']]
+                    if n >= NUM_FILES :
+                        df_to_dl = df_to_dl.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
+                                                                                 random_state=random_seed)))
+                    else:
+                        df_to_dl = df_to_dl.append(mask) 
+
+            else :
+                df_to_dl = subdf_dataset                                                         
+            
+            # download all the audio files into a directory with a subdirectory for each
+            # species
+            df_dl = maad.util.xc_download(df         =df_to_dl,
+                                        rootdir      =rootdir,
+                                        dataset_name =dataset_name,
+                                        overwrite    =overwrite,
+                                        save_csv     =False,
+                                        verbose      =verbose)
+            
+            # add columns        
+            df_dl['filename']  = df_dl['fullfilename'].apply(os.path.basename)
+            df_dl['categories']= df_dl['fullfilename'].apply(lambda path : Path(path).parts[-2])
+                    
+            # update df_dataset with df_dl
+            df_dataset.update(df_dl)
+            
+            # save the updated dataframe
+            df_dataset.to_csv(csv_fullfilename, sep=";", index=True, index_label='id') 
+            
+            # output with only the new files that were just downloaded (not the older)
+            if only_new == True :
+                df = df_dl
+            else:
+                # keep the rows with audio already downloaded
+                df = df_dataset[~df_dataset['fullfilename'].isna()]
+        
+        # if we do not want to increment dataset                 
+        else:
+            # Keep the xc recordings that have already been downloaded
+            df = df_dataset[~df_dataset['fullfilename'].isna()]
+            
+            # if limit in the number of files
+            if (NUM_FILES is not None) and (len(df_dataset)>0) :
+               
+                # number of audio files per species
+                df_num = df_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
+                
+                # extract the combination (gen, sp) from df_groups
+                keys = df_num.keys()
+                
+                # init the df
+                df = pd.DataFrame()
+                
+                # test if the number of files is greater than the maximum number of
+                # resquested files per species
+                # Do a stratified sampling in order to download the same number of files
+                # for each species (combination of gen and sp).
+                # If the number of files is lower than the requested number, take all the files
+                for n, k in zip( df_num, keys):
+                    mask = df_dataset[(df_dataset[['gen','sp']] == k)['gen']]
+                    if n >= NUM_FILES :
+                        df = df.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
+                                                                     random_state=random_seed)))
+                    else:
+                        df = df.append(mask)
+            else:
+                df = df_dataset
+                
+    return df, csv_fullfilename
 
 #%%
 def grab_audio_to_df (path, 

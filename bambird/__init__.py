@@ -23,6 +23,7 @@ Dataset
     :toctree: generated/
     query_xc
     download_xc
+    query_download_xc
     grab_audio_to_df
     change_path
     
@@ -71,6 +72,7 @@ from .dataset import(
     change_path,
     query_xc,
     download_xc,
+    query_download_xc,
     )
 
 from .segmentation import(     
@@ -101,6 +103,7 @@ __all__ = [
         'change_path',
         'query_xc',
         'download_xc',
+        'query_download_xc',
         # segmentation.py                         
         'extract_rois_core',
         'extract_rois_full_sig',
