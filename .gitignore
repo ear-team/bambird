@@ -16,3 +16,7 @@
 !.gitignore
 examples/build_dataset_temp/
 examples/build_dataset/
+
+examples/inline_workflow_single_file.py
+
+examples/workflow_auto.py
