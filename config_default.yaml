@@ -38,7 +38,7 @@ PARAMS_EXTRACT:
   MODE_RMBCKG: median     # Mode to compute the remove_background {'mean', 'median'}
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
   N_RUNNING_MEAN: 10      # Number of points used to compute the running mean of the noise profil
-  # hysteretic thresholding parameters
+  # hysteretic thresholding parameters (in dB)
   MASK_PARAM1: 26
   MASK_PARAM2: 10
   # Select and merge bbox parameters
