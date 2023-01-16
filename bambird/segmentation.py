@@ -420,6 +420,12 @@ def multicpu_extract_rois(
             "WARNING: dataset must be a valid path to a directory, a csv file"
             + "or a dataframe"
         )
+        
+    
+    # Check if there is a column categories in the df
+    #---------------------------------------------
+    if ('categories' in df_data.columns) == False :
+        df_data['categories'] = "default"    
 
     # Check if the output directory already exists
     #---------------------------------------------
@@ -455,7 +461,7 @@ def multicpu_extract_rois(
             if verbose :
                 print('Composition of the dataset : ')
                 print('   -number of files : %2.0f' % len(df_data[~mask]))
-                print('   -number of categories : %2.0f' % len(df_data[~mask].categories.unique()))
+                print('   -number of categories : %2.0f' % len(df_data[~mask]['categories'].unique()))
                 print('   -unique categories : {}'.format(df_data[~mask]['categories'].unique()))
         
             # Number of CPU used for the calculation. By default, set to all available
