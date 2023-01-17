@@ -414,10 +414,12 @@ def find_cluster(
                                                    DBCV_score,
                                                    cluster.relative_validity_))"""
 
-            # add the label found with the clustering
-            #-------------------------------------------------------
-            # add the cluster label into the label's column of the dataframe
+            # add the cluster number and the label found with the clustering
+            #---------------------------------------------------------------
+            # add the cluster number into the label's column of the dataframe
             df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
+            # convert the cluster number into integer
+            df_cluster['cluster_number'] = df_cluster['cluster_number'].astype('int')
     
             # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
             # the dataframe
@@ -445,6 +447,8 @@ def find_cluster(
                 df_cluster.loc[(df_cluster["categories"] == categories) & (
                                 df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
             
+            # convert the label (0 or -1) into integer
+            df_cluster['auto_label'] = df_cluster['auto_label'].astype('int')
                         
             if display:                
                 # display the result in 2D (2D reduction of the dimension)
