@@ -56,7 +56,8 @@ setup(
                           'umap-learn',
                           'tqdm',
                           'kneed',
-                          'pyyaml'],
+                          'pyyaml',
+                          'ipywidgets'],
       classifiers=textwrap.dedent("""
         Development Status :: 4 - Beta
         Intended Audience :: Science/Research
