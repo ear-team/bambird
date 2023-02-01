@@ -24,6 +24,9 @@ import numpy as np
 # audio package
 import librosa
 
+# stats
+from scipy import stats
+
 # scikit-learn (machine learning) package
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.neighbors import NearestNeighbors
@@ -141,6 +144,63 @@ def _prepare_features(df_features,
         X2 = X
     
     return X
+
+
+###############################################################################
+def _find_representative_samples (df_cluster):
+            
+    # copy
+    df = df_cluster.copy()
+
+    # set cluster_number as the index
+    # df.set_index("cluster_number", inplace = True)
+
+    # compute the average shapes for each filename
+    df['features'] = df['features'].apply(lambda x: np.array(x))
+    
+    df_avg = pd.DataFrame({'features' : df.groupby('cluster_number')['features'].apply(np.mean)})
+    
+    # dataframe with the nearest samples to the center of each cluster
+    df['likeness'] = np.nan
+    df['normdist_to_model'] = np.nan
+    df['dist_to_model'] = np.nan
+    df['model'] = 0
+    
+    for index, y in df_avg.iterrows():  
+        y = y.features 
+        X = np.array(df[df.cluster_number == index].features.tolist())
+        neighbors = NearestNeighbors(n_neighbors=len(X))
+        neighbors_fit = neighbors.fit(X)
+        distances, index_sample = neighbors_fit.kneighbors([y])       
+        
+        # Give an indicator of the likeness of the sample regarding its cluster
+        #-------------------------------------------------------------------------
+        # 1 is the closest sample to the model (the most likeness of the cluster)
+        # 0.5 is as half the distance between the furthest and the closest
+        # 0 is the furthest sample (should be very different to the avg sample)
+        d = distances[0]
+        df.update(pd.DataFrame({'likeness': 1-(d-min(d))/(max(d)-min(d))},
+                               index =  df[df.cluster_number == index].iloc[index_sample[0]].index ))
+        
+        # normalized distance
+        # 1 is the closest to the model 
+        # 2 is twice the distance to the model
+        # 10 is ten times the minimum distance to the model
+        d = distances[0]
+        df.update(pd.DataFrame({'normdist_to_model': d/d[0]},
+                               index =  df[df.cluster_number == index].iloc[index_sample[0]].index ))
+        
+        # absolute distance
+        d = distances[0]
+        df.update(pd.DataFrame({'dist_to_model': d},
+                               index =  df[df.cluster_number == index].iloc[index_sample[0]].index ))
+                
+        # add a column "model"
+        # 1 => the closest to the average features = model, 0 either.        
+        idx = df[df.cluster_number == index].iloc[index_sample[0][0]].name
+        df.at[idx,'model'] = 1
+        
+    return df
 
 ###############################################################################
 def find_cluster(
@@ -326,7 +386,7 @@ def find_cluster(
         else :
             df_cluster = df_cluster.join(pd.DataFrame({'features': X.tolist()}, 
                                                       index = df_single_categories.index))
-
+                                                      
         # test if the number of ROIs is higher than 2.
         #---------------------------------------------
         # If not, it is impossible to cluster ROIs. It requires at least 3 ROIS
@@ -429,12 +489,12 @@ def find_cluster(
                                                     np.unique(cluster.labels_).size,
                                                     DBCV_score,
                                                     cluster.relative_validity_))"""
-
+    
                 # add the cluster number and the label found with the clustering
                 #---------------------------------------------------------------
                 # add the cluster number into the label's column of the dataframe
                 df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
-
+    
                 # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
                 # the dataframe
                 # Test if we want to consider only the biggest or all clusters 
@@ -469,7 +529,7 @@ def find_cluster(
                     # pca = PCA(n_components=2)
                     # principalComponents = pca.fit_transform(X)
                     # Y = pd.DataFrame(
-
+    
                     ##### tsne
                     # tsne = TSNE(n_components=2, 
                     #             init='pca', 
@@ -502,8 +562,19 @@ def find_cluster(
                         alpha=0.8,
                     )        
                     
+        # Give an indicator of the representativeness of the sample to its cluster
+        #-------------------------------------------------------------------------
+        # add a column "represent_percent"
+        # 0% is the closest sample (the most representative of the cluster)
+        # 5% corresponds to the 5% closest sample to the avg sample
+        # 50% corresond to the 1st half of the samples that are representative of the cluster
+        # 95% corresponds to the 95% closest sample to the avg sample
+        # 100% is the furthest sample (should be very different to the avg sample))
+        
+        # add a column "representative"
+        # 1 => the most representative, 0 either.
+        df_cluster = _find_representative_samples(df_cluster)
                 
-
         # increment
         count += 1
             
