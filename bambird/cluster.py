@@ -209,7 +209,7 @@ def find_cluster(
             # #----------------------------------------------------------
             # if save_path is None :
             #     save_path = save_path = dataset.parent
-                      
+
     elif isinstance(dataset, pd.DataFrame): 
         df_features = dataset.copy()
         
@@ -229,6 +229,7 @@ def find_cluster(
             "WARNING: dataset must be a valid path to a csv file"
             + "or a dataframe"
         )
+        return
 
     # drop NaN rows
     df_features = df_features.dropna(axis=0)
@@ -298,36 +299,47 @@ def find_cluster(
         # select the ROIs of the current categories
         df_single_categories = df_features[df_features["categories"] == categories]
         
+        # Prepare the features of that categories
+        #-------------------------------------------------------
+        X = _prepare_features(df_single_categories, 
+                             scaler = params['SCALER'],
+                             features = params['FEATURES'])
+        
+        if display:
+            # Plot the features
+            ax3[count].imshow(
+                X,
+                interpolation="None",
+                cmap="viridis",
+                vmin=np.percentile(X, 10),
+                vmax=np.percentile(X, 90),
+            )
+            ax3[count].set_xlabel("features")
+            ax3[count].set_title("Shapes")
+            
+                    
+        # add vector of features used for the clustering as a new column "features"
+        #--------------------------------------------------------------------------
+        df_cluster = df_cluster.join(pd.DataFrame({'features': X.tolist()}, 
+                                                  index = df_single_categories.index))
+        df_cluster = df_cluster.update(pd.DataFrame({'features': X.tolist()}, 
+                                                  index = df_single_categories.index))
+        
+        # df_cluster = pd.concat([df_cluster, pd.DataFrame({'features': X.tolist()}, index = df_single_categories.index)])
+
         # test if the number of ROIs is higher than 2.
+        #---------------------------------------------
         # If not, it is impossible to cluster ROIs. It requires at least 3 ROIS
-        if len(df_single_categories) <3 :
+        if len(df_single_categories) < 3 :
             df_cluster["cluster_number"] = -1 # noise
             df_cluster["auto_label"] = 0 # noise
+
             
             if verbose:
                 print("Only {} ROIs. It requires at least 3 ROIs to perform clustering".format(
                         len(df_single_categories)))
                 
-        else:
-
-            # Prepare the features of that categories
-            #-------------------------------------------------------
-            X = _prepare_features(df_single_categories, 
-                                 scaler = params['SCALER'],
-                                 features = params['FEATURES'])
-    
-            if display:
-                # Plot the features
-                ax3[count].imshow(
-                    X,
-                    interpolation="None",
-                    cmap="viridis",
-                    vmin=np.percentile(X, 10),
-                    vmax=np.percentile(X, 90),
-                )
-                ax3[count].set_xlabel("features")
-                ax3[count].set_title("Shapes")
-    
+        else:           
             # Select the minimum of points for a cluster
             #-------------------------------------------------------
             if params["PERCENTAGE_PTS"] is not None :
@@ -418,9 +430,7 @@ def find_cluster(
             #---------------------------------------------------------------
             # add the cluster number into the label's column of the dataframe
             df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
-            # convert the cluster number into integer
-            df_cluster['cluster_number'] = df_cluster['cluster_number'].astype('int')
-    
+
             # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
             # the dataframe
             # Test if we want to consider only the biggest or all clusters 
@@ -446,9 +456,6 @@ def find_cluster(
                 # set by to 1 the auto_label of the signal (cluster ID >= 0)
                 df_cluster.loc[(df_cluster["categories"] == categories) & (
                                 df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
-            
-            # convert the label (0 or -1) into integer
-            df_cluster['auto_label'] = df_cluster['auto_label'].astype('int')
                         
             if display:                
                 # display the result in 2D (2D reduction of the dimension)
@@ -536,6 +543,11 @@ def find_cluster(
                                   header=True)
     else:
         csv_fullfilename = None
+        
+    # convert the cluster number into integer
+    df_cluster['cluster_number'] = df_cluster['cluster_number'].astype('int')
+    # convert the label (0 or -1) into integer
+    df_cluster['auto_label'] = df_cluster['auto_label'].astype('int')
 
     return df_cluster, csv_fullfilename
 
@@ -798,7 +810,7 @@ def overlay_rois (cluster,
     
     # if no filename given, pick a random one
     if filename is None :
-        filename = df_cluster.sample(n=1, random_state=random_seed).index
+        filename = df_cluster.sample(n=1, random_state=random_seed).index.values[0]
 
     # extract the row corresponding to the filename
     df_single_file = df_cluster.loc[filename]
