@@ -2,6 +2,13 @@
 
 ## Unsupervised classification to improve the quality of a bird song recording dataset
 
+[![Downloads](https://static.pepy.tech/badge/bambird)](https://pepy.tech/project/bambird)
+[![PyPI version](https://badge.fury.io/py/bambird.svg)](https://badge.fury.io/py/bambird)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Citation Badge](https://api.juleskreuer.eu/citation-badge.php?doi=10.1016/j.ecoinf.2022.101952)](https://juleskreuer.eu/projekte/citation-badge/)
+<!--[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)-->
+
 
 Open audio databases such as [Xeno-Canto](https://xeno-canto.org/) are widely used to build datasets to explore bird song repertoire or to train models for automatic bird sound classification by deep learning algorithms. However, such databases suffer from the fact that bird sounds are weakly labelled: a species name is attributed to each audio recording without timestamps that provide the temporal localization of the bird song of interest. 
 Manual annotations can solve this issue, but they are time consuming, expert-dependent, and cannot run on large datasets. Another solution consists in using a labelling function that automatically segments audio recordings before assigning a label to each segmented audio sample. Although labelling functions were introduced to expedite strong label assignment, their classification performance remains mostly unknown. 
