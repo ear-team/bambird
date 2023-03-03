@@ -1048,6 +1048,7 @@ class label_rois:
     def __init__(self, 
                 df_cluster, 
                 params=cfg.PARAMS['PARAMS_EXTRACT'], 
+                roi_length=3,
                 save_path=None,
                 save_csv_filename=None,
                 verbose=False):
@@ -1070,6 +1071,8 @@ class label_rois:
         params : dictionnary, optional
             contains all the parameters useful to perform the labeling
             The default is PARAMS_EXTRACT.
+        roi_length : int
+            Indicates the length of the ROI in seconds for the display.
         save_path : string, default is None
             Path to the directory where the result of the labeling will be saved    
         save_csv_filename: string, optional
@@ -1087,6 +1090,7 @@ class label_rois:
 
         self.df_cluster = df_cluster.copy().reset_index()
         self.params = params
+        self.roi_length = roi_length
         self.save_path = save_path
         self.save_csv_filename = save_csv_filename
         self.verbose = verbose
@@ -1113,11 +1117,11 @@ class label_rois:
         b, a = butter(5, [fmin, fmax], fs=sr, btype='band')       
         sig = lfilter(b, a, sig)
 
-        # Fix length of the ROI to display to 3 seconds
-        if sig.shape[0] >= (sr*3):
-            sig = sig[:sig.shape[0]-int(sig.shape[0]-(sr*3))]
+        # Fix the length of the ROI to display for praticalities
+        if sig.shape[0] >= int(sr*self.roi_length):
+            sig = sig[:sig.shape[0]-int(sig.shape[0]-(sr*self.roi_length))]
         else:
-            pad_samples = (sr*3) - sig.shape[0]
+            pad_samples = int(sr*self.roi_length) - sig.shape[0]
             sig = np.pad(sig, (pad_samples // 2, pad_samples // 2), 'constant')
 
         # Compute spectrogram
