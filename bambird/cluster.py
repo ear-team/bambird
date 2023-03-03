@@ -17,14 +17,14 @@ import os
 import warnings
 from pathlib import Path
 
-# ipython packages
-import IPython.display as ipd
-import ipywidgets as widgets
-
 # basic packages
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+
+# ipython packages
+import IPython.display as ipd
+import ipywidgets as widgets
 
 # audio package
 import librosa
@@ -1113,8 +1113,15 @@ class label_rois:
         b, a = butter(5, [fmin, fmax], fs=sr, btype='band')       
         sig = lfilter(b, a, sig)
 
+        # Fix length of the ROI to display to 3 seconds
+        if sig.shape[0] >= (sr*3):
+            sig = sig[:sig.shape[0]-int(sig.shape[0]-(sr*3))]
+        else:
+            pad_samples = (sr*3) - sig.shape[0]
+            sig = np.pad(sig, (pad_samples // 2, pad_samples // 2), 'constant')
+
         # Compute spectrogram
-        Sxx, tn, fn, ext = maad.sound.spectrogram(sig, sr,nperseg=n_fft, noverlap=n_fft // 2)
+        Sxx, tn, fn, ext = maad.sound.spectrogram(sig, sr, nperseg=n_fft, noverlap=n_fft // 2)
         X = maad.util.power2dB(Sxx, db_range=96) + 96
         
         ipd.clear_output(wait=False)
@@ -1124,7 +1131,7 @@ class label_rois:
         maad.util.plot_spectrogram(X, log_scale=False, colorbar=False, ax=ax, now=False, extent=ext)
         ax.yaxis.set_label_position("right")
         ax.set_title(os.path.dirname(filename), size=6)
-        ax.set_ylim([fmin, fmax])
+        ax.set_ylim([self.params['LOW_FREQ'], self.params['HIGH_FREQ']])
         ax.set_xlabel(f'ROI: {i}/{len(self.df_cluster)}')
         ax.yaxis.tick_right()
         plt.show()
@@ -1153,7 +1160,7 @@ class label_rois:
                 
                 # save and append dataframe 
                 csv_fullfilename = self.save_path / self.save_csv_filename
-                self.df_cluster.to_csv(csv_fullfilename, sep=';', header=True)
+                self.df_cluster.to_csv(csv_fullfilename, sep=';', index=False)
             else:
                 csv_fullfilename = None
 
@@ -1181,10 +1188,10 @@ class label_rois:
                 
                 # save and append dataframe 
                 csv_fullfilename = self.save_path / self.save_csv_filename
-                self.df_cluster.to_csv(csv_fullfilename, sep=';', header=True)
+                self.df_cluster.to_csv(csv_fullfilename, sep=';', index=False)
             else:
                 csv_fullfilename = None
             
         else:
             i = len(self.manual_label)
-            self.roi(i)
+            self.roi(i)   
