@@ -1,6 +1,6 @@
-# bambird package
+# bambird
 
-## Unsupervised classification to improve the quality of a bird song recording dataset
+## Unsupervised classification of sound units segmented from any soundscapes or any focal audio recordings
 
 [![Downloads](https://static.pepy.tech/badge/bambird)](https://pepy.tech/project/bambird)
 [![PyPI version](https://badge.fury.io/py/bambird.svg)](https://badge.fury.io/py/bambird)
@@ -8,7 +8,6 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Citation Badge](https://api.juleskreuer.eu/citation-badge.php?doi=10.1016/j.ecoinf.2022.101952)](https://juleskreuer.eu/projekte/citation-badge/)
 <!--[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)-->
-
 
 Open audio databases such as [Xeno-Canto](https://xeno-canto.org/) are widely used to build datasets to explore bird song repertoire or to train models for automatic bird sound classification by deep learning algorithms. However, such databases suffer from the fact that bird sounds are weakly labelled: a species name is attributed to each audio recording without timestamps that provide the temporal localization of the bird song of interest. 
 Manual annotations can solve this issue, but they are time consuming, expert-dependent, and cannot run on large datasets. Another solution consists in using a labelling function that automatically segments audio recordings before assigning a label to each segmented audio sample. Although labelling functions were introduced to expedite strong label assignment, their classification performance remains mostly unknown. 
@@ -26,6 +25,7 @@ Based on this work, we propose **bambird**, an open source Python package that p
 [![DOI](https://zenodo.org/badge/xxx.svg)](https://zenodo.org/badge/latestdoi/xxxxx)
 
 ## Installation
+
 bambird dependencies:
 
 - scikit-maad >= 1.3.12
@@ -48,7 +48,9 @@ To install the latest version from source clone the master repository and from t
 $ git clone https://github.com/ear-team/bambird.git && cd bambird
 $ pip install -e .
 ```
-## Functions
+
+## Usage
+
 The functions available in the package are:
 from config.py
 >- **load_config** : Load the configuration file to set all the parameters of bambird
@@ -83,7 +85,6 @@ from cluster.py
 >- **mark_rois**: Add a marker to the audio filenames of each Roi depending on the result of the evaluation of the clustering (TN, FN, TP, FP)
 >- **unmark_rois**: Remove the markers
 
-
 ## Examples and documentation
 
 - See the directory "example" to find scripts to run the labelling function on a collection of birds species or on a single file
@@ -106,9 +107,18 @@ from cluster.py
 
 If you find **bambird** usefull for your research, please consider citing it as:
 
-- Michaud, F.,  Sueur, J., Le Cesne, M., & Haupert, S. (2022). [Unsupervised classification to improve the quality of a bird song recording dataset](https://doi.org/xxx). Ecological Informatics, xx, xxx–xxx
+- Michaud, F.,  Sueur, J., Le Cesne, M., & Haupert, S. (2023). [Unsupervised classification to improve the quality of a bird song recording dataset](https://doi.org/10.1016/j.ecoinf.2022.101952). Ecological Informatics, 74, 101952
 
-## Contributions and bug report
+## Contributing
 
-Improvements and new features are greatly appreciated. If you would like to contribute developing new features or making improvements to the available package, please refer to our [wiki](https://github.com/ear-team/bambird/wiki/How-to-contribute-to-bambird). Bug reports and especially tested patches may be submitted directly to the [bug tracker](https://github.com/ear-team/bambird/issues). 
+Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+Improvements and new features are greatly appreciated. If you would like to contribute developing new features or making improvements to the available package, please refer to our [wiki](https://github.com/ear-team/bambird/wiki/How-to-contribute-to-bambird). 
+Bug reports and especially tested patches may be submitted directly to the [bug tracker](https://github.com/ear-team/bambird/issues). 
 
+## License
+
+`bambird` was created by Sylvain Haupert et Félix Michaud. It is licensed under the terms of the BSD 3-Clause license.
+
+## Credits
+
+`bambird` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
