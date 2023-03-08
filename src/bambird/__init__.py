@@ -85,7 +85,7 @@ from .features import(
     compute_features,
     multicpu_compute_features,
     )
-                 
+
 from .cluster import (
     find_cluster,
     cluster_eval,
@@ -93,7 +93,6 @@ from .cluster import (
     mark_rois,
     unmark_rois
     )
-
 
 __all__ = [
         # config.py
