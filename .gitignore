@@ -149,5 +149,5 @@ dmypy.json
 *.pyc
 
 #============== specific to this package ===========
-docs/examples/build_dataset_temp
-dev/
+dev/build_dataset_temp
+
