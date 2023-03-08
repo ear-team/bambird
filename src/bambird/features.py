@@ -30,6 +30,9 @@ from concurrent import futures
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+import maad.util
+import maad.sound
+import maad.features
 
 #
 from bambird import config as cfg
@@ -104,9 +107,9 @@ def compute_features(
         # 3. compute the spectrogram
         #----------------------------------------------
         Sxx, tn, fn, ext = maad.sound.spectrogram(sig,
-                                             params["SAMPLE_RATE"],
-                                             nperseg=params["NFFT"],
-                                             noverlap=params["NFFT"] // 2)
+                                            params["SAMPLE_RATE"],
+                                            nperseg=params["NFFT"],
+                                            noverlap=params["NFFT"] // 2)
 
         # set to zero the DC value (= the first row of the spectrogram)
         Sxx[0, :] = 0
@@ -124,16 +127,16 @@ def compute_features(
             # is below width_x
             if int(round((width_x - Sxx.shape[1]) / 2)) > 0 :
                 margin = np.zeros((Sxx.shape[0], 
-                                  int(round((width_x - Sxx.shape[1]) / 2))), int)
+                                int(round((width_x - Sxx.shape[1]) / 2))), int)
                 Sxx_to_display = np.concatenate((margin, Sxx, margin), axis=1)
             else :
                 Sxx_to_display = Sxx
                 
             maad.util.plot_spectrogram(Sxx_to_display,
-                                  extent=[0, WIDTH_T, ext[2], ext[3]],
-                                  ax=ax[0, 0],
-                                  title="original ROI",
-                                  now=False)
+                                extent=[0, WIDTH_T, ext[2], ext[3]],
+                                ax=ax[0, 0],
+                                title="original ROI",
+                                now=False)
 
         # 4. convert to dB
         #----------------------------------------------
@@ -170,13 +173,13 @@ def compute_features(
             max_y = np.where(maad.sound.avg_amplitude_spectro(Sxx_clean_dB) != 0)[0][-1]
 
         df_rois_for_shape = pd.DataFrame([[min_y, 0, max_y, Sxx.shape[1] - 1]], 
-                                         columns=["min_y", "min_x", "max_y", "max_x"])
+                                        columns=["min_y", "min_x", "max_y", "max_x"])
 
         # 6. Compute acoustic features (MAAD)
         #----------------------------------------------
         df_shape, params_shape = maad.features.shape_features(Sxx_clean_dB, 
-                                                         resolution=params["SHAPE_RES"], 
-                                                         rois=df_rois_for_shape)
+                                                        resolution=params["SHAPE_RES"], 
+                                                        rois=df_rois_for_shape)
 
         if display:
             maad.util.plot_shape(df_shape, params_shape, ax=ax[1, 0])
@@ -315,17 +318,17 @@ def multicpu_compute_features(
     
             # create a dataframe with all recordings in the directory
             df_rois = grab_audio_to_df(path         =dataset, 
-                                       audio_format ='wav', 
-                                       verbose      =verbose)
+                                    audio_format ='wav', 
+                                    verbose      =verbose)
             
             # change the default name of the column fullfilename when using
             # grab_audio_to_df
             df_rois = df_rois.rename(columns={"fullfilename":"fullfilename_ts",
-                                              "filename":"filename_ts"})
+                                            "filename":"filename_ts"})
             
             # retrieve the origianl filename from filename_ts
             df_rois['filename'] = df_rois['filename_ts'].apply(lambda filename_ts : 
-                                                                  (filename_ts.split("_", 1)[0])+'.mp3')
+                                                                (filename_ts.split("_", 1)[0])+'.mp3')
             
             # Default directory to save the dataframe with all features
             #----------------------------------------------------------
@@ -359,7 +362,7 @@ def multicpu_compute_features(
             "WARNING: dataset must be a valid path to a directory, a csv file"
             + "or a dataframe"
         )
-              
+        
     # Default name of the csv file with features
     #-------------------------------------------------------------------------
     if save_csv_filename is None :
@@ -379,7 +382,7 @@ def multicpu_compute_features(
     try :
         # load the dataframe with all ROIs already extracted
         df_features = pd.read_csv(save_path / save_csv_filename, 
-                                  sep=';')
+                                sep=';')
         # create a mask to select or not the audio files that were already segmented
         mask = df_rois['filename'].isin(df_features['filename'].unique().tolist())
         
@@ -406,7 +409,7 @@ def multicpu_compute_features(
             if ((file_exist == True) and (overwrite == True))  :
                 if verbose :
                     print(('{} already exists. \n'+
-                          '***BE CAREFULL*** csv file will be overwritten').format(save_csv_filename)) 
+                        '***BE CAREFULL*** csv file will be overwritten').format(save_csv_filename)) 
         
             if verbose :
                 print('Composition of the dataset : ')
@@ -465,12 +468,12 @@ def multicpu_compute_features(
                 df_features_sorted = df_features_sorted.append(
                     df_features[df_features["categories"] == categories].sort_index()
                 )
-           
+        
             if verbose :
                 print('\n')
                 print(('Features were extracted for'
-                       +' {} ROIS audio files').format(len(df_features_sorted)- INITIAL_NUM_ROIS))
-             
+                    +' {} ROIS audio files').format(len(df_features_sorted)- INITIAL_NUM_ROIS))
+            
             # save features
             #-------------------------------
             if save_csv_filename is not None :
@@ -482,8 +485,8 @@ def multicpu_compute_features(
                 # save and append dataframe 
                 csv_fullfilename = save_path / save_csv_filename
                 df_features_sorted.to_csv(csv_fullfilename, 
-                                          sep=';', 
-                                          header=True)
+                                        sep=';', 
+                                        header=True)
                 # reset index
                 df_features_sorted.reset_index(inplace=True)
     

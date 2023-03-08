@@ -21,6 +21,9 @@ from skimage.transform import resize
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+import maad.sound
+import maad.util
+import maad.rois
 
 # import bambird
 from bambird import config as cfg

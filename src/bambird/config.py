@@ -124,7 +124,7 @@ def _fun_call_by_name(val):
 
 def _fun_constructor(loader, node):
     val = loader.construct_scalar(node)
-    print(val)
+    print("use the function <{}> to segment ROIS".format(val))
     return _fun_call_by_name(val)
 
 def _get_loader():
@@ -169,7 +169,7 @@ def load_config(fullfilename = None):
             PARAMS = yaml.load(f, Loader=_get_loader())
             RANDOM_SEED = PARAMS['RANDOM_SEED']
             PARAMS_XC = PARAMS['PARAMS_XC']
-            PARAMS_EXTRACT = PARAMS['PARAMS_EXTRACT']
+            PARAMS_EXTRACT = PARAMS['PARAMS_EXTRACT']            
             PARAMS_FEATURES = PARAMS['PARAMS_FEATURES']
             PARAMS_CLUSTER = PARAMS['PARAMS_CLUSTER']
     else :

@@ -21,6 +21,7 @@ import glob
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+import maad.util
 
 #
 from bambird import config as cfg

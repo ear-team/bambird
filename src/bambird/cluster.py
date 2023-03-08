@@ -53,6 +53,8 @@ import hdbscan
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+import maad.sound
+import maad.util
 
 from bambird import config as cfg
 # cfg.get_config()
@@ -69,8 +71,8 @@ plt.style.use("default")
 
 ###############################################################################
 def _prepare_features(df_features,
-                     scaler = "STANDARDSCALER",
-                     features = ["shp", "centroid_f"]):
+                    scaler = "STANDARDSCALER",
+                    features = ["shp", "centroid_f"]):
     """
 
     Prepare the features before clustering

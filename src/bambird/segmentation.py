@@ -33,6 +33,9 @@ from concurrent import futures
 
 # Scikit-Maad (ecoacoustics functions) package
 import maad
+import maad.sound
+import maad.util
+import maad.rois
 
 #
 from bambird import config as cfg
@@ -290,11 +293,11 @@ def single_file_extract_rois(
                                 current_df_rois,
                                 save_path=save_path,
                                 margins=(params["MARGIN_T"],
-                                         params["MARGIN_F"]),
+                                        params["MARGIN_F"]),
                                 filter_order=params["FILTER_ORDER"],
                                 display=False,
                             )
-          
+                    
                     # Add current_df_rois to df_rois
                     if len(df_rois) > 0:
                         df_rois = df_rois.append(
@@ -379,7 +382,7 @@ def multicpu_extract_rois(
         if os.path.isdir(dataset):
             
             # format dataset to Path
-            dataset = Path(dataset)
+            #dataset = Path(dataset)
 
             # create a dataframe with all recordings in the directory
             #--------------------------------------------------------
@@ -392,6 +395,7 @@ def multicpu_extract_rois(
             if save_path is None:
                 if (dataset[-1] == "/") or (dataset[-1] == "/"):
                     dataset = dataset[:-1]
+
                 save_path = str(dataset) + "_ROIS"
             
         # test if dataset_path is a valid csv file
@@ -403,8 +407,7 @@ def multicpu_extract_rois(
             # set default save_path and save_filename
             if save_path is None:
                 save_path = os.path.dirname(dataset) + "_ROIS"
-                
-                
+                        
     # if dataset is a dataframe : 
     # > read the dataframe       
     #--------------------------- 
@@ -434,7 +437,7 @@ def multicpu_extract_rois(
         if (dir_exist == True) and (overwrite == True):
             if verbose:
                 print(("The directory {} already exists" +
-                      " and will be overwritten").format(save_path))   
+                    " and will be overwritten").format(save_path))   
         
         try :
             # load the dataframe with all ROIs already extracted
@@ -467,7 +470,7 @@ def multicpu_extract_rois(
             # Number of CPU used for the calculation. By default, set to all available
             # CPUs
             if nb_cpu is None:
-                nb_cpu = os.cpu_count()
+                nb_cpu = os.cpu_count() -1
                 
             # define a new function with fixed parameters to give to the multicpu pool 
             #-------------------------------------------------------------------------        
@@ -488,7 +491,7 @@ def multicpu_extract_rois(
             # Multicpu process
             #-------------------
             with tqdm(total=len(df_data[~mask])) as pbar:
-                with futures.ProcessPoolExecutor(max_workers=nb_cpu-1) as pool:
+                with futures.ProcessPoolExecutor(max_workers=nb_cpu) as pool:
                     for df_rois_temp in pool.map(
                         multicpu_func, df_data[~mask]["fullfilename"].to_list()
                     ):
@@ -498,16 +501,17 @@ def multicpu_extract_rois(
             # sort filename for each categories
             #---------------------------------
             df_rois_sorted = pd.DataFrame()
+
             for categories in df_rois["categories"].unique():
                 df_rois_sorted = df_rois_sorted.append(
                     df_rois[df_rois["categories"] == categories].sort_index()
                 )
                         
             if verbose :
-               print('\n')
-               print(('{} new ROIs added in {}').format(len(df_rois_sorted)-INITIAL_NUM_ROIS,
+                print('\n')
+                print(('{} new ROIs added in {}').format(len(df_rois_sorted)-INITIAL_NUM_ROIS,
                                                         save_path))
-               
+
             # save rois
             #-------------------------------
             if save_csv_filename is not None :
@@ -524,8 +528,8 @@ def multicpu_extract_rois(
                 # save and append dataframe 
                 csv_fullfilename = save_path / save_csv_filename
                 df_rois_sorted.to_csv(csv_fullfilename, 
-                                      sep=';', 
-                                      header=True)
+                                    sep=';', 
+                                    header=True)
                 # reset index
                 df_rois_sorted.reset_index(inplace=True)
         
