@@ -26,7 +26,8 @@ import maad.util
 import maad.rois
 
 # import bambird
-from bambird import config as cfg
+import bambird
+import bambird.config as cfg
 
 #%%
 ###############################################################################
