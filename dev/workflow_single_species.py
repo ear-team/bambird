@@ -7,11 +7,6 @@ Authors : Felix Michaud and Sylvain Haupert
 
 """
 
-from IPython import get_ipython
-print(__doc__)
-# Clear all the variables
-get_ipython().magic('reset -sf')
-
 import shutil
 import numpy as np
 from pathlib import Path
@@ -44,7 +39,7 @@ SCIENTIC_NAME_LIST = [
                         # "Aegithalos caudatus",
                       ]
 
-CONFIG_FILE = '../config_default.yaml' 
+CONFIG_FILE = '../src/bambird/config_default.yaml' 
 
 # After the process, remove the audio that were saved during the process ?
 CLEAN = True
