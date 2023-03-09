@@ -288,6 +288,14 @@ def find_cluster(
     # add 3 others columns if they exist in df_features 
     # if the ROIs were extracted outside of this workflow, they might not exist
     # in the dataframe df_features
+    if 'min_f' in df_features :
+        df_cluster['min_f'] = df_features['min_f']
+    if 'min_t' in df_features :
+        df_cluster['min_t'] = df_features['min_t']
+    if 'max_f' in df_features :
+        df_cluster['max_f'] = df_features['max_f']
+    if 'max_t' in df_features :
+        df_cluster['max_t'] = df_features['max_t']
     if 'fullfilename' in df_features :
         df_cluster['fullfilename'] = df_features['fullfilename']
     if 'filename' in df_features :
