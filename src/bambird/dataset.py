@@ -465,6 +465,10 @@ def grab_audio_to_df (path,
     columns_name :
         First column name corresponds to full path to the filename
         Second column name correspond to the filename alone without the extension
+
+    # to do
+    # case insensitive
+    # with and without dot in the extension.
     """
     
     # create a dataframe with all recordings in the directory
