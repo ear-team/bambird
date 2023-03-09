@@ -279,11 +279,7 @@ def find_cluster(
     #-------------------------------------------------------
     df_cluster = df_features[['filename_ts',
                               'fullfilename_ts',
-                              'categories',
-                              'min_f',
-                              'min_t',
-                              'max_f',
-                              'max_t']]
+                              'categories']]
     
     # add 3 others columns if they exist in df_features 
     # if the ROIs were extracted outside of this workflow, they might not exist
