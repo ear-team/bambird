@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """Version info"""
-__version__ = '0.3.1a'
+__version__ = '0.3.1a1'

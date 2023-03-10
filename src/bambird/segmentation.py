@@ -38,8 +38,8 @@ import maad.util
 import maad.rois
 
 #
-from bambird import config as cfg
-from bambird import grab_audio_to_df
+import bambird.config as cfg
+from bambird.dataset import grab_audio_to_df
 
 #%%
 ###############################################################################
