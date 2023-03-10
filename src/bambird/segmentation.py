@@ -32,7 +32,6 @@ from tqdm import tqdm
 from concurrent import futures
 
 # Scikit-Maad (ecoacoustics functions) package
-import maad
 import maad.sound
 import maad.util
 import maad.rois

@@ -24,7 +24,6 @@ from skimage.morphology import closing
 from scipy import ndimage 
 
 # Scikit-Maad (ecoacoustics functions) package
-import maad
 import maad.sound
 import maad.util
 import maad.rois

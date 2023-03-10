@@ -52,7 +52,6 @@ import hdbscan
 # spec.loader.exec_module(DBCV)  # the module is called DBCV
 
 # Scikit-Maad (ecoacoustics functions) package
-import maad
 import maad.sound
 import maad.util
 
