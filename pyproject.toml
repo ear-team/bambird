@@ -50,8 +50,8 @@ Source = "https://github.com/ear-mnhn/bambird"
 Documentation = "https://bambird.github.io/"
 Tracker = 'https://github.com/ear-mnhn/bambird/issues'
 
-[tool.flit.module]
-name = "bambird"
+#[tool.flit.module]
+#name = "bambird"
 
 [tool.flit.sdist]
 exclude = [
