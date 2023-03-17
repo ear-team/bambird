@@ -5,8 +5,9 @@ Collection of functions to cluster separate the sound of interests (or regions
 of interest ROIs) from the noise, compute metrics and overlay the results 
 """
 #
-# Authors:  Felix MICHAUD   <felixmichaudlnhrdt@gmail.com>
-#           Sylvain HAUPERT <sylvain.haupert@mnhn.fr>
+# Authors:  Felix MICHAUD      <felixmichaudlnhrdt@gmail.com>
+#           Sylvain HAUPERT    <sylvain.haupert@mnhn.fr>
+#           Joachim POUTARAUD  <joachipo@uio.no>
 #
 # License: New BSD License
 
@@ -21,8 +22,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+# ipython packages
+import IPython.display as ipd
+import ipywidgets as widgets
+
 # audio package
 import librosa
+from scipy.signal import butter, lfilter
 
 # stats
 from scipy import stats
@@ -1059,4 +1065,160 @@ def unmark_rois (dataset_csv,
             
     return df, unmarked
 
-    
+###############################################################################
+class label_rois:
+
+    def __init__(self, 
+                df_cluster, 
+                params=cfg.PARAMS['PARAMS_EXTRACT'], 
+                roi_length=3,
+                save_path=None,
+                save_csv_filename=None,
+                verbose=False):
+
+        """
+        Labeling of ROIs
+
+        This class is useful to display the selected ROIs and label them as either SIGNAL or NOISE 
+        in order to evaluate the clustering of the ROIs using the cluster_eval function afterwards.
+
+        Parameters
+        ----------
+        dataset : string or pandas dataframe
+            If it's a string it should be a full path to a csv file with the features
+            containing a column "fullfilename_ts" with the full path to the roi
+            and the maximum and minimum frequency of the rois.
+            If it's a dataframe, the dataframe should contain the features and 
+            a column "fullfilename_ts" with the full path to the roi and
+            the maximum and minimum frequency of the rois.    
+        params : dictionnary, optional
+            contains all the parameters useful to perform the labeling
+            The default is PARAMS_EXTRACT.
+        roi_length : int
+            Indicates the length of the ROI in seconds for the display.
+        save_path : string, default is None
+            Path to the directory where the result of the labeling will be saved    
+        save_csv_filename: string, optional
+            csv filename that contains all the labeled rois that will be saved. 
+            The default is label.csv 
+        verbose : boolean, optional
+            if True, print information. The default is False.
+
+        Returns
+        -------
+        df_cluster : pandas dataframe
+            Dataframe with the manual label found for each roi.
+
+        """
+
+        self.df_cluster = df_cluster.copy().reset_index()
+        self.params = params
+        self.roi_length = roi_length
+        self.save_path = save_path
+        self.save_csv_filename = save_csv_filename
+        self.verbose = verbose
+        self.manual_label = []        
+
+        button1 = widgets.Button(description="Signal")
+        button2 = widgets.Button(description="Noise")
+        buttons = widgets.HBox(children=[button1, button2])
+        button1.on_click(self.signal)
+        button2.on_click(self.noise)
+
+        self.all_widgets = widgets.HBox(children=[buttons, widgets.Output()])
+        self.roi(0)
+        
+    def roi(self, i):
+        filename   = self.df_cluster['fullfilename_ts'][i]
+        fmin       = self.df_cluster['min_f'][i]
+        fmax       = self.df_cluster['max_f'][i]
+        sr         = self.params["SAMPLE_RATE"]
+        n_fft      = self.params["NFFT"]
+        
+        # Load and filter the segmented signal
+        sig, sr = librosa.load(filename, sr=sr)
+        b, a = butter(5, [fmin, fmax], fs=sr, btype='band')       
+        sig = lfilter(b, a, sig)
+
+        # Fix the length of the ROI to display for praticalities
+        if sig.shape[0] >= int(sr*self.roi_length):
+            sig = sig[:sig.shape[0]-int(sig.shape[0]-(sr*self.roi_length))]
+        else:
+            pad_samples = int(sr*self.roi_length) - sig.shape[0]
+            sig = np.pad(sig, (pad_samples // 2, pad_samples // 2), 'constant')
+
+        # Compute spectrogram
+        Sxx, tn, fn, ext = maad.sound.spectrogram(sig, sr, nperseg=n_fft, noverlap=n_fft // 2)
+        X = maad.util.power2dB(Sxx, db_range=96) + 96
+        
+        ipd.clear_output(wait=False)
+        
+        # Display spectrogram
+        fig, ax = plt.subplots(figsize=(4,2))
+        maad.util.plot_spectrogram(X, log_scale=False, colorbar=False, ax=ax, now=False, extent=ext)
+        ax.yaxis.set_label_position("right")
+        ax.set_title(os.path.dirname(filename), size=6)
+        ax.set_ylim([self.params['LOW_FREQ'], self.params['HIGH_FREQ']])
+        ax.set_xlabel(f'ROI: {i}/{len(self.df_cluster)}')
+        ax.yaxis.tick_right()
+        plt.show()
+        
+        # Display audio unit and widgets
+        ipd.display(ipd.Audio(sig, rate=sr))
+        ipd.display(self.all_widgets)
+
+    def signal(self, b):
+        self.manual_label.append(1.0)
+        ipd.clear_output(wait=False)
+        
+        if len(self.manual_label) == len(self.df_cluster):
+            self.df_cluster['manual_label'] = self.manual_label
+            ipd.display(self.df_cluster)
+
+            if self.save_path is not None:
+                if self.save_csv_filename is None:
+                    self.save_csv_filename = 'label.csv'
+                           
+                # format save_path into Path
+                self.save_path = Path(self.save_path)
+                
+                if self.verbose:
+                    print('Save csv file with cluster here {}'.format(self.save_path / self.save_csv_filename))
+                
+                # save and append dataframe 
+                csv_fullfilename = self.save_path / self.save_csv_filename
+                self.df_cluster.to_csv(csv_fullfilename, sep=';', index=False)
+            else:
+                csv_fullfilename = None
+
+        else:
+            i = len(self.manual_label)
+            self.roi(i)
+
+    def noise(self, b):
+        self.manual_label.append(0.0)
+        ipd.clear_output(wait=False)
+        
+        if len(self.manual_label) == len(self.df_cluster):
+            self.df_cluster['manual_label'] = self.manual_label
+            ipd.display(self.df_cluster)
+
+            if self.save_path is not None:
+                if self.save_csv_filename is None:
+                    self.save_csv_filename = 'label.csv'
+                           
+                # format save_path into Path
+                self.save_path = Path(self.save_path)
+                
+                if self.verbose:
+                    print('Save csv file with cluster here {}'.format(self.save_path / self.save_csv_filename))
+                
+                # save and append dataframe 
+                csv_fullfilename = self.save_path / self.save_csv_filename
+                self.df_cluster.to_csv(csv_fullfilename, sep=';', index=False)
+            else:
+                csv_fullfilename = None
+            
+        else:
+            i = len(self.manual_label)
+            self.roi(i)   
