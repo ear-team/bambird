@@ -91,7 +91,8 @@ from .cluster import (
     cluster_eval,
     overlay_rois,
     mark_rois,
-    unmark_rois
+    unmark_rois,
+    label_rois
     )
 
 __all__ = [
@@ -116,7 +117,8 @@ __all__ = [
         'cluster_eval',
         'overlay_rois',
         'mark_rois',
-        'unmark_rois'
+        'unmark_rois',
+        'label_rois'
         ]
 
 
