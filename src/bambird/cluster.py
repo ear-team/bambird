@@ -305,6 +305,13 @@ def find_cluster(
         df_cluster['filename'] = df_features['filename']
     if 'abs_min_t' in df_features :
         df_cluster['abs_min_t'] = df_features['abs_min_t']
+
+    # Select the sequence of clustering. Could be
+    # 1. category by category
+    # 2. all categories together
+    # 3. N categories by N categories (with N >= 2)
+    #-------------------------------------------------------
+
         
     # find the cluster for each categories separately
     #-------------------------------------------------------  
@@ -316,9 +323,9 @@ def find_cluster(
         # Prepare the features of that categories
         #-------------------------------------------------------
         X = _prepare_features(df_single_categories, 
-                             scaler = params['SCALER'],
-                             features = params['FEATURES'])
-        
+                            scaler = params['SCALER'],
+                            features = params['FEATURES'])
+                
         if display:
             # Plot the features
             ax3[count].imshow(
@@ -328,10 +335,22 @@ def find_cluster(
                 vmin=np.percentile(X, 10),
                 vmax=np.percentile(X, 90),
             )
-            ax3[count].set_xlabel("features")
-            ax3[count].set_title("Shapes")
-            
-                    
+            ax3[count].set_xlabel("features vector")
+            ax3[count].set_title("Features")
+        
+        # PCA dimensionality reduction that explains 95% of the variance
+        #---------------------------------------------------------------------
+        X = PCA(n_components=0.95).fit_transform(X)
+
+        # UMAP reduction to 2 dimensions
+        #---------------------------------------------------------------------
+        # X = umap.UMAP(
+        #             n_components    =2,
+        #             n_neighbors     =round(len(df_single_categories) / 10), # 10% of the number of points
+        #             min_dist        =0.1,
+        #             metric          ='cosine',
+        #             random_state=cfg.RANDOM_SEED).fit_transform(X)
+        
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------
         if 'features' in df_cluster :
@@ -424,11 +443,30 @@ def find_cluster(
                 elif params["METHOD"] == "HDBSCAN":
                     cluster = hdbscan.HDBSCAN(
                         min_cluster_size=min_points,
+                        prediction_data = True,
                         min_samples=round(min_points / 2),
                         cluster_selection_epsilon=float(eps),
-                        # cluster_selection_method = 'leaf',
-                        #allow_single_cluster=True,
+                        #cluster_selection_method = 'leaf',
+                        allow_single_cluster=True,
                     ).fit(X)
+
+                    # TODO 
+                    # * tester UMAP avec DBSCAN
+                    # * tester le soft clusetering avec HDBSCAN
+                    # * modifier le code pour faire du clustering sur 1 ou toutes les espèces en même temps
+                    # * modifier le code pour faire des "combats" avec 2, 3, N espèces en même temps avec toutes les combinaisons possibles (si 2
+                    # # toutes les paires possible)
+
+                    # COMMENT 
+                    # soft_cluster = hdbscan.all_points_membership_vectors(cluster)
+
+                    # label = []
+                    # for x in soft_cluster:
+                    #     if np.max(x) <0.1 :
+                    #         label += [-1]
+                    #     else:
+                    #         label += [np.argmax(x)]
+                    # cluster.labels_ = np.array(label)
                     
                     if verbose:
                         print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
