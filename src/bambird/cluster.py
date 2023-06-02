@@ -344,12 +344,12 @@ def find_cluster(
 
         # UMAP reduction to 2 dimensions
         #---------------------------------------------------------------------
-        # X = umap.UMAP(
-        #             n_components    =2,
-        #             n_neighbors     =round(len(df_single_categories) / 10), # 10% of the number of points
-        #             min_dist        =0.1,
-        #             metric          ='cosine',
-        #             random_state=cfg.RANDOM_SEED).fit_transform(X)
+        X = umap.UMAP(
+                    n_components    =2,
+                    n_neighbors     =round(len(df_single_categories) / 10), # 10% of the number of points
+                    min_dist        =0.1,
+                    metric          ='cosine',
+                    random_state=cfg.RANDOM_SEED).fit_transform(X)
         
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------

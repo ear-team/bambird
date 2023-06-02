@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3License
 # -*- coding: utf-8 -*-
 """ 
 Collection of functions to compute the features for each sound of interest also
@@ -437,7 +437,9 @@ def multicpu_compute_features(
                         multicpu_func, df_rois[~mask]["fullfilename_ts"].to_list()
                     ):
                         pbar.update(1)
-                        df_features = df_features.append(df_features_temp)
+                        df_features = pd.concat([df_features,
+                                                df_features_temp
+                                                ])
                                 
             # Merge the result df_features with the df_rois
             #----------------------------------------------
@@ -464,9 +466,9 @@ def multicpu_compute_features(
             #-------------------------------
             df_features_sorted = pd.DataFrame()
             for categories in df_features["categories"].unique():
-                df_features_sorted = df_features_sorted.append(
-                    df_features[df_features["categories"] == categories].sort_index()
-                )
+                df_features_sorted = pd.concat([df_features_sorted,
+                                                df_features[df_features["categories"] == categories].sort_index()
+                                                ])
         
             if verbose :
                 print('\n')
