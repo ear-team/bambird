@@ -450,7 +450,8 @@ def multicpu_compute_features(
             
             df_rois.set_index(["filename_ts"], inplace=True)
             df_features.set_index(["filename_ts"], inplace=True)
-            drop_col = (df_features.columns & df_rois.columns).tolist()
+            # drop_col = (df_features.columns & df_rois.columns).tolist()
+            drop_col = list(set(df_features.columns).intersection(df_rois.columns))
         
             # Merge the DataFrames based on the index and after dropping the columns
             # that are duplicated
