@@ -346,7 +346,7 @@ def find_cluster(
         #---------------------------------------------------------------------
         X = umap.UMAP(
                     n_components    =2,
-                    n_neighbors     =round(len(df_single_categories) / 10), # 10% of the number of points
+                    n_neighbors     =max(round(len(df_single_categories) / 10), 2) r, # 10% of the number of points
                     min_dist        =0.1,
                     metric          ='cosine',
                     random_state=cfg.RANDOM_SEED).fit_transform(X)
