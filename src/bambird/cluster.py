@@ -338,18 +338,18 @@ def find_cluster(
             ax3[count].set_xlabel("features vector")
             ax3[count].set_title("Features")
         
-        # PCA dimensionality reduction that explains 95% of the variance
-        #---------------------------------------------------------------------
-        X = PCA(n_components=0.95).fit_transform(X)
+        # # PCA dimensionality reduction that explains 95% of the variance
+        # #---------------------------------------------------------------------
+        # X = PCA(n_components=0.95).fit_transform(X)
 
-        # UMAP reduction to 2 dimensions
-        #---------------------------------------------------------------------
-        X = umap.UMAP(
-                    n_components    =2,
-                    n_neighbors     =max(round(len(df_single_categories) / 10), 2), # 10% of the number of points
-                    min_dist        =0.1,
-                    metric          ='cosine',
-                    random_state=cfg.RANDOM_SEED).fit_transform(X)
+        # # UMAP reduction to 2 dimensions
+        # #---------------------------------------------------------------------
+        # X = umap.UMAP(
+        #             n_components    =2,
+        #             n_neighbors     =max(round(len(df_single_categories) / 10), 2), # 10% of the number of points
+        #             min_dist        =0.1,
+        #             metric          ='cosine',
+        #             random_state=cfg.RANDOM_SEED).fit_transform(X)
         
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------
