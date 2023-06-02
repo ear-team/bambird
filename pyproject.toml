@@ -19,7 +19,8 @@ dependencies = [
 	"umap-learn >=0.5.3",
 	"scikit-learn >=1.2.1",
 	"scikit-maad >=1.3.12",
-	"pyyaml >= 6.0"
+	"pyyaml >= 6.0",
+    "ipywidgets'
     ]
 classifiers = [
     "Development Status :: 4 - Beta",
