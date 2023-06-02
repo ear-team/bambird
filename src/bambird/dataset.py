@@ -503,10 +503,12 @@ def grab_audio_to_df (path,
         #                             ignore_index=True)
         df_dataset = pd.concat([df_dataset,
                                pd.DataFrame({
-                                'fullfilename':file,
-                                'filename'    :Path(file).parts[-1],
-                                'categories'  :categories,
-                                'id'          :iden})],
+                                    'fullfilename':file,
+                                    'filename'    :Path(file).parts[-1],
+                                    'categories'  :categories,
+                                    'id'          :iden},
+                                    index=[0])
+                                ],
                                 ignore_index=True)
         
     # set id as index
