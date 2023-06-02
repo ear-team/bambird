@@ -20,7 +20,7 @@ dependencies = [
 	"scikit-learn >=1.2.1",
 	"scikit-maad >=1.3.12",
 	"pyyaml >= 6.0",
-    "ipywidgets'
+    "ipywidgets",
     ]
 classifiers = [
     "Development Status :: 4 - Beta",
