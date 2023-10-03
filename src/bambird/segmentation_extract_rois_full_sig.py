@@ -487,7 +487,7 @@ def extract_rois_full_sig(
             ax=ax3,
             title="3. mask",
             interpolation=None,
-            now=True,
+            now=False
         )
 
     # 6. get the mask with rois (im_rois) and the bounding box for each rois (rois_bbox)
