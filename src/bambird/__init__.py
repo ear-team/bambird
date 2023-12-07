@@ -23,7 +23,6 @@ Dataset
     :toctree: generated/
     query_xc
     download_xc
-    query_download_xc
     grab_audio_to_df
     change_path
     
@@ -63,6 +62,10 @@ from .segmentation_extract_rois_core import(
     extract_rois_core,
     )
 
+from .segmentation_extract_rois_in_soundscape import(       
+    extract_rois_in_soundscape,
+    )
+
 from .config import (
     load_config
     )
@@ -72,7 +75,6 @@ from .dataset import(
     change_path,
     query_xc,
     download_xc,
-    query_download_xc,
     )
 
 from .segmentation import(     
@@ -85,15 +87,15 @@ from .features import(
     compute_features,
     multicpu_compute_features,
     )
-
+                 
 from .cluster import (
     find_cluster,
     cluster_eval,
     overlay_rois,
     mark_rois,
-    unmark_rois,
-    label_rois
+    unmark_rois
     )
+
 
 __all__ = [
         # config.py
@@ -103,11 +105,11 @@ __all__ = [
         'change_path',
         'query_xc',
         'download_xc',
-        'query_download_xc',
         # segmentation.py                         
         'extract_rois_core',
         'extract_rois_full_sig',
         'single_file_extract_rois',
+        'extract_rois_in_soundscape',
         'multicpu_extract_rois',
         # features.py
         'compute_features',
@@ -117,8 +119,7 @@ __all__ = [
         'cluster_eval',
         'overlay_rois',
         'mark_rois',
-        'unmark_rois',
-        'label_rois'
+        'unmark_rois'
         ]
 
 

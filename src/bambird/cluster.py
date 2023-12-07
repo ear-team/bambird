@@ -338,18 +338,17 @@ def find_cluster(
             ax3[count].set_xlabel("features vector")
             ax3[count].set_title("Features")
         
-        # # PCA dimensionality reduction that explains 95% of the variance
+        # # PCA dimensionality reduction to N dimensions
         # #---------------------------------------------------------------------
-        # X = PCA(n_components=0.95).fit_transform(X)
+        # N_COMPONENTS = 2
+        # X = PCA(n_components=N_COMPONENTS).fit_transform(X)
 
-        # # UMAP reduction to 2 dimensions
+        # # UMAP reduction to N dimensions
         # #---------------------------------------------------------------------
-        # X = umap.UMAP(
-        #             n_components    =2,
-        #             n_neighbors     =max(round(len(df_single_categories) / 10), 2), # 10% of the number of points
-        #             min_dist        =0.1,
-        #             metric          ='cosine',
-        #             random_state=cfg.RANDOM_SEED).fit_transform(X)
+        N_COMPONENTS = 5
+        X = umap.UMAP(
+                    n_components=N_COMPONENTS,
+                    random_state=cfg.RANDOM_SEED).fit_transform(X)
         
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------
@@ -372,188 +371,192 @@ def find_cluster(
                         len(df_single_categories)))
                 
         else:           
-            # Select the minimum of points for a cluster
-            #-------------------------------------------------------
-            if params["PERCENTAGE_PTS"] is not None :
-                min_points = round(params["PERCENTAGE_PTS"] / 100 * len(df_single_categories))
-            elif params["MIN_PTS"] is not None :
-                min_points = round(params["MIN_PTS"])
-            else :
-                min_points = 2  
+            # # Select the minimum of points for a cluster
+            # #-------------------------------------------------------
+            # if params["PERCENTAGE_PTS"] is not None :
+            #     min_points = round(params["PERCENTAGE_PTS"] / 100 * len(df_single_categories))
+            # elif params["MIN_PTS"] is not None :
+            #     min_points = round(params["MIN_PTS"])
+            # else :
+            #     min_points = 2  
                 
-            if min_points < 2: min_points = 2  
-            # test if the number of points in the list is higher than the required
-            # minimum of points
-            # if not, then do not cluster
-            if len(X) >= min_points:
+            # if min_points < 2: min_points = 2  
+            # # test if the number of points in the list is higher than the required
+            # # minimum of points
+            # # if not, then do not cluster
+            # if len(X) >= min_points:
 
-                # automatic estimation of the maximum distance eps
-                #-------------------------------------------------------
-                if params["EPS"] == 'auto' :
-                    # Calculate the average distance between each point in the data set and
-                    # its N nearest neighbors (N corresponds to min_points).
-                    neighbors = NearestNeighbors(n_neighbors=min_points)
-                    neighbors_fit = neighbors.fit(X)
-                    distances, indices = neighbors_fit.kneighbors(X)
-            
-                    # Sort distance values by ascending value and plot
-                    distances = np.sort(distances, axis=0)
-                    distances = distances[:, 1] 
-            
+            # automatic estimation of the maximum distance eps
+            #-------------------------------------------------------
+            if params["EPS"] == 'auto' :
+                # Calculate the average distance between each point in the data set and
+                # its nearest neighbors.
+                neighbors = NearestNeighbors(n_neighbors=2)
+                neighbors_fit = neighbors.fit(X)
+                distances, indices = neighbors_fit.kneighbors(X)
+        
+                # Sort distance values by ascending value and plot
+                distances = np.sort(distances, axis=0)
+                distances = distances[:, 1] 
+        
+                # find the knee (curvature inflexion point)
+                # Filter out warnings from the specific function
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore")
                     # find the knee (curvature inflexion point)
                     kneedle = KneeLocator(
                         x=np.arange(0, len(distances), 1),
                         y=distances,
-                        interp_method="polynomial",
-                        # online = False,
-                        # S=10,
+                        interp_method="polynomial", # interp1d polynomial
                         curve="convex",
                         direction="increasing",
-                    )
-            
-                    if display:
-                        # plot the distance + the knee
-                        ax2[count].set_xlabel("cumulative number of ROIs", fontsize=10)
-                        ax2[count].set_ylabel("eps", fontsize=10)
-                        ax2[count].axhline(y=kneedle.knee_y, xmin=0,xmax=len(distances), color="r")
-                        ax2[count].set_title("sorted k-dist graph", fontsize=12)
-                        ax2[count].plot(distances)
-            
-                    # first find the maximum distance that corresponds to 95% of observations
-                    eps = kneedle.knee_y  
-                    
-                    # if eps is not a regular distance, let's take the average distance
-                    if (eps == 0) or (eps is None):
-                        eps = np.mean(distances)
-
-                # set eps manually 
-                #-------------------------------------------------------
-                else :
-                    eps = params["EPS"]
+                    )       
+                # first find the maximum distance that corresponds to 95% of observations
+                try :
+                    EPS = float(kneedle.knee_y)  
+                except :
+                    EPS = distances [-1]
         
-                # find the number of clusters and the rois that belong to the cluster
-                #--------------------------------------------------------------------
-                if params["METHOD"] == "DBSCAN":
-                    cluster = DBSCAN(eps=eps, min_samples=min_points).fit(X)
+        
+                if display:
+                    # plot the distance + the knee
+                    ax2[count].set_xlabel("cumulative number of ROIs", fontsize=10)
+                    ax2[count].set_ylabel("eps", fontsize=10)
+                    ax2[count].axhline(y=EPS, xmin=0,xmax=len(distances), color="r")
+                    ax2[count].set_title("sorted k-dist graph", fontsize=12)
+                    ax2[count].plot(distances)
+    
+            # set eps manually 
+            #-------------------------------------------------------
+            else :
+                EPS = params["EPS"]
+    
+            # find the number of clusters and the rois that belong to the cluster
+            #--------------------------------------------------------------------
+            if params["METHOD"] == "DBSCAN":
+                cluster = DBSCAN(
+                                eps=EPS, 
+                                min_samples=2*N_COMPONENTS-1
+                                ).fit(X)
+                
+                if verbose:
+                    print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, min_points,
+                            categories, np.unique(cluster.labels_).size))
                     
-                    if verbose:
-                        print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
-                                categories, np.unique(cluster.labels_).size))
+            elif params["METHOD"] == "HDBSCAN":
+
+                cluster = hdbscan.HDBSCAN(
+                                    min_cluster_size=2*N_COMPONENTS-1,
+                                    prediction_data = True,
+                                    min_samples=2*N_COMPONENTS-1,
+                                    cluster_selection_epsilon = max(0,EPS), 
+                                    allow_single_cluster=False,
+                                    core_dist_n_jobs = -1,
+                                    ).fit(X)
+
+                # TODO 
+                # * tester UMAP avec DBSCAN
+                # * tester le soft clusetering avec HDBSCAN
+                # * modifier le code pour faire du clustering sur 1 ou toutes les espèces en même temps
+                # * modifier le code pour faire des "combats" avec 2, 3, N espèces en même temps avec toutes les combinaisons possibles (si 2
+                # # toutes les paires possible)
+
+                # COMMENT 
+                # soft_cluster = hdbscan.all_points_membership_vectors(cluster)
+
+                # label = []
+                # for x in soft_cluster:
+                #     if np.max(x) <0.1 :
+                #         label += [-1]
+                #     else:
+                #         label += [np.argmax(x)]
+                # cluster.labels_ = np.array(label)
+                
+                if verbose:
+                    print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, min_points,
+                            categories, np.unique(cluster.labels_).size))
+    
+                # metric DBCV
+                """DBCV_score = DBCV.DBCV(X, cluster.labels_, dist_function=euclidean)
+                
+                print('Number of soundtypes found for {} : {} \
+                    / DBCV score {:.2f} \
+                    / DBCV relative {:.2f}'.format(categories,
+                                                np.unique(cluster.labels_).size,
+                                                DBCV_score,
+                                                cluster.relative_validity_))"""
+
+            # add the cluster number and the label found with the clustering
+            #---------------------------------------------------------------
+            # add the cluster number into the label's column of the dataframe
+            df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
+
+            # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
+            # the dataframe
+            # Test if we want to consider only the biggest or all clusters 
+            # that are not noise (-1) to be signal
+            if params["KEEP"] == 'BIGGEST' :
+                # set by default to 0 the auto_label of all
+                df_cluster.loc[df_cluster["categories"] == categories, "auto_label"] = int(0)
+                # find the cluster ID of the biggest cluster that is not noise
+                try :
+                    biggest_cluster_ID = df_cluster.loc[(df_cluster["categories"] == categories) & (
+                                                    df_cluster["cluster_number"] >= 0)]["cluster_number"].value_counts().idxmax()
+                    # set by default to 1 the auto_label of the biggest cluster
+                    df_cluster.loc[(df_cluster["categories"] == categories) & (
+                                    df_cluster["cluster_number"] == biggest_cluster_ID), "auto_label"] = int(1)
+                except:
+                    # if there is only noise
+                    pass
+                
+            elif params["KEEP"] == 'ALL' :
+                # set by to 0 the auto_label of the noise (cluster ID = -1)
+                df_cluster.loc[(df_cluster["categories"] == categories) & (
+                                df_cluster["cluster_number"] < 0), "auto_label"] = int(0)
+                # set by to 1 the auto_label of the signal (cluster ID >= 0)
+                df_cluster.loc[(df_cluster["categories"] == categories) & (
+                                df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
                         
-                elif params["METHOD"] == "HDBSCAN":
-                    cluster = hdbscan.HDBSCAN(
-                        min_cluster_size=min_points,
-                        prediction_data = True,
-                        min_samples=round(min_points / 2),
-                        cluster_selection_epsilon=float(eps),
-                        #cluster_selection_method = 'leaf',
-                        allow_single_cluster=True,
-                    ).fit(X)
+            if display:                
+                # display the result in 2D (2D reduction of the dimension)
+                # compute the dimensionality reduction.
+                
+                ##### pca
+                # pca = PCA(n_components=2)
+                # principalComponents = pca.fit_transform(X)
+                # Y = pd.DataFrame(
 
-                    # TODO 
-                    # * tester UMAP avec DBSCAN
-                    # * tester le soft clusetering avec HDBSCAN
-                    # * modifier le code pour faire du clustering sur 1 ou toutes les espèces en même temps
-                    # * modifier le code pour faire des "combats" avec 2, 3, N espèces en même temps avec toutes les combinaisons possibles (si 2
-                    # # toutes les paires possible)
-
-                    # COMMENT 
-                    # soft_cluster = hdbscan.all_points_membership_vectors(cluster)
-
-                    # label = []
-                    # for x in soft_cluster:
-                    #     if np.max(x) <0.1 :
-                    #         label += [-1]
-                    #     else:
-                    #         label += [np.argmax(x)]
-                    # cluster.labels_ = np.array(label)
-                    
-                    if verbose:
-                        print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(eps, min_points,
-                                categories, np.unique(cluster.labels_).size))
-        
-                    # metric DBCV
-                    """DBCV_score = DBCV.DBCV(X, cluster.labels_, dist_function=euclidean)
-                    
-                    print('Number of soundtypes found for {} : {} \
-                        / DBCV score {:.2f} \
-                        / DBCV relative {:.2f}'.format(categories,
-                                                    np.unique(cluster.labels_).size,
-                                                    DBCV_score,
-                                                    cluster.relative_validity_))"""
+                ##### tsne
+                # tsne = TSNE(n_components=2, 
+                #             init='pca', 
+                #             n_jobs = -1,
+                #             random_state=cfg.RANDOM_SEED)
+                # Y = tsne.fit_transform(X)
+                
+                ##### umap
+                umap_red = umap.UMAP(
+                        n_components=2,
+                        random_state=cfg.RANDOM_SEED)
+                Y = umap_red.fit_transform(X)
+                
+                
+                df_reducdim = pd.DataFrame(
+                    data=Y,
+                    columns=["dim1", "dim2"],
+                )
+                
+                ax[count].set_xlabel("dim 1", fontsize=10)
+                ax[count].set_ylabel("dim 2", fontsize=10)
+                ax[count].set_title(categories, fontsize=12)
     
-                # add the cluster number and the label found with the clustering
-                #---------------------------------------------------------------
-                # add the cluster number into the label's column of the dataframe
-                df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
-    
-                # add the automatic label (SIGNAL = 1 or NOISE = 0) into the auto_label's column of
-                # the dataframe
-                # Test if we want to consider only the biggest or all clusters 
-                # that are not noise (-1) to be signal
-                if params["KEEP"] == 'BIGGEST' :
-                    # set by default to 0 the auto_label of all
-                    df_cluster.loc[df_cluster["categories"] == categories, "auto_label"] = int(0)
-                    # find the cluster ID of the biggest cluster that is not noise
-                    try :
-                        biggest_cluster_ID = df_cluster.loc[(df_cluster["categories"] == categories) & (
-                                                        df_cluster["cluster_number"] >= 0)]["cluster_number"].value_counts().idxmax()
-                        # set by default to 1 the auto_label of the biggest cluster
-                        df_cluster.loc[(df_cluster["categories"] == categories) & (
-                                        df_cluster["cluster_number"] == biggest_cluster_ID), "auto_label"] = int(1)
-                    except:
-                        # if there is only noise
-                        pass
-                    
-                elif params["KEEP"] == 'ALL' :
-                    # set by to 0 the auto_label of the noise (cluster ID = -1)
-                    df_cluster.loc[(df_cluster["categories"] == categories) & (
-                                    df_cluster["cluster_number"] < 0), "auto_label"] = int(0)
-                    # set by to 1 the auto_label of the signal (cluster ID >= 0)
-                    df_cluster.loc[(df_cluster["categories"] == categories) & (
-                                    df_cluster["cluster_number"] >= 0), "auto_label"] = int(1)
-                            
-                if display:                
-                    # display the result in 2D (2D reduction of the dimension)
-                    # compute the dimensionality reduction.
-                    
-                    ##### pca
-                    # pca = PCA(n_components=2)
-                    # principalComponents = pca.fit_transform(X)
-                    # Y = pd.DataFrame(
-    
-                    ##### tsne
-                    # tsne = TSNE(n_components=2, 
-                    #             init='pca', 
-                    #             n_jobs = -1,
-                    #             random_state=cfg.RANDOM_SEED)
-                    # Y = tsne.fit_transform(X)
-                    
-                    ##### umap
-                    umap_red = umap.UMAP(
-                            n_neighbors=min_points,
-                            n_components=2,
-                            random_state=cfg.RANDOM_SEED)
-                    Y = umap_red.fit_transform(X)
-                    
-                    
-                    df_reducdim = pd.DataFrame(
-                        data=Y,
-                        columns=["dim1", "dim2"],
-                    )
-                    
-                    ax[count].set_xlabel("dim 1", fontsize=10)
-                    ax[count].set_ylabel("dim 2", fontsize=10)
-                    ax[count].set_title(categories, fontsize=12)
-        
-                    ax[count].scatter(
-                        df_reducdim["dim1"],
-                        df_reducdim["dim2"],
-                        c=cluster.labels_,
-                        s=50,
-                        alpha=0.8,
-                    )        
-                                    
+                ax[count].scatter(
+                    df_reducdim["dim1"],
+                    df_reducdim["dim2"],
+                    c=cluster.labels_,
+                    s=50,
+                    alpha=0.8,
+                )        
+                
         # increment
         count += 1
             
@@ -593,8 +596,8 @@ def find_cluster(
         # save and append dataframe 
         csv_fullfilename = save_path / save_csv_filename
         df_cluster.to_csv(csv_fullfilename, 
-                                  sep=';', 
-                                  header=True)
+                        sep=';', 
+                        header=True)
     else:
         csv_fullfilename = None
         
@@ -610,14 +613,14 @@ def find_cluster(
 
 ###############################################################################
 def cluster_eval(df_cluster,
-                 path_to_csv_with_gt,
-                 colname_label    = 'auto_label' ,
-                 colname_label_gt = 'manual_label',
-                 verbose=False):
+                path_to_csv_with_gt,
+                colname_label    = 'auto_label' ,
+                colname_label_gt = 'manual_label',
+                verbose=False):
     """
 
     Evalation of the clustering (requires annotations or any other files to 
-                                 compare with the result of the clustering)
+                                compare with the result of the clustering)
 
     Parameters
     ----------
