@@ -113,13 +113,13 @@ def _prepare_features(df_features,
     else :
         scaler = StandardScaler()
         print ("*** WARNING *** the scaler {} does not exist. StandarScaler was choosen".format(scaler))
-    
-    X = pd.DataFrame()
-    f = features.copy() #copy the list otherwise the suppression of a feature is kept
-    
+
+    X = []
+    X2 = []
+
     # Normalize the shapes
     #----------------------------------------------
-    if "shp" in f :
+    if "shp" in features :
         # with shapes
         # create a vector with X in order to scale all features together
         X = df_features.loc[:, df_features.columns.str.startswith("shp")]
@@ -129,26 +129,24 @@ def _prepare_features(df_features,
         X_vect = scaler.fit_transform(X_vect)
         X = X_vect.reshape(X_shape)
         # remove "shp" from the list
-        f.remove('shp')
-    
-    X2 = pd.DataFrame()
+        features.remove('shp')
     
     # Normalize the other features (centroid, bandwidth...)
     #-------------------------------------------------------
     # test if the features list is not null
-    if len(f) > 0 :
+    if len(features) > 0 :
         # add other features like frequency centroid
-        X2 = df_features[f]
+        X2 = df_features[features]
         # Preprocess data : data scaler
         X2 = scaler.fit_transform(X2)
 
     # Concatenate the features after normalization
     #-------------------------------------------------------
-    if len(X) == len(X2)  :
+    if (len(X2)>0) & (len(X)>0) :
         # create a matrix with all features after rescaling
         X = np.concatenate((X, X2), axis=1)
-    elif len(X2) > len(X) :
-        X2 = X
+    elif len(X2) >0 :
+        X = X2
     
     return X
 
@@ -285,8 +283,8 @@ def find_cluster(
     # initialize df_cluster
     #-------------------------------------------------------
     df_cluster = df_features[['filename_ts',
-                              'fullfilename_ts',
-                              'categories']]
+                            'fullfilename_ts',
+                            'categories']]
     
     # add 3 others columns if they exist in df_features 
     # if the ROIs were extracted outside of this workflow, they might not exist
@@ -345,20 +343,45 @@ def find_cluster(
 
         # # UMAP reduction to N dimensions
         # #---------------------------------------------------------------------
-        N_COMPONENTS = 5
-        X = umap.UMAP(
-                    n_components=N_COMPONENTS,
-                    random_state=cfg.RANDOM_SEED).fit_transform(X)
+
+        # if no UMAP averaging, keep the same random seed for repetitions
+        if  params['N_AVG_UMAP'] == 1 : 
+            X = umap.UMAP(
+                        n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
+                        min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
+                        n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
+                                                                # (potentially to the detriment of the big picture), while large values will push UMAP to look 
+                                                                # at larger neighborhoods of each point when estimating the manifold structure of the data
+                        random_state=cfg.RANDOM_SEED
+                        ).fit_transform(X)
+        elif params['N_AVG_UMAP'] > 1 :
+            uu = 0
+            XX = []
+            while uu < params['N_AVG_UMAP'] :
+                X_temp = umap.UMAP(
+                            n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
+                            min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
+                            n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
+                                                                    # (potentially to the detriment of the big picture), while large values will push UMAP to look 
+                                                                    # at larger neighborhoods of each point when estimating the manifold structure of the data
+                            # random_state=cfg.RANDOM_SEED
+                            ).fit_transform(X)
+                if len(XX) >0 :
+                    XX = np.add(XX, X_temp)
+                else :
+                    XX = X_temp
+                uu += 1
+            X = np.divide(XX,params['N_AVG_UMAP'] )
         
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------
         if 'features' in df_cluster :
             df_cluster.update(pd.DataFrame({'features': X.tolist()}, 
-                                           index = df_single_categories.index))
+                                        index = df_single_categories.index))
         else :
             df_cluster = df_cluster.join(pd.DataFrame({'features': X.tolist()}, 
-                                                      index = df_single_categories.index))
-                                                      
+                                                    index = df_single_categories.index))
+        
         # test if the number of ROIs is higher than 2.
         #---------------------------------------------
         # If not, it is impossible to cluster ROIs. It requires at least 3 ROIS
@@ -371,20 +394,6 @@ def find_cluster(
                         len(df_single_categories)))
                 
         else:           
-            # # Select the minimum of points for a cluster
-            # #-------------------------------------------------------
-            # if params["PERCENTAGE_PTS"] is not None :
-            #     min_points = round(params["PERCENTAGE_PTS"] / 100 * len(df_single_categories))
-            # elif params["MIN_PTS"] is not None :
-            #     min_points = round(params["MIN_PTS"])
-            # else :
-            #     min_points = 2  
-                
-            # if min_points < 2: min_points = 2  
-            # # test if the number of points in the list is higher than the required
-            # # minimum of points
-            # # if not, then do not cluster
-            # if len(X) >= min_points:
 
             # automatic estimation of the maximum distance eps
             #-------------------------------------------------------
@@ -436,20 +445,18 @@ def find_cluster(
             if params["METHOD"] == "DBSCAN":
                 cluster = DBSCAN(
                                 eps=EPS, 
-                                min_samples=2*N_COMPONENTS-1
+                                min_samples=params["MIN_PTS"],
                                 ).fit(X)
                 
                 if verbose:
-                    print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, min_points,
+                    print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, params["MIN_PTS"],
                             categories, np.unique(cluster.labels_).size))
                     
             elif params["METHOD"] == "HDBSCAN":
 
                 cluster = hdbscan.HDBSCAN(
-                                    min_cluster_size=2*N_COMPONENTS-1,
-                                    prediction_data = True,
-                                    min_samples=2*N_COMPONENTS-1,
-                                    cluster_selection_epsilon = max(0,EPS), 
+                                    min_cluster_size=params["MIN_PTS"],
+                                    min_samples= params["MIN_CORE_PTS"],
                                     allow_single_cluster=False,
                                     core_dist_n_jobs = -1,
                                     ).fit(X)
@@ -473,7 +480,7 @@ def find_cluster(
                 # cluster.labels_ = np.array(label)
                 
                 if verbose:
-                    print("HDBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, min_points,
+                    print("HDBSCAN eps {} min_samples {} min_cluster_size {} Number of soundtypes found for {} : {}".format(EPS, params["MIN_PTS"], params["MIN_CORE_PTS"],
                             categories, np.unique(cluster.labels_).size))
     
                 # metric DBCV
@@ -570,14 +577,14 @@ def find_cluster(
             #     'cluster_'
             #     'with_'
             #     + '_'.join(str(elem) for elem in params["FEATURES"])
+            #     + "_n_components_"
+            #     + str(params["N_COMPONENTS"])
+            #     + "_n_neigh_"
+            #     + str(params["N_NEIGHBORS"])
+            #     + "_min_dist_"
+            #     + str(params["MIN_DIST"])
             #     + "_min_points_"
-            #     + str(round(min_points,3))
-            #     + "_eps_"
-            #     + str(round(eps,3))
-            #     + "_method_"
-            #     + str(params["METHOD"])
-            #     + "_keep_"
-            #     + str(params["KEEP"])
+            #     + str(round(params["MIN_PTS"],3))
             #     + ".csv"
             # )
                     

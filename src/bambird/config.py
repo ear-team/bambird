@@ -81,9 +81,20 @@ PARAMS_FEATURES = {
 }
 
 PARAMS_CLUSTER = {
-    "FEATURES": ['shp', 'centroid_f'],  # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' } 
+    "FEATURES": ['shp', 'centroid_f', 'peak_f'],  # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' } 
+    # UMAP parameters
+    "N_COMPONENTS": 10,                         # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
+    "N_NEIGHBORS": 30,                          # The size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation. 
+                                                # Larger values result in more global views of the manifold, while smaller values result in more local data being preserved
+    "MIN_DIST" : 0,                             # The effective minimum distance between embedded points. Smaller values will result in a more clustered/clumped embedding 
+                                                # where nearby points on the manifold are drawn closer together, while larger values will result on a more even dispersal of points
+    "N_AVG_UMAP" : 1,                           # Number of UMAP that will be averaged. 
+    # HDBSCAN DBSCAN
     "PERCENTAGE_PTS": 5,                 # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
     "MIN_PTS": None,                     # minimum number of ROIs to form a cluster {integer or blank}
+    "MIN_CORE_PTS" : 10,                 # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+                                         # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
+                                         # and clusters will be restricted to progressively more dense areas.
     "METHOD": "DBSCAN",                 # HDBSCAN or DBSCAN
     "SCALER": "MINMAXSCALER",           # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
     "KEEP":   "BIGGEST",                # ALL or BIGGEST

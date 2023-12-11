@@ -26,24 +26,24 @@ PARAMS_EXTRACT:
   # function
   FUNC: !FUNC bambird.extract_rois_in_soundscape  # select the function used to extract the rois {bambirdx.extract_rois_in_soundscape, bambirdx.extract_rois_without_rain}
   # Extract Audio resampling
-  SAMPLE_RATE: 48000      # Sampling frequency in Hz
+  SAMPLE_RATE: 36000      # Sampling frequency in Hz
   # Audio preprocess
-  LOW_FREQ: 100           # Low frequency in Hz of the bandpass filter applied to the audio
-  HIGH_FREQ: 20000        # High frequency in Hz of the bandpass filter applied to the audio
+  LOW_FREQ: 50            # Low frequency in Hz of the bandpass filter applied to the audio
+  HIGH_FREQ: 16000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
   AUDIO_DURATION: 60      # Max duration of the audio file (in seconds)
   CHUNK_DURATION: 10      # Split the audio signal in chunks of duration = CHUNK_DURATION (in seconds)
-  OVLP: 0.5               # Define the overlap ratio between each chunk (0=> no overlap, 0.75=> 75% of overlap between 2 consecutive chunks)
+  OVLP: 0                 # Define the overlap ratio between each chunk (0=> no overlap, 0.75=> 75% of overlap between 2 consecutive chunks)
   # Spectrogram
   MODE_RMBCKG: mean       # Mode to compute the remove_background {'mean', 'median'}
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
   N_RUNNING_MEAN: 25      # Number of points used to compute the running mean of the noise profil
   # hysteretic thresholding parameters
-  MASK_PARAM1: 14
-  MASK_PARAM2: 3
+  MASK_PARAM1: 12
+  MASK_PARAM2: 6
   # Select and merge bbox parameters
   MAX_RATIO_YX: 7         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
-  MIN_DURATION: 0.02      # minimum event duration in s
+  MIN_DURATION: 0.05      # minimum event duration in s
   MARGIN_T_LEFT: 0.02     # overlapping time margin in s on the left side of the ROI to merge
   MARGIN_T_RIGHT: 0.02    # overlapping time margin in s on the right side of the ROI to merge
   MARGIN_F_BOTTOM: 50     # overlapping frequency margin in Hz on the bottom of the ROI to merge
@@ -58,25 +58,36 @@ PARAMS_EXTRACT:
 ################################
 PARAMS_FEATURES:
   # Extract Audio resampling
-  SAMPLE_RATE: 48000      # Sampling frequency in Hz
+  SAMPLE_RATE: 36000      # Sampling frequency in Hz
   # Audio preprocess
-  LOW_FREQ: 100           # Low frequency in Hz of the bandpass filter applied to the audio
+  LOW_FREQ: 50            # Low frequency in Hz of the bandpass filter applied to the audio
   HIGH_FREQ: 20000        # High frequency in Hz of the bandpass filter applied to the audio
-  BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
+  BUTTER_ORDER: 5         # butterworth filter order to select the bandwidth corresponding to the ROI
   # Spectrogram
-  NFFT: 512              # Number of points of the spectrogram
+  NFFT: 1024              # Number of points of the spectrogram
   SHAPE_RES: 'high'       # Resolution of the shapes {low, med, high}
 
 ################################
 # CLUSTERING PARAMETERS
 ################################
 PARAMS_CLUSTER:
-  FEATURES: ['shp', 'centroid_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
-  SCALER: MINMAXSCALER              # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
-  PERCENTAGE_PTS:                   # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
-  MIN_PTS: 5                        # minimum number of ROIs to form a cluster {integer or blank}
-  EPS: auto  #0.18                  # set the maximum distance between elements in a single clusters {a number or 'auto'}
-  METHOD: HDBSCAN                   # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
-  KEEP: ALL                         # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
+  FEATURES: ['shp', 'centroid_f', 'peak_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
+  SCALER: MINMAXSCALER                        # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
+  # UMAP parameters
+  N_COMPONENTS: 10                            # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
+  N_NEIGHBORS: 30                             # The size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation. 
+                                              # Larger values result in more global views of the manifold, while smaller values result in more local data being preserved
+  MIN_DIST : 0                                # The effective minimum distance between embedded points. Smaller values will result in a more clustered/clumped embedding 
+                                              # where nearby points on the manifold are drawn closer together, while larger values will result on a more even dispersal of points
+  N_AVG_UMAP : 1                              # Number of UMAP that will be averaged. 
+  # HDBSCAN DBSCAN
+  PERCENTAGE_PTS:                             # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
+  MIN_PTS: 10                                 # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
+  MIN_CORE_PTS : 10                           # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+                                              # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
+                                              # and clusters will be restricted to progressively more dense areas.
+  EPS: auto                                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
+  METHOD: HDBSCAN                             # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
+  KEEP: ALL                                   # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
 
 
