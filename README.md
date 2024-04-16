@@ -2,6 +2,8 @@
 
 ## Unsupervised classification to improve the quality of a bird song recording dataset
 
+https://doi-org.inee.bib.cnrs.fr/10.1016/j.ecoinf.2022.101952
+
 [![Downloads](https://static.pepy.tech/badge/bambird)](https://pepy.tech/project/bambird)
 [![PyPI version](https://badge.fury.io/py/bambird.svg)](https://badge.fury.io/py/bambird)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -106,7 +108,7 @@ from cluster.py
 
 If you find **bambird** usefull for your research, please consider citing it as:
 
-- Michaud, F.,  Sueur, J., Le Cesne, M., & Haupert, S. (2022). [Unsupervised classification to improve the quality of a bird song recording dataset](https://doi.org/xxx). Ecological Informatics, xx, xxx–xxx
+- Michaud, F.,  Sueur, J., Le Cesne, M., & Haupert, S. (2023). [Unsupervised classification to improve the quality of a bird song recording dataset](https://doi-org.inee.bib.cnrs.fr/10.1016/j.ecoinf.2022.101952). Ecological Informatics, Volume 74, May 2023.
 
 ## Contributions and bug report
 
