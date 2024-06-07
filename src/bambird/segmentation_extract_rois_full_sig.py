@@ -50,6 +50,7 @@ PARAMS_EXTRACT = {'SAMPLE_RATE': 48000,
                  'MARGIN_F': 250,
                  'FILTER_ORDER': 5}
 
+
 #%%
 def _centroid_features(Sxx, rois=None, im_rois=None): 
     """ 

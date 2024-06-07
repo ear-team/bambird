@@ -235,9 +235,9 @@ def single_file_extract_rois(
 
             split = sig[i: i + n_points_per_chunk]
 
-            # End of signal?
-            if len(split) < n_points_per_chunk :
-                break
+            # # End of signal?
+            # if len(split) < n_points_per_chunk :
+            #     break
 
             sig_splits.append(split)
 
