@@ -1,52 +1,33 @@
-# bambird
+# bamscape
 
-## Unsupervised classification of sound units segmented from any soundscapes or any focal audio recordings
-
-[![Downloads](https://static.pepy.tech/badge/bambird)](https://pepy.tech/project/bambird)
-[![PyPI version](https://badge.fury.io/py/bambird.svg)](https://badge.fury.io/py/bambird)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-[![Citation Badge](https://api.juleskreuer.eu/citation-badge.php?doi=10.1016/j.ecoinf.2022.101952)](https://juleskreuer.eu/projekte/citation-badge/)
-<!--[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)-->
-
-Open audio databases such as [Xeno-Canto](https://xeno-canto.org/) are widely used to build datasets to explore bird song repertoire or to train models for automatic bird sound classification by deep learning algorithms. However, such databases suffer from the fact that bird sounds are weakly labelled: a species name is attributed to each audio recording without timestamps that provide the temporal localization of the bird song of interest. 
-Manual annotations can solve this issue, but they are time consuming, expert-dependent, and cannot run on large datasets. Another solution consists in using a labelling function that automatically segments audio recordings before assigning a label to each segmented audio sample. Although labelling functions were introduced to expedite strong label assignment, their classification performance remains mostly unknown. 
-To address this issue and reduce label noise (wrong label assignment) in large bird song datasets, we introduce a data-centric novel labelling function composed of three successive steps: 1) time-frequency sound unit segmentation, 2) feature computation for each sound unit, and 3) classification of each sound unit as bird song or noise with either an unsupervised DBSCAN algorithm or the supervised BirdNET neural network. 
-The labelling function was optimized, validated, and tested on the songs of 44 West-Palearctic common bird species. We first showed that the segmentation of bird songs alone aggregated from 10% to 83% of label noise depending on the species. We also demonstrated that our labelling function was able to significantly reduce the initial label noise present in the dataset by up to a factor of three. Finally, we discuss different opportunities to design suitable labelling functions to build high-quality animal vocalizations with minimum expert annotation effort.
-
-<br/>
-<div align="center">
-    <img src="./docs/figure_workflow_sans_alpha.png" alt="drawing"/>
-</div>
-<br/>
-
-Based on this work, we propose **bambird**, an open source Python package that provides a complete workflow to create your own labelling function to build cleaner bird song recording dataset. **bambird** is mostly based on [scikit-maad](https://github.com/scikit-maad/scikit-maad) package
-
-[![DOI](https://zenodo.org/badge/xxx.svg)](https://zenodo.org/badge/latestdoi/xxxxx)
 
 ## Installation
 
-bambird dependencies:
-
-- scikit-maad >= 1.3.12
-- librosa
-- scikit-learn
-- kneed
-- hdbscan
-- tqdm
-- umap-learn
-
-**bambird** is hosted on PyPI. To install, run the following command in your Python environment:
-
+First install the environment `xprize-final`
 ```bash
-$ pip install bambird
+$ conda env update -n my_env --file environment.yaml
 ```
 
-To install the latest version from source clone the master repository and from the top-level folder call:
+Then install the latest version of the dev branch from source clone the master repository and from the top-level folder call:
 
 ```bash
-$ git clone https://github.com/ear-team/bambird.git && cd bambird
+$ git clone --branch dev https://github.com/ear-team/bambird.git && cd bambird
 $ pip install -e .
+```
+
+Optional, install a wrapper of birdnet to get the embeddings. 
+birdnetlib requires Python 3.9+ and prior installation of Tensorflow Lite and ffmpeg.
+
+Prequisite
+```bash
+pip install tflite-runtime
+```
+```bash
+sudo apt-get install ffmpeg
+```
+Then install birdnetlib
+```bash
+pip install birdnetlib
 ```
 
 ## Usage
@@ -85,40 +66,3 @@ from cluster.py
 >- **mark_rois**: Add a marker to the audio filenames of each Roi depending on the result of the evaluation of the clustering (TN, FN, TP, FP)
 >- **unmark_rois**: Remove the markers
 
-## Examples and documentation
-
-- See the directory "example" to find scripts to run the labelling function on a collection of birds species or on a single file
-- All scripts to reproduce the results in the article as well as the examples are also on [colab](https://colab.research.google.com/)
-  - [clustering_only_train](https://colab.research.google.com/drive/1RTRo3DQ1czDAb4QaOsE30eK2JKSZlbZQ)
-  - [clustering_only_validation](https://colab.research.google.com/drive/1fTPK8LAt97jcXP0XuyY09J4ZbxvFHO4i)
-  - [clustering_only_test](https://colab.research.google.com/drive/1K-Os_ZVivtk_-REsAYNmpzKiaxYa0AvO)
-  - [birdnet_train](https://colab.research.google.com/drive/1Ev-Xjc4evEIhT3HlqeGKrEoTPsUPc4fF)
-  - [birdnet_validations](https://colab.research.google.com/drive/19jvks3rv678ZJF4nAdNTD69C6lGc7V44)
-  - [birdnet_test](https://colab.research.google.com/drive/1So-L8LE5duk7EavSb9kY_ecDlr4zOT8s)
-  - [full_process_validation](https://colab.research.google.com/drive/1gR8ECKZBzf50y7A_JEj-eLTx7p_IzmIt)
-  - [full_process_test](https://colab.research.google.com/drive/1oKYt548aroTuILoM5AACd2sNJ954X1G_)
-  - [workflow_single_file](https://colab.research.google.com/drive/1DgK-LlovEv_0jh70dggqlV2G0jbJCfKi)
-  - [workflow_multiple_species](https://colab.research.google.com/drive/18tglsE1JciyD1xpTryX3JIenHKGScLSq)  
-- Full description of the package **scikit-maad**: https://doi.org/10.1111/2041-210X.13711
-- Online reference manual and example gallery of **scikit-maad** [here](https://scikit-maad.github.io/).
-- In depth information related to the Multiresolution Analysis of Acoustic Diversity implemented in scikit-maad was published in: Ulloa, J. S., Aubin, T., Llusia, D., Bouveyron, C., & Sueur, J. (2018). [Estimating animal acoustic diversity in tropical environments using unsupervised multiresolution analysis](https://doi.org/10.1016/j.ecolind.2018.03.026). Ecological Indicators, 90, 346–355
-
-## Citing this work
-
-If you find **bambird** usefull for your research, please consider citing it as:
-
-- Michaud, F.,  Sueur, J., Le Cesne, M., & Haupert, S. (2023). [Unsupervised classification to improve the quality of a bird song recording dataset](https://doi.org/10.1016/j.ecoinf.2022.101952). Ecological Informatics, 74, 101952
-
-## Contributing
-
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
-Improvements and new features are greatly appreciated. If you would like to contribute developing new features or making improvements to the available package, please refer to our [wiki](https://github.com/ear-team/bambird/wiki/How-to-contribute-to-bambird). 
-Bug reports and especially tested patches may be submitted directly to the [bug tracker](https://github.com/ear-team/bambird/issues). 
-
-## License
-
-`bambird` was created by Sylvain Haupert et Félix Michaud. It is licensed under the terms of the BSD 3-Clause license.
-
-## Credits
-
-`bambird` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).

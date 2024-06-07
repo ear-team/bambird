@@ -39,15 +39,18 @@ PARAMS_EXTRACT:
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
   N_RUNNING_MEAN: 25      # Number of points used to compute the running mean of the noise profil
   # hysteretic thresholding parameters
-  MASK_PARAM1: 12
-  MASK_PARAM2: 6
+  SEED_LEVEL: 12
+  LOW_LEVEL: 6
   # Select and merge bbox parameters
-  MAX_RATIO_YX: 7         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
-  MIN_DURATION: 0.05      # minimum event duration in s
-  MARGIN_T_LEFT: 0.02     # overlapping time margin in s on the left side of the ROI to merge
-  MARGIN_T_RIGHT: 0.02    # overlapping time margin in s on the right side of the ROI to merge
-  MARGIN_F_BOTTOM: 50     # overlapping frequency margin in Hz on the bottom of the ROI to merge
-  MARGIN_F_TOP: 50        # overlapping frequency margin in Hz on the top of the ROI to merge
+  MAX_RATIO_YX: 10         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
+  MIN_EVENT_DUR: 0.05      # minimum event duration in s
+  MAX_EVENT_DUR: 60        # maximum event duration in s
+  FUSION_ROIS: [0.05, 100] # (seconds, hertz)  
+  MIN_FREQ_BW : 100
+  MAX_FREQ_BW : 
+  REMOVE_ROIS_FMIN_LIM: 50
+  REMOVE_ROIS_FMAX_LIM: 
+  REMOVE_RAIN : True
   # Save ROIs parameters
   MARGIN_T: 0.02          # time margin in s around the ROI
   MARGIN_F: 50            # frequency margin in Hz around the ROI
