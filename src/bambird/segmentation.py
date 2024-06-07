@@ -49,6 +49,7 @@ def _save_rois(
     df_rois,
     save_path,
     margins=(0.02, 50),
+    cnn_margins_t=None,
     filter_order=5,
     display=False):
     """ 
@@ -70,6 +71,10 @@ def _save_rois(
         the first numbers corresponds to the +/- margins in time (s)
         the second numbers corresponds to the +/- margins in frequency (Hz)
         the default value is (0.02s, 50Hz)
+    cnn_margins_t: number, optional
+        The required length in seconds of the sound will be used to feed the CNN. 
+        The default is None.
+        The sound will be padded with zeros if the sound is shorter than cnn_margins
     filter_order: integer, optional
         Define the order of the bandpass filter. The default value is 5
     display: boolean, optional
@@ -133,6 +138,17 @@ def _save_rois(
             fname="butter",
             ftype="bandpass",
         )
+
+        # C) optional padding to feed the CNN
+        if cnn_margins_t is not None:
+            # compute the length of the sound
+            sound_length = len(chunk_rois) / fs
+            # if the sound is shorter than cnn_margins, pad it with zeros
+            if sound_length < cnn_margins_t:
+                # compute the number of zeros to add
+                n_zeros = int((cnn_margins_t - sound_length) * fs)
+                # add zeros
+                chunk_rois = np.pad(chunk_rois, (0, n_zeros), "constant")
 
         # Let's display the spectrogram of the ROI
         if display:
@@ -293,6 +309,7 @@ def single_file_extract_rois(
                                 save_path=save_path,
                                 margins=(params["MARGIN_T"],
                                         params["MARGIN_F"]),
+                                cnn_margins_t=params["CNN_MARGINS_T"],
                                 filter_order=params["FILTER_ORDER"],
                                 display=False,
                             )
