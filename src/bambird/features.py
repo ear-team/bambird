@@ -33,6 +33,13 @@ import maad.util
 import maad.sound
 import maad.features
 
+# birdnet packages
+from birdnetlib.analyzer import Analyzer
+from birdnetlib import Recording
+
+global analyzer
+analyzer = Analyzer()
+
 #
 from bambird import config as cfg
 # cfg.get_config()
@@ -40,6 +47,80 @@ from bambird.dataset import grab_audio_to_df
 
 
 #%%
+
+##############################################################################
+
+def single_birdnet_analysis(path, lat=None, lon=None, date=None):
+
+    recording = Recording(
+        analyzer,
+        path,
+        lat=lat,
+        lon=lon,
+        date=date,
+        min_conf=0.01,
+    )
+    recording.analyze()
+    detections = recording.detections
+    recording.extract_embeddings()
+    list_embeddings = recording.embeddings
+
+    if len(recording.chunks) == 0:
+        detections = {
+                    'path':path,
+                    'label':'no detection', 
+                    'confidence':0,
+                    'embeddings': np.zeros(1024)}
+    elif len(detections) == 0:
+        embeddings = np.zeros(1024)
+        for ii, emb in enumerate(list_embeddings):
+            embeddings += emb['embeddings']
+        # do the average
+        embeddings = embeddings / (ii+1)
+
+        detections = {
+                    'path':path,
+                    'label':'no detection', 
+                    'confidence':0,
+                    'embeddings': embeddings}
+    else :
+        try :
+            # ***** detections *****
+            # convert dictionalry to pandas dataframe
+            df = pd.DataFrame(detections)
+            # pivot the dataframe
+            df_pivot = df.pivot(index='label', columns='start_time', values='confidence')
+            # replace Nan by 0
+            df_pivot = df_pivot.fillna(0)
+            # add a column with the average of the confidence.
+            df_pivot['mean'] = df_pivot.mean(axis=1)
+            # Get the label with the highest mean confidence
+            label = df_pivot['mean'].idxmax()
+            # Get the highest mean confidence
+            confidence = df_pivot['mean'].max()
+
+            # ***** embeddings *****
+            embeddings = np.zeros(1024)
+            for ii, emb in enumerate(list_embeddings):
+                embeddings += emb['embeddings']
+            # do the average
+            embeddings = embeddings / (ii+1)
+
+            # **** dictionary ****
+            detections = {
+                'path':path,
+                'label':label, 
+                'confidence':confidence,
+                'embeddings':embeddings}
+        except:
+            detections = {
+                    'path':path,
+                    'label':'no detection', 
+                    'confidence':0,
+                    'embeddings': np.zeros(1024)}
+
+    return detections
+
 
 ###############################################################################
 def compute_features(
@@ -173,23 +254,33 @@ def compute_features(
 
         df_rois_for_shape = pd.DataFrame([[min_y, 0, max_y, Sxx.shape[1] - 1]], 
                                         columns=["min_y", "min_x", "max_y", "max_x"])
-
-        # 6. Compute acoustic features (MAAD)
+        
+        # 6. Compute features 
         #----------------------------------------------
-        df_shape, params_shape = maad.features.shape_features(Sxx_clean_dB, 
-                                                        resolution=params["SHAPE_RES"], 
-                                                        rois=df_rois_for_shape)
 
-        if display:
-            maad.util.plot_shape(df_shape, params_shape, ax=ax[1, 0])
+        if params["METHOD"] == "maad" :
+            df_features, params_shape = maad.features.shape_features(Sxx_clean_dB, 
+                                                            resolution=params["SHAPE_RES"], 
+                                                            rois=df_rois_for_shape)
 
+            if display:
+                maad.util.plot_shape(df_features, params_shape, ax=ax[1, 0])
+
+        elif params["METHOD"] == "birdnet" :
+            detections = single_birdnet_analysis(audio_path, lat=params['LATITUDE'], lon=params['LONGITUDE'], date=params['DATE'])
+            embeddings = detections['embeddings']
+            # create a vector of string x1, x2, x3, x4, x5 depending on the length of XX
+            df_features = pd.concat([df_rois_for_shape, pd.DataFrame([embeddings], columns=['x'+str(i) for i in range(1,len(embeddings)+1)])], axis=1)
+            df_features['label'] = detections['label']
+            df_features['confidence'] = detections['confidence']   
+            
         # Keep columns ['min_y', 'min_x', 'max_y', 'max_x'] in case of these
         # features are not in the original dataset. If there are already
         # in the original dataset, these columns will be deleted and we keep
         # the original columns ['min_y', 'min_x', 'max_y', 'max_x'] found during
         # the extraction of the ROIs
-        df_shape = maad.util.format_features(df_shape, tn, fn)
-
+        df_features = maad.util.format_features(df_features, tn, fn)
+        
         # 7. Compute the centroid (t,f), the bandwidth and the duration of the ROI
         #-------------------------------------------------------------------------
         # initialize the dataframe df_rois with duration and centroid from the
@@ -234,9 +325,12 @@ def compute_features(
         df_rois.insert(0, "filename_ts", filename)
         df_rois.insert(1, "fullfilename_ts", audio_path)
 
-        # 8. concat df_rois and df_shape
+        # 8. concat df_rois and df_features
         #----------------------------------------------
-        df_features = pd.concat([df_rois, df_shape], axis=1)
+        if params["METHOD"] == "maad":
+            df_features = pd.concat([df_rois, df_features], axis=1)
+        elif params["METHOD"] == "birdnet":
+            df_features = pd.concat([df_rois, df_features], axis=1)
 
     except Exception as e:
         print("\n" + str(e))
@@ -382,8 +476,10 @@ def multicpu_compute_features(
         # load the dataframe with all ROIs already extracted
         df_features = pd.read_csv(save_path / save_csv_filename, 
                                 sep=';')
-        # create a mask to select or not the audio files that were already segmented
-        mask = df_rois['filename'].isin(df_features['filename'].unique().tolist())
+        # create a mask to select or not the features of audio files that were already computed
+        mask = df_rois['filename_ts'].isin(df_features['filename_ts'].unique().tolist())
+
+        print("Features already computed for {} audio files".format(len(mask)))
         
     except :
         # create an empty dataframe. It will contain all ROIs found for each
@@ -488,6 +584,7 @@ def multicpu_compute_features(
                 csv_fullfilename = save_path / save_csv_filename
                 df_features_sorted.to_csv(csv_fullfilename, 
                                         sep=';', 
+                                        mode='a', 
                                         header=True)
                 # reset index
                 df_features_sorted.reset_index(inplace=True)

@@ -490,11 +490,6 @@ def extract_rois_in_soundscape(
     
     ### 2. Clean spectrogram : remove background)
 
-    # Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB,
-    #                                                 mode=params["MODE_RMBCKG"],
-    #                                                 N=params["N_RUNNING_MEAN"],
-    #                                                 display=False)
-
     if REMOVE_RAIN: 
         # remove single vertical lines
         Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB.T,

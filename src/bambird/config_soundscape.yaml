@@ -18,7 +18,7 @@ PARAMS_XC:
   - q:">C"
   - type:song
   CSV_XC_FILE: 'xc_metadata.csv' # The file will contain all the metadata collected from Xeno-canto
-   
+
 ################################
 # ROIS EXTRACTION PARAMETERS
 ################################
@@ -26,10 +26,10 @@ PARAMS_EXTRACT:
   # function
   FUNC: !FUNC bambird.extract_rois_in_soundscape  # select the function used to extract the rois {bambirdx.extract_rois_in_soundscape, bambirdx.extract_rois_without_rain}
   # Extract Audio resampling
-  SAMPLE_RATE: 36000      # Sampling frequency in Hz
+  SAMPLE_RATE: 44100      # Sampling frequency in Hz
   # Audio preprocess
   LOW_FREQ: 50            # Low frequency in Hz of the bandpass filter applied to the audio
-  HIGH_FREQ: 16000        # High frequency in Hz of the bandpass filter applied to the audio
+  HIGH_FREQ: 20000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
   AUDIO_DURATION: 60      # Max duration of the audio file (in seconds)
   CHUNK_DURATION: 10      # Split the audio signal in chunks of duration = CHUNK_DURATION (in seconds)
@@ -39,13 +39,13 @@ PARAMS_EXTRACT:
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
   N_RUNNING_MEAN: 25      # Number of points used to compute the running mean of the noise profil
   # hysteretic thresholding parameters
-  SEED_LEVEL: 12
+  SEED_LEVEL: 13
   LOW_LEVEL: 6
   # Select and merge bbox parameters
   MAX_RATIO_YX: 10         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
   MIN_EVENT_DUR: 0.05      # minimum event duration in s
   MAX_EVENT_DUR: 60        # maximum event duration in s
-  FUSION_ROIS: [0.05, 100] # (seconds, hertz)  
+  FUSION_ROIS: [0.05, 1000] # (seconds, hertz)  
   MIN_FREQ_BW : 100
   MAX_FREQ_BW : 
   REMOVE_ROIS_FMIN_LIM: 50
@@ -55,6 +55,8 @@ PARAMS_EXTRACT:
   MARGIN_T: 0.02          # time margin in s around the ROI
   MARGIN_F: 50            # frequency margin in Hz around the ROI
   FILTER_ORDER: 5         # butterworth filter order to select the bandwidth corresponding to the ROI
+  # CNN margins
+  CNN_MARGINS_T: 3          # Minimum duration of the window in seconds around the ROI to extract the CNN features
   
 ################################
 # FEATURES EXTRACTION PARAMETERS
@@ -69,6 +71,7 @@ PARAMS_FEATURES:
   # Spectrogram
   NFFT: 1024              # Number of points of the spectrogram
   SHAPE_RES: 'high'       # Resolution of the shapes {low, med, high}
+  METHOD: 'birdnet'        # Method to extract the features {'birdnet', 'maad'}   
 
 ################################
 # CLUSTERING PARAMETERS

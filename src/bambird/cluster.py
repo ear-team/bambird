@@ -115,6 +115,7 @@ def _prepare_features(df_features,
         print ("*** WARNING *** the scaler {} does not exist. StandarScaler was choosen".format(scaler))
 
     X = []
+    X1 = []
     X2 = []
 
     # Normalize the shapes
@@ -130,7 +131,16 @@ def _prepare_features(df_features,
         X = X_vect.reshape(X_shape)
         # remove "shp" from the list
         features.remove('shp')
-    
+
+    # Keep the features without normalization 
+    #-------------------------------------------------------
+    if "x" in features :
+        # with birdned features
+        X = df_features.loc[:, df_features.columns.str.startswith("x")]
+        X1 = X.to_numpy()
+        # remove "x" from the list
+        features.remove('x')    
+
     # Normalize the other features (centroid, bandwidth...)
     #-------------------------------------------------------
     # test if the features list is not null
@@ -142,9 +152,17 @@ def _prepare_features(df_features,
 
     # Concatenate the features after normalization
     #-------------------------------------------------------
-    if (len(X2)>0) & (len(X)>0) :
+    if (len(X2)>0) & (len(X1)>0) & (len(X)>0) :
         # create a matrix with all features after rescaling
+        X = np.concatenate((X, X1, X2), axis=1)
+    elif (len(X2)>0) & (len(X1)>0) :
+        X = np.concatenate((X1, X2), axis=1)
+    elif (len(X2)>0) & (len(X)>0) :
         X = np.concatenate((X, X2), axis=1)
+    elif (len(X1)>0) & (len(X)>0) :
+        X = np.concatenate((X, X1), axis=1)
+    elif len(X1)>0 :
+        X = X1
     elif len(X2) >0 :
         X = X2
     
@@ -347,24 +365,27 @@ def find_cluster(
         # if no UMAP averaging, keep the same random seed for repetitions
         if  params['N_AVG_UMAP'] == 1 : 
             X = umap.UMAP(
+                        # densmap=True,                           # 
                         n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
                         min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
                         n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
                                                                 # (potentially to the detriment of the big picture), while large values will push UMAP to look 
                                                                 # at larger neighborhoods of each point when estimating the manifold structure of the data
-                        random_state=cfg.RANDOM_SEED
+                        random_state=cfg.RANDOM_SEED,
+                        n_jobs=-1
                         ).fit_transform(X)
         elif params['N_AVG_UMAP'] > 1 :
             uu = 0
             XX = []
             while uu < params['N_AVG_UMAP'] :
                 X_temp = umap.UMAP(
+                            # densmap=True, 
                             n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
                             min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
                             n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
                                                                     # (potentially to the detriment of the big picture), while large values will push UMAP to look 
                                                                     # at larger neighborhoods of each point when estimating the manifold structure of the data
-                            # random_state=cfg.RANDOM_SEED
+                            n_jobs=-1
                             ).fit_transform(X)
                 if len(XX) >0 :
                     XX = np.add(XX, X_temp)
@@ -442,6 +463,10 @@ def find_cluster(
     
             # find the number of clusters and the rois that belong to the cluster
             #--------------------------------------------------------------------
+
+            if params["MIN_PTS"] == 'auto':
+                params["MIN_PTS"] = int(len(X) * 0.25 / 100)
+
             if params["METHOD"] == "DBSCAN":
                 cluster = DBSCAN(
                                 eps=EPS, 
@@ -449,14 +474,16 @@ def find_cluster(
                                 ).fit(X)
                 
                 if verbose:
-                    print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, params["MIN_PTS"],
+                    print("DBSCAN eps {} min_points {} Number of soundtypes found for {} : {}".format(EPS, params["MIN_PTS"], 
                             categories, np.unique(cluster.labels_).size))
                     
             elif params["METHOD"] == "HDBSCAN":
 
                 cluster = hdbscan.HDBSCAN(
                                     min_cluster_size=params["MIN_PTS"],
-                                    min_samples= params["MIN_CORE_PTS"],
+                                    min_samples=params["MIN_CORE_PTS"],
+                                    # cluster_selection_epsilon = 1.2*EPS,
+                                    # cluster_selection_method='leaf',
                                     allow_single_cluster=False,
                                     core_dist_n_jobs = -1,
                                     ).fit(X)
@@ -467,6 +494,7 @@ def find_cluster(
                 # * modifier le code pour faire du clustering sur 1 ou toutes les espèces en même temps
                 # * modifier le code pour faire des "combats" avec 2, 3, N espèces en même temps avec toutes les combinaisons possibles (si 2
                 # # toutes les paires possible)
+                # Tester AlignedUMAP
 
                 # COMMENT 
                 # soft_cluster = hdbscan.all_points_membership_vectors(cluster)
@@ -480,8 +508,11 @@ def find_cluster(
                 # cluster.labels_ = np.array(label)
                 
                 if verbose:
-                    print("HDBSCAN eps {} min_samples {} min_cluster_size {} Number of soundtypes found for {} : {}".format(EPS, params["MIN_PTS"], params["MIN_CORE_PTS"],
-                            categories, np.unique(cluster.labels_).size))
+                    print("HDBSCAN eps {}; min_samples {}; min core samples {}; Number of soundtypes found for {} : {}; {}% are clustered".format(EPS, params["MIN_PTS"], 
+                                                params["MIN_CORE_PTS"],
+                                                categories, 
+                                                np.unique(cluster.labels_).size, 
+                                                len(cluster.labels_ != -1) / len(cluster.labels_) * 100))
     
                 # metric DBCV
                 """DBCV_score = DBCV.DBCV(X, cluster.labels_, dist_function=euclidean)

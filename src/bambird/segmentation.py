@@ -449,7 +449,7 @@ def multicpu_extract_rois(
 
     # Check if the output directory already exists
     #---------------------------------------------
-    dir_exist = os.path.exists(save_path) 
+    dir_exist = os.path.exists(str(save_path)) 
     if (dir_exist == False) or ((dir_exist == True) and (overwrite == True)) : 
         if (dir_exist == True) and (overwrite == True):
             if verbose:
@@ -459,9 +459,14 @@ def multicpu_extract_rois(
         try :
             # load the dataframe with all ROIs already extracted
             #---------------------------------------------------
-            df_rois = pd.read_csv(save_path / save_csv_filename, sep=';')
+
+            df_rois = pd.read_csv(str(Path(save_path) / save_csv_filename), sep=';')
+
             # create a mask to select or not the audio files that were already segmented
             mask = df_data['filename'].isin(df_rois['filename'].unique().tolist())
+
+            if verbose:
+                print("{} new files will be processed".format(len(mask)))
             
         except :
             # create an empty dataframe. It will contain all ROIs found for each
@@ -514,7 +519,7 @@ def multicpu_extract_rois(
                     ):
                         pbar.update(1)
                         df_rois = pd.concat([df_rois, 
-                                             df_rois_temp])
+                                            df_rois_temp])
             
             # sort filename for each categories
             #---------------------------------
@@ -540,11 +545,11 @@ def multicpu_extract_rois(
                     pass  
                 
                 # test if the directory exists if not, create it 
-                if os.path.exists(save_path) == False:
+                if os.path.exists(str(save_path)) == False:
                     save_path.mkdir(parents=True, exist_ok=True)
                 
-                # save and append dataframe 
-                csv_fullfilename = save_path / save_csv_filename
+                # save and append dataframe
+                csv_fullfilename = Path(save_path) / save_csv_filename
                 df_rois_sorted.to_csv(csv_fullfilename, 
                                     sep=';', 
                                     header=True)
@@ -561,7 +566,7 @@ def multicpu_extract_rois(
             # remove from df_data the audio files that were already segmented
             mask = df_rois['filename'].isin(df_data['filename'].unique().tolist())
             df_rois_sorted = df_rois[mask]
-            csv_fullfilename = save_path / save_csv_filename
+            csv_fullfilename = Path(save_path) / save_csv_filename
             
             if verbose:
                 print("No audio file needs to be segmented")
@@ -571,10 +576,10 @@ def multicpu_extract_rois(
     #-------------------------------      
     else:
         # Read the already existed file
-        csv_fullfilename = save_path / save_csv_filename
+        csv_fullfilename = Path(save_path) / save_csv_filename
         
         try :
-            df_rois_sorted = pd.read_csv(csv_fullfilename, sep=";")
+            df_rois_sorted = pd.read_csv(str(csv_fullfilename), sep=";")
         except :
             df_rois_sorted = pd.DataFrame()
             
@@ -586,5 +591,5 @@ def multicpu_extract_rois(
             print("The directory {} already exists".format(save_path))
             print(">>> EXTRACTION PROCESS ABORTED <<<")
 
-    return df_rois_sorted, csv_fullfilename
+    return df_rois_sorted, str(csv_fullfilename)
 

@@ -15,7 +15,7 @@ dependencies:
   - librosa
   - umap-learn
   - pip:
-      - scikit-maad>=1.4.0
+      - scikit-maad>=1.4.2
       - kneed
       - hdbscan
   
