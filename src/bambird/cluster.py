@@ -828,7 +828,7 @@ def combine_rois(
 
     # test if there is a single ROI in the file
     if isinstance(df_single_filename, pd.Series):
-        df_combined = df_single_filename.to_frame()
+        df_combined = df_single_filename.to_frame().T
         
     else:
         # create a new dataframe to store the combined ROIs
@@ -851,7 +851,7 @@ def combine_rois(
 
             # test if there is a single ROI corresponding to the cluster
             if isinstance(df_single_filename, pd.Series):
-                df_single_cluster = df_single_filename.to_frame()
+                df_single_cluster = df_single_filename.to_frame().T
                 # add the ROI into the dataframe
                 df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
             # if multiple ROIs
@@ -873,7 +873,7 @@ def combine_rois(
 
                 # test if df_single_cluster_merged is a series
                 if isinstance(df_single_cluster_merged, pd.Series):
-                    df_single_cluster_merged = df_single_cluster_merged.to_frame()
+                    df_single_cluster_merged = df_single_cluster_merged.to_frame().T
 
                 # add the new ROI into the dataframe
                 df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
