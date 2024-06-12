@@ -98,7 +98,8 @@ PARAMS_CLUSTER = {
     "METHOD": "DBSCAN",                 # HDBSCAN or DBSCAN
     "SCALER": "MINMAXSCALER",           # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
     "KEEP":   "BIGGEST",                # ALL or BIGGEST
-    "EPS":    "auto"                    # set the maximum distance between elements in a single clusters {a number or 'auto'}
+    "EPS":    "auto",                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
+    "INTERVAL_DURATION": 1              # minimum duration of the interval in s to consider to combine the ROIs of the same cluster
 }
 
 PARAMS = {

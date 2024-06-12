@@ -22,6 +22,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+# Parallel processing packages
+from functools import partial
+from tqdm import tqdm
+from concurrent import futures
+
 # ipython packages
 import IPython.display as ipd
 import ipywidgets as widgets
@@ -102,6 +107,12 @@ def _prepare_features(df_features,
 
     """
 
+    # copy the dataframe
+    df = df_features.copy()
+
+    # copy the list of features
+    features_list = features.copy()
+
     # select the scaler
     #----------------------------------------------
     if scaler == "STANDARDSCALER":
@@ -120,52 +131,46 @@ def _prepare_features(df_features,
 
     # Normalize the shapes
     #----------------------------------------------
-    if "shp" in features :
+    if "shp" in features_list :
         # with shapes
         # create a vector with X in order to scale all features together
-        X = df_features.loc[:, df_features.columns.str.startswith("shp")]
+        X = df.loc[:, df.columns.str.startswith("shp")]
         X_vect = X.to_numpy()
         X_shape = X_vect.shape
         X_vect = X_vect.reshape(X_vect.size, -1)
         X_vect = scaler.fit_transform(X_vect)
         X = X_vect.reshape(X_shape)
         # remove "shp" from the list
-        features.remove('shp')
+        features_list.remove('shp')
 
     # Keep the features without normalization 
     #-------------------------------------------------------
-    if "x" in features :
+    if "x" in features_list :
         # with birdned features
-        X = df_features.loc[:, df_features.columns.str.startswith("x")]
+        X = df.loc[:, df.columns.str.startswith("x")]
         X1 = X.to_numpy()
         # remove "x" from the list
-        features.remove('x')    
+        features_list.remove('x')    
 
     # Normalize the other features (centroid, bandwidth...)
     #-------------------------------------------------------
     # test if the features list is not null
-    if len(features) > 0 :
+    if len(features_list) > 0 :
         # add other features like frequency centroid
-        X2 = df_features[features]
+        X2 = df[features_list]
         # Preprocess data : data scaler
         X2 = scaler.fit_transform(X2)
 
     # Concatenate the features after normalization
     #-------------------------------------------------------
-    if (len(X2)>0) & (len(X1)>0) & (len(X)>0) :
-        # create a matrix with all features after rescaling
-        X = np.concatenate((X, X1, X2), axis=1)
-    elif (len(X2)>0) & (len(X1)>0) :
-        X = np.concatenate((X1, X2), axis=1)
-    elif (len(X2)>0) & (len(X)>0) :
-        X = np.concatenate((X, X2), axis=1)
-    elif (len(X1)>0) & (len(X)>0) :
+    if (len(X1)>0) & (len(X)>0)  :
         X = np.concatenate((X, X1), axis=1)
-    elif len(X1)>0 :
+    elif (len(X1)>0) :
         X = X1
-    elif len(X2) >0 :
-        X = X2
     
+    if len(X2) >0 :
+        X = np.concatenate((X, X2), axis=1)
+
     return X
 
 ###############################################################################
@@ -259,7 +264,7 @@ def find_cluster(
 
     # drop NaN rows
     df_features = df_features.dropna(axis=0)
-    
+
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # HACK to DELETE in the future. For compliance with data of the article 
     # The column categories does not exit
@@ -341,7 +346,7 @@ def find_cluster(
         X = _prepare_features(df_single_categories, 
                             scaler = params['SCALER'],
                             features = params['FEATURES'])
-                
+                        
         if display:
             # Plot the features
             ax3[count].imshow(
@@ -455,7 +460,7 @@ def find_cluster(
                     ax2[count].axhline(y=EPS, xmin=0,xmax=len(distances), color="r")
                     ax2[count].set_title("sorted k-dist graph", fontsize=12)
                     ax2[count].plot(distances)
-    
+                
             # set eps manually 
             #-------------------------------------------------------
             else :
@@ -464,8 +469,9 @@ def find_cluster(
             # find the number of clusters and the rois that belong to the cluster
             #--------------------------------------------------------------------
 
-            if params["MIN_PTS"] == 'auto':
-                params["MIN_PTS"] = int(len(X) * 0.25 / 100)
+            # if PERCENTATGE_PTS is not None, calculate the minimum number of points
+            if params["PERCENTAGE_PTS"] is not None :
+                params["MIN_PTS"] = np.max(int(len(X) * params["PERCENTAGE_PTS"] / 100), 3)
 
             if params["METHOD"] == "DBSCAN":
                 cluster = DBSCAN(
@@ -482,7 +488,7 @@ def find_cluster(
                 cluster = hdbscan.HDBSCAN(
                                     min_cluster_size=params["MIN_PTS"],
                                     min_samples=params["MIN_CORE_PTS"],
-                                    # cluster_selection_epsilon = 1.2*EPS,
+                                    cluster_selection_epsilon = EPS,
                                     # cluster_selection_method='leaf',
                                     allow_single_cluster=False,
                                     core_dist_n_jobs = -1,
@@ -512,7 +518,7 @@ def find_cluster(
                                                 params["MIN_CORE_PTS"],
                                                 categories, 
                                                 np.unique(cluster.labels_).size, 
-                                                len(cluster.labels_ != -1) / len(cluster.labels_) * 100))
+                                                np.sum(cluster.labels_ != -1) / len(cluster.labels_) * 100))
     
                 # metric DBCV
                 """DBCV_score = DBCV.DBCV(X, cluster.labels_, dist_function=euclidean)
@@ -645,8 +651,422 @@ def find_cluster(
     df_cluster['auto_label'] = df_cluster['auto_label'].astype('int')
     # convert the list of features into np.array
     df_cluster['features'] = df_cluster['features'].apply(lambda x: np.array(x))
-    
+
     return df_cluster, csv_fullfilename
+
+###############################################################################
+def _intersection_bbox(bb1, bb2):
+    """
+    test if 2 bounding-boxes intersect.
+
+    Parameters
+    ----------
+    bb1 : dict
+        Keys: {'x1', 'x2', 'y1', 'y2'}
+        The (x1, y1) position is at the top left corner,
+        the (x2, y2) position is at the bottom right corner
+    bb2 : dict
+        Keys: {'x1', 'x2', 'y1', 'y2'}
+        The (x, y) position is at the top left corner,
+        the (x2, y2) position is at the bottom right corner
+
+    Returns
+    -------
+    boolean
+
+    """
+
+    # test if values are consistant (min < max)
+    assert bb1["min_t"] <= bb1["max_t"]
+    assert bb2["min_t"] <= bb2["max_t"]
+
+    # determine the coordinates of the intersection rectangle
+    t_left = max(bb1["min_t"], bb2["min_t"])
+    t_right = min(bb1["max_t"], bb2["max_t"])
+
+    # intersection in x only
+    if (t_right < t_left) :    
+        is_intersected = False
+    else:
+        is_intersected = True
+
+    return is_intersected
+
+###############################################################################
+def _fusion_bbox(df, list_idx):
+    """[fusion beginning and ends of 2 events that are too close to each other. It is applied if
+    the 2 beginnings or the 2 ends are too close, or if the end of the first one is too close to the beginning
+    of the second event. This function test all the events that follow each other in the dataframe.]
+
+    Args:
+        df : 
+            dataframe with all bbox to test for merging
+        idx1 : 
+            position of the FIRST bbox in the dataframe
+        idx2 : 
+            position of the SECOND bbox in the dataframe
+
+    Return      
+        df_output: 
+            returns the original dataframe with merged bbox
+    """
+    # create an empty dataframe
+    df_output = pd.DataFrame(columns=list(df.columns))
+
+    # fill the dataframe
+    df_output["min_f"] = [df.loc[list_idx, "min_f"].min()]
+    df_output["max_f"] = [df.loc[list_idx, "max_f"].max()]
+    df_output["min_t"] = [df.loc[list_idx, "min_t"].min()]
+    df_output["max_t"] = [df.loc[list_idx, "max_t"].max()]
+    df_output["features"] = [df.loc[list_idx, "features"].mean()]
+    df_output["abs_min_t"] = 0
+    df_output["filename_ts"] = None
+    df_output["fullfilename_ts"] = None
+    df_output["categories"] = df.loc[list_idx, "categories"].unique()
+    df_output["fullfilename"] = df.loc[list_idx, "fullfilename"].unique()
+    df_output["filename"] = df.loc[list_idx, "filename"].unique()
+    df_output["cluster_number"] = df.loc[list_idx, "cluster_number"].unique()
+    df_output["auto_label"] = df.loc[list_idx, "auto_label"].unique()
+
+    return df_output
+
+###############################################################################
+def _merge_bbox(df, margins, verbose=True):
+    """[Merge two bbox that are within the margin. As the process is iterative
+    if the resulting bbox is also close to another bbox, then it is merged. 
+    And so on]
+
+    Args:
+        df_rois : 
+            dataframe with all bbox to test for merging
+        margins : 
+            array with margins before/after the bbox and upper/lower the bbox
+
+    Returns:
+        df_output: 
+            returns the original dataframe with merged bbox
+    """
+
+    # copy the dataframe
+    # df = dff.copy()
+
+    # create an empty dataframe
+    df_output = pd.DataFrame(columns=list(df.columns))
+
+    # add the absolute min time to min and max time as now we are working with the full audio file
+    df["min_t"] = df["min_t"] + df["abs_min_t"]
+    df["max_t"] = df["max_t"] + df["abs_min_t"]
+
+    # sort the dataframe by the beginning of the bbox min_t
+    df.sort_values(by="min_t", inplace=True)
+
+    # reset index
+    try:
+        df.reset_index(inplace=True)
+    except:
+        pass
+
+    # list of index to fusion
+    list_idx = []
+    # list of list_idx
+    list_to_fusion = []
+
+    if len(df) > 1:
+
+        idx = df.index[0]
+        row = df.loc[idx]
+        
+        # add the current idx to list of idx
+        list_idx += [idx]
+        # add the margins to the bbox
+        bb1 = row[["min_t", "max_t"]] + margins 
+
+        # loop to all the other ROIs
+        for idx2, row2 in df.drop(idx).iterrows():
+            # add the margins to the bbox
+            bb2 = row2[["min_t", "max_t"]] + margins
+            # If intersection => merge
+            if _intersection_bbox(bb1, bb2):
+                bb1 = bb2
+                # add index to the list of ROIs to fusion
+                list_idx += [idx2]
+
+                if verbose:
+                    print(f'{idx} intersected with {idx2}')
+
+            else :
+                # add the current list of ROIs to fusion in the list of fusion
+                list_to_fusion += [list_idx]
+                # add the current idx2 to a NEW list of idx
+                list_idx = [idx2]
+                # reset bb1 to the current bbox
+                bb1 = bb2
+        
+        # Add the last list of idx to the list of fusion
+        list_to_fusion += [list_idx]
+        
+    else :
+        idx_list = [df.index[0]]
+        list_to_fusion += [idx_list]
+
+    # do the fusion
+    for idx_list in list_to_fusion:
+        df_temp = _fusion_bbox(df, idx_list)
+        df_output = pd.concat([df_output, df_temp], ignore_index=True)
+
+    return df_output
+
+###############################################################################
+def combine_rois(
+                filename,
+                df,
+                params=cfg.PARAMS['PARAMS_CLUSTER'],
+                verbose=False):
+
+    # select the ROIs of the current filename
+    df_single_filename = df.loc[filename]
+
+    # test if there is a single ROI in the file
+    if isinstance(df_single_filename, pd.Series):
+        df_combined = df_single_filename.to_frame()
+        
+    else:
+        # create a new dataframe to store the combined ROIs
+        df_combined = pd.DataFrame(columns=df_single_filename.columns)
+
+        # for each cluster
+        # Test if its a single integer or a list of clusters
+        if df_single_filename["cluster_number"].size > 1:
+            cluster_number = df_single_filename["cluster_number"].unique()
+        else:
+            cluster_number = [df_single_filename["cluster_number"]]
+        
+        # for each cluster number
+        for cluster in cluster_number:
+            if verbose:
+                print(f'______ the cluster is {cluster} ________')
+
+            # select the ROIs of the current cluster
+            #---------------------------------------
+
+            # test if there is a single ROI corresponding to the cluster
+            if isinstance(df_single_filename, pd.Series):
+                df_single_cluster = df_single_filename.to_frame()
+                # add the ROI into the dataframe
+                df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+            # if multiple ROIs
+            else : 
+                df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
+
+                if verbose:
+                    print(f'Number of ROIs before {len(df_single_cluster)}')
+
+                # merge the ROIs
+                df_single_cluster_merged = _merge_bbox(
+                                                df_single_cluster, 
+                                                margins=[-params['INTERVAL_DURATION'],params['INTERVAL_DURATION']], 
+                                                verbose=verbose
+                                                )
+
+                if verbose:
+                    print(f'Number of ROIs after {len(df_single_cluster_merged)}')
+
+                # test if df_single_cluster_merged is a series
+                if isinstance(df_single_cluster_merged, pd.Series):
+                    df_single_cluster_merged = df_single_cluster_merged.to_frame()
+
+                # add the new ROI into the dataframe
+                df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
+
+    return df_combined
+
+def multi_cpu_combine_rois(
+                    df_cluster,
+                    remove_noise=True,
+                    params=cfg.PARAMS['PARAMS_CLUSTER'],
+                    nb_cpu=None,
+                    verbose=False):
+    """
+    Combine the ROIs that belong to the same cluster in order to obtain a single ROIs. The steps are :
+    - for each filename :
+        - for each cluster :
+            - combine the ROIs that belong to the same cluster if the interval between them is less than INTERVAL_DURATION.
+            The result should be a new ROI with the start time of the first ROI and the end time of the last ROI as well as
+            the minimum and maximum frequency of all the ROIs.
+            - average the features of all the ROIs that belong to the same cluster.
+            - add a new name filename_ts with the name of the filename and the cluster number.
+            - save the combined ROI into a new dataframe
+    
+    Parameters
+    ----------
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+
+    Returns
+    -------
+    df_combined : pandas dataframe
+        Dataframe with the combined ROIs.
+    """
+    # write the code here
+    if verbose :
+        print('\n')
+        print('================== COMBINE WAVES FROM SAME CLUSTER =================\n')
+
+    # copy the dataframe
+    df = df_cluster.copy()
+
+    # reset the index
+    df.set_index("filename", inplace = True)
+
+    # create a new dataframe to store the combined ROIs
+    df_combined = pd.DataFrame(columns=df.columns)
+
+    # remove the cluster -1 (noise)
+    if remove_noise :
+        df = df[df["cluster_number"] != -1]
+
+    # Number of CPU used for the calculation. By default, set to all available
+    # CPUs
+    if nb_cpu is None:
+        nb_cpu = os.cpu_count()
+
+    # # define a new function with fixed parameters to give to the multicpu pool
+    multicpu_func = partial(
+        combine_rois,
+        df=df,
+        params=params,
+        verbose=False,
+    )
+
+    # for each filename
+    with tqdm(total=len(df.index.unique())) as pbar:
+        with futures.ProcessPoolExecutor(max_workers=nb_cpu-1) as pool:
+            for df_combined_temp in pool.map(
+                multicpu_func, df.index.unique().to_list()
+            ):
+                pbar.update(1)
+                # test if it's a pandas series
+                if isinstance(df_combined_temp, pd.Series):
+                    df_combined_temp = df_combined_temp.to_frame()
+                df_combined = pd.concat([df_combined, df_combined_temp], 
+                                        axis=0, 
+                                        ignore_index=True)
+
+    return df_combined
+
+
+###############################################################################
+def combine_ROIs_from_same_cluster(df_cluster,
+                                params=cfg.PARAMS['PARAMS_CLUSTER'],
+                                verbose=False):
+    """
+    Combine the ROIs that belong to the same cluster in order to obtain a single ROIs. The steps are :
+    - for each filename :
+        - for each cluster :
+            - combine the ROIs that belong to the same cluster if the interval between them is less than INTERVAL_DURATION.
+            The result should be a new ROI with the start time of the first ROI and the end time of the last ROI as well as
+            the minimum and maximum frequency of all the ROIs.
+            - average the features of all the ROIs that belong to the same cluster.
+            - add a new name filename_ts with the name of the filename and the cluster number.
+            - save the combined ROI into a new dataframe
+    
+    Parameters
+    ----------
+    df_cluster : pandas dataframe
+        Dataframe with the label found for each roi.
+    params : dictionnary, optional
+        contains all the parameters to perform the clustering
+        The default is DEFAULT_PARAMS_CLUSTER.
+    verbose : boolean, optional
+        if true, print information. The default is False.
+
+    Returns
+    -------
+    df_combined : pandas dataframe
+        Dataframe with the combined ROIs.
+    """
+    # write the code here
+    if verbose :
+        print('\n')
+        print('================== COMBINE WAVES FROM SAME CLUSTER =================\n')
+
+    # copy the dataframe
+    df = df_cluster.copy()
+
+    # reset the index
+    df.set_index("filename", inplace = True)
+
+    # create a new dataframe to store the combined ROIs
+    df_combined = pd.DataFrame(columns=df.columns)
+
+    # remove the cluster -1 (noise)
+    df = df[df["cluster_number"] != -1]
+
+    # for each filename
+    for filename in df.index.unique():
+    # for filename in ['20240303_063500.WAV']:    
+        print(f'=============== {filename} ===============')
+
+        # select the ROIs of the current filename
+        df_single_filename = df.loc[filename]
+
+        # test if there is a single ROI in the file
+        if isinstance(df_single_filename, pd.Series):
+            df_single_cluster = df_single_filename.to_frame()
+            # add the ROI into the dataframe
+            df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+        else:
+            # for each cluster
+            # Test if its a single integer or a list of clusters
+            if df_single_filename["cluster_number"].size > 1:
+                cluster_number = df_single_filename["cluster_number"].unique()
+            else:
+                cluster_number = [df_single_filename["cluster_number"]]
+            
+            # for each cluster number
+            for cluster in cluster_number:
+                if verbose:
+                    print(f'______ the cluster is {cluster} ________')
+
+                # select the ROIs of the current cluster
+                #---------------------------------------
+
+                # test if there is a single ROI corresponding to the cluster
+                if isinstance(df_single_filename, pd.Series):
+                    df_single_cluster = df_single_filename.to_frame()
+                    # add the ROI into the dataframe
+                    df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+                # if multiple ROIs
+                else : 
+                    df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
+
+                    if verbose:
+                        print(f'Number of ROIs before {len(df_single_cluster)}')
+
+                    # merge the ROIs
+                    df_single_cluster_merged = _merge_bbox(
+                                                    df_single_cluster, 
+                                                    margins=[params['INTERVAL_DURATION'],params['INTERVAL_DURATION']], 
+                                                    verbose=verbose
+                                                    )
+
+                    if verbose:
+                        print(f'Number of ROIs after {len(df_single_cluster_merged)}')
+
+                    # test if df_single_cluster_merged is a series
+                    if isinstance(df_single_cluster_merged, pd.Series):
+                        df_single_cluster_merged = df_single_cluster_merged.to_frame()
+
+                    # add the new ROI into the dataframe
+                    df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
+
+    return df_combined
+
 
 
 ###############################################################################

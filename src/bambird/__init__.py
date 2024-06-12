@@ -47,6 +47,8 @@ ROIs clustering
 .. autosummary::
     :toctree: generated/
     find_cluster
+    combine_rois
+    multi_cpu_combine_rois
     cluster_eval
     overlay_rois
     mark_rois
@@ -87,13 +89,16 @@ from .features import(
     compute_features,
     multicpu_compute_features,
     )
-                 
+
+
 from .cluster import (
     find_cluster,
+    combine_rois,
+    multi_cpu_combine_rois,
     cluster_eval,
     overlay_rois,
     mark_rois,
-    unmark_rois
+    unmark_rois,
     )
 
 
@@ -116,6 +121,8 @@ __all__ = [
         'multicpu_compute_features',
         # cluster.py
         'find_cluster',
+        'combine_rois',
+        'multi_cpu_combine_rois',
         'cluster_eval',
         'overlay_rois',
         'mark_rois',
