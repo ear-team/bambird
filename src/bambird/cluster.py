@@ -532,6 +532,7 @@ def find_cluster(
 
             # add the cluster number and the label found with the clustering
             #---------------------------------------------------------------
+
             # add the cluster number into the label's column of the dataframe
             df_cluster.loc[df_cluster["categories"] == categories, "cluster_number"] = cluster.labels_.reshape(-1, 1)
 
@@ -701,10 +702,8 @@ def _fusion_bbox(df, list_idx):
     Args:
         df : 
             dataframe with all bbox to test for merging
-        idx1 : 
-            position of the FIRST bbox in the dataframe
-        idx2 : 
-            position of the SECOND bbox in the dataframe
+        list_idx :
+            list of index to fusion
 
     Return      
         df_output: 
@@ -760,9 +759,11 @@ def _merge_bbox(df, margins, verbose=True):
     # sort the dataframe by the beginning of the bbox min_t
     df.sort_values(by="min_t", inplace=True)
 
-    # reset index
+
+    # rename the index 
     try:
-        df.reset_index(inplace=True)
+
+        df.reset_index(names='filename', inplace=True)
     except:
         pass
 
@@ -829,6 +830,16 @@ def combine_rois(
     # test if there is a single ROI in the file
     if isinstance(df_single_filename, pd.Series):
         df_combined = df_single_filename.to_frame().T
+
+        # rename the index 
+        try:
+            df_combined.reset_index(names='filename', inplace=True)
+        except:
+            pass
+
+        df_combined["abs_min_t"] = 0
+        df_combined["filename_ts"] = None
+        df_combined["fullfilename_ts"] = None
         
     else:
         # create a new dataframe to store the combined ROIs
@@ -852,6 +863,16 @@ def combine_rois(
             # test if there is a single ROI corresponding to the cluster
             if isinstance(df_single_filename, pd.Series):
                 df_single_cluster = df_single_filename.to_frame().T
+                df_single_cluster["abs_min_t"] = 0
+                df_single_cluster["filename_ts"] = None
+                df_single_cluster["fullfilename_ts"] = None
+
+                # rename the index 
+                try:
+                    df_single_cluster.reset_index(names='filename', inplace=True)
+                except:
+                    pass
+
                 # add the ROI into the dataframe
                 df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
             # if multiple ROIs
@@ -961,111 +982,111 @@ def multi_cpu_combine_rois(
 
 
 ###############################################################################
-def combine_ROIs_from_same_cluster(df_cluster,
-                                params=cfg.PARAMS['PARAMS_CLUSTER'],
-                                verbose=False):
-    """
-    Combine the ROIs that belong to the same cluster in order to obtain a single ROIs. The steps are :
-    - for each filename :
-        - for each cluster :
-            - combine the ROIs that belong to the same cluster if the interval between them is less than INTERVAL_DURATION.
-            The result should be a new ROI with the start time of the first ROI and the end time of the last ROI as well as
-            the minimum and maximum frequency of all the ROIs.
-            - average the features of all the ROIs that belong to the same cluster.
-            - add a new name filename_ts with the name of the filename and the cluster number.
-            - save the combined ROI into a new dataframe
+# def combine_ROIs_from_same_cluster(df_cluster,
+#                                 params=cfg.PARAMS['PARAMS_CLUSTER'],
+#                                 verbose=False):
+#     """
+#     Combine the ROIs that belong to the same cluster in order to obtain a single ROIs. The steps are :
+#     - for each filename :
+#         - for each cluster :
+#             - combine the ROIs that belong to the same cluster if the interval between them is less than INTERVAL_DURATION.
+#             The result should be a new ROI with the start time of the first ROI and the end time of the last ROI as well as
+#             the minimum and maximum frequency of all the ROIs.
+#             - average the features of all the ROIs that belong to the same cluster.
+#             - add a new name filename_ts with the name of the filename and the cluster number.
+#             - save the combined ROI into a new dataframe
     
-    Parameters
-    ----------
-    df_cluster : pandas dataframe
-        Dataframe with the label found for each roi.
-    params : dictionnary, optional
-        contains all the parameters to perform the clustering
-        The default is DEFAULT_PARAMS_CLUSTER.
-    verbose : boolean, optional
-        if true, print information. The default is False.
+#     Parameters
+#     ----------
+#     df_cluster : pandas dataframe
+#         Dataframe with the label found for each roi.
+#     params : dictionnary, optional
+#         contains all the parameters to perform the clustering
+#         The default is DEFAULT_PARAMS_CLUSTER.
+#     verbose : boolean, optional
+#         if true, print information. The default is False.
 
-    Returns
-    -------
-    df_combined : pandas dataframe
-        Dataframe with the combined ROIs.
-    """
-    # write the code here
-    if verbose :
-        print('\n')
-        print('================== COMBINE WAVES FROM SAME CLUSTER =================\n')
+#     Returns
+#     -------
+#     df_combined : pandas dataframe
+#         Dataframe with the combined ROIs.
+#     """
+#     # write the code here
+#     if verbose :
+#         print('\n')
+#         print('================== COMBINE WAVES FROM SAME CLUSTER =================\n')
 
-    # copy the dataframe
-    df = df_cluster.copy()
+#     # copy the dataframe
+#     df = df_cluster.copy()
 
-    # reset the index
-    df.set_index("filename", inplace = True)
+#     # reset the index
+#     df.set_index("filename", inplace = True)
 
-    # create a new dataframe to store the combined ROIs
-    df_combined = pd.DataFrame(columns=df.columns)
+#     # create a new dataframe to store the combined ROIs
+#     df_combined = pd.DataFrame(columns=df.columns)
 
-    # remove the cluster -1 (noise)
-    df = df[df["cluster_number"] != -1]
+#     # remove the cluster -1 (noise)
+#     df = df[df["cluster_number"] != -1]
 
-    # for each filename
-    for filename in df.index.unique():
-    # for filename in ['20240303_063500.WAV']:    
-        print(f'=============== {filename} ===============')
+#     # for each filename
+#     for filename in df.index.unique():
+#     # for filename in ['20240303_063500.WAV']:    
+#         print(f'=============== {filename} ===============')
 
-        # select the ROIs of the current filename
-        df_single_filename = df.loc[filename]
+#         # select the ROIs of the current filename
+#         df_single_filename = df.loc[filename]
 
-        # test if there is a single ROI in the file
-        if isinstance(df_single_filename, pd.Series):
-            df_single_cluster = df_single_filename.to_frame()
-            # add the ROI into the dataframe
-            df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
-        else:
-            # for each cluster
-            # Test if its a single integer or a list of clusters
-            if df_single_filename["cluster_number"].size > 1:
-                cluster_number = df_single_filename["cluster_number"].unique()
-            else:
-                cluster_number = [df_single_filename["cluster_number"]]
+#         # test if there is a single ROI in the file
+#         if isinstance(df_single_filename, pd.Series):
+#             df_single_cluster = df_single_filename.to_frame()
+#             # add the ROI into the dataframe
+#             df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+#         else:
+#             # for each cluster
+#             # Test if its a single integer or a list of clusters
+#             if df_single_filename["cluster_number"].size > 1:
+#                 cluster_number = df_single_filename["cluster_number"].unique()
+#             else:
+#                 cluster_number = [df_single_filename["cluster_number"]]
             
-            # for each cluster number
-            for cluster in cluster_number:
-                if verbose:
-                    print(f'______ the cluster is {cluster} ________')
+#             # for each cluster number
+#             for cluster in cluster_number:
+#                 if verbose:
+#                     print(f'______ the cluster is {cluster} ________')
 
-                # select the ROIs of the current cluster
-                #---------------------------------------
+#                 # select the ROIs of the current cluster
+#                 #---------------------------------------
 
-                # test if there is a single ROI corresponding to the cluster
-                if isinstance(df_single_filename, pd.Series):
-                    df_single_cluster = df_single_filename.to_frame()
-                    # add the ROI into the dataframe
-                    df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
-                # if multiple ROIs
-                else : 
-                    df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
+#                 # test if there is a single ROI corresponding to the cluster
+#                 if isinstance(df_single_filename, pd.Series):
+#                     df_single_cluster = df_single_filename.to_frame()
+#                     # add the ROI into the dataframe
+#                     df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+#                 # if multiple ROIs
+#                 else : 
+#                     df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
 
-                    if verbose:
-                        print(f'Number of ROIs before {len(df_single_cluster)}')
+#                     if verbose:
+#                         print(f'Number of ROIs before {len(df_single_cluster)}')
 
-                    # merge the ROIs
-                    df_single_cluster_merged = _merge_bbox(
-                                                    df_single_cluster, 
-                                                    margins=[params['INTERVAL_DURATION'],params['INTERVAL_DURATION']], 
-                                                    verbose=verbose
-                                                    )
+#                     # merge the ROIs
+#                     df_single_cluster_merged = _merge_bbox(
+#                                                     df_single_cluster, 
+#                                                     margins=[params['INTERVAL_DURATION'],params['INTERVAL_DURATION']], 
+#                                                     verbose=verbose
+#                                                     )
 
-                    if verbose:
-                        print(f'Number of ROIs after {len(df_single_cluster_merged)}')
+#                     if verbose:
+#                         print(f'Number of ROIs after {len(df_single_cluster_merged)}')
 
-                    # test if df_single_cluster_merged is a series
-                    if isinstance(df_single_cluster_merged, pd.Series):
-                        df_single_cluster_merged = df_single_cluster_merged.to_frame()
+#                     # test if df_single_cluster_merged is a series
+#                     if isinstance(df_single_cluster_merged, pd.Series):
+#                         df_single_cluster_merged = df_single_cluster_merged.to_frame()
 
-                    # add the new ROI into the dataframe
-                    df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
+#                     # add the new ROI into the dataframe
+#                     df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
 
-    return df_combined
+#     return df_combined
 
 
 
@@ -1390,6 +1411,9 @@ def overlay_rois (cluster,
                               **kwargs)
         
         # 4.
+        # # cast numbers into strings
+        # df_single_file['cluster_number'] = df_single_file['cluster_number'].astype('str')
+
         if unique_labels is None :
             unique_labels = list(df_single_file[column_labels].unique())
         
