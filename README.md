@@ -1,5 +1,9 @@
 # bambird package
 
+<div align="center">
+    <img src="https://github.com/ear-team/bambird/blob/master/docs/bambird_logo-removebg.png" alt="bambird logo"/>
+</div>
+
 ## Unsupervised classification to improve the quality of a bird song recording dataset
 
 https://doi-org.inee.bib.cnrs.fr/10.1016/j.ecoinf.2022.101952
