@@ -326,6 +326,10 @@ def find_cluster(
         df_cluster['filename'] = df_features['filename']
     if 'abs_min_t' in df_features :
         df_cluster['abs_min_t'] = df_features['abs_min_t']
+    if 'label' in df_features :
+        df_cluster['label'] = df_features['label']
+    if 'confidence' in df_features :
+        df_cluster['confidence'] = df_features['confidence']
 
     # Select the sequence of clustering. Could be
     # 1. category by category

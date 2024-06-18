@@ -58,7 +58,7 @@ def single_birdnet_analysis(path, lat=None, lon=None, date=None):
         lat=lat,
         lon=lon,
         date=date,
-        min_conf=0.01,
+        min_conf=0.001,
     )
     recording.analyze()
     detections = recording.detections

@@ -22,6 +22,7 @@ import pandas as pd
 
 # Scipy
 from scipy.io import wavfile
+from scipy.signal.windows import tukey
 
 # audio package
 import librosa
@@ -101,7 +102,6 @@ def _save_rois(
         # test if the save path is not a bird directory
         # if its already a bird directory, do not nest directory
         if save_path != full_path.parent:
-            #new_path = os.path.join(save_path, full_path.parts[-2])
             new_path = save_path / full_path.parts[-2]
         else:
             new_path = save_path
@@ -110,6 +110,7 @@ def _save_rois(
             new_path.mkdir(parents=True, exist_ok=True)
             
         # A) cut the raw audio in time domain
+        #------------------------------------------------
         idx_min = int((row["min_t"] - margins[0]) * fs)
         idx_max = int((row["max_t"] + margins[0]) * fs)
         # test if index are out of the boundary
@@ -120,7 +121,14 @@ def _save_rois(
         # cut in time
         chunk_rois = chunk[idx_min:idx_max]
 
-        # B) cut the audio in the frequency domain
+        # B) fade in and fade out the chunk_rois
+        #-----------------------------------------
+        # create a tuckey window of 1% of the roi duration
+        win = tukey(chunk_rois.size, alpha=0.01)
+        chunk_rois = chunk_rois * win
+
+        # C) cut the audio in the frequency domain
+        #-----------------------------------------
         fcut_min = row["min_f"] - margins[1]
         fcut_max = row["max_f"] + margins[1]
         # test if frequencies are out of the boundary
@@ -139,7 +147,7 @@ def _save_rois(
             ftype="bandpass",
         )
 
-        # C) optional padding to feed the CNN
+        # D) optional padding to feed the CNN
         if cnn_margins_t is not None:
             # compute the length of the sound
             sound_length = len(chunk_rois) / fs
@@ -247,15 +255,42 @@ def single_file_extract_rois(
         # We also adjust the overlap (OVLP, ratio) between each chunk
         sig_splits = []
         n_points_per_chunk = int(params["CHUNK_DURATION"]* params["SAMPLE_RATE"])
-        for i in range(0,len(sig), int(n_points_per_chunk * (1 - params["OVLP"]))):
+        # for i in range(0,len(sig), int(n_points_per_chunk * (1 - params["OVLP"]))):
 
-            split = sig[i: i + n_points_per_chunk]
+        #     split = sig[i: i + n_points_per_chunk]
 
-            # # End of signal?
-            # if len(split) < n_points_per_chunk :
-            #     break
+        #     # # End of signal?
+        #     # if len(split) < n_points_per_chunk :
+        #     #     break
 
-            sig_splits.append(split)
+        #     sig_splits.append(split)
+
+        # cast sig to list
+        sig = list(sig)
+        while len(sig) > 0 :
+            try:
+                # get the chunk
+                chunk = sig[0:n_points_per_chunk]
+                # fade in and fade out chunk
+                # create a tuckey window of 1% of the roi duration
+                win = tukey(len(chunk), alpha=0.01)
+                chunk = chunk * win
+                # add the chunk
+                sig_splits.append(chunk)
+                # remove the chunk from the signal
+                sig = sig[n_points_per_chunk:]
+            except:
+                # if the signal is too short, add all the points of the signal
+                # get the chunk
+                chunk = sig
+                # fade in and fade out chunk
+                # create a tuckey window of 1% of the roi duration
+                win = tukey(len(chunk), alpha=0.01)
+                chunk = chunk * win
+                # add the chunk
+                sig_splits.append(chunk)
+                # empty the signal
+                sig = []
 
         # print outputs
         if verbose:
