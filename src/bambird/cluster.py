@@ -330,6 +330,8 @@ def find_cluster(
         df_cluster['label'] = df_features['label']
     if 'confidence' in df_features :
         df_cluster['confidence'] = df_features['confidence']
+    if 'date' in df_features :
+        df_cluster['date'] = df_features['date']
 
     # Select the sequence of clustering. Could be
     # 1. category by category
@@ -722,6 +724,9 @@ def _fusion_bbox(df, list_idx):
     df_output["min_t"] = [df.loc[list_idx, "min_t"].min()]
     df_output["max_t"] = [df.loc[list_idx, "max_t"].max()]
     df_output["features"] = [df.loc[list_idx, "features"].mean()]
+    df_output["confidence"] = df.loc[list_idx, "confidence"].max()
+    df_output["label"] = df.loc[df.loc[list_idx, "confidence"].idxmax(), "label"]
+    df_output["date"] = df.loc[list_idx, "date"].unique()
     df_output["abs_min_t"] = 0
     df_output["filename_ts"] = None
     df_output["fullfilename_ts"] = None
@@ -879,6 +884,7 @@ def combine_rois(
 
                 # add the ROI into the dataframe
                 df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
+
             # if multiple ROIs
             else : 
                 df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
