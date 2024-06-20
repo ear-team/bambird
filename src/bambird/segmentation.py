@@ -255,15 +255,6 @@ def single_file_extract_rois(
         # We also adjust the overlap (OVLP, ratio) between each chunk
         sig_splits = []
         n_points_per_chunk = int(params["CHUNK_DURATION"]* params["SAMPLE_RATE"])
-        # for i in range(0,len(sig), int(n_points_per_chunk * (1 - params["OVLP"]))):
-
-        #     split = sig[i: i + n_points_per_chunk]
-
-        #     # # End of signal?
-        #     # if len(split) < n_points_per_chunk :
-        #     #     break
-
-        #     sig_splits.append(split)
 
         # cast sig to list
         sig = list(sig)
@@ -333,7 +324,13 @@ def single_file_extract_rois(
                     current_df_rois.insert(4, "categories", categories)
                     current_df_rois.insert(5, "abs_min_t", seconds)
                     current_df_rois.insert(4, "id", filename.split('.',1)[0][2:])
-                    
+
+                    # remove the column label if exists
+                    try:
+                        current_df_rois.drop(['label'], axis=1, inplace=True)
+                    except:
+                        pass
+
                     # Save ROIs as raw audio file
                     if save_path is not None:                        
                         if len(current_df_rois) > 0:
@@ -569,7 +566,12 @@ def multicpu_extract_rois(
                 print('\n')
                 print(('{} new ROIs added in {}').format(len(df_rois_sorted)-INITIAL_NUM_ROIS,
                                                         save_path))
-
+            
+            # Add the date column from df_data if exists
+            #--------------------------------------------
+            if 'date' in df_data.columns:
+                df_rois_sorted['date'] = df_rois_sorted['filename'].map(df_data.set_index('filename')['date'])
+            
             # save rois
             #-------------------------------
             if save_csv_filename is not None :
