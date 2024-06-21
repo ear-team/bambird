@@ -152,3 +152,7 @@ dmypy.json
 #============== specific to this package ===========
 dev/build_dataset_temp
 
+*.mp3
+*.wav
+*.WAV
+
