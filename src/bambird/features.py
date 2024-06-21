@@ -257,22 +257,34 @@ def compute_features(
         
         # 6. Compute features 
         #----------------------------------------------
+        # test if params["METHOD"] exists
+        if "METHOD" in params.keys():
+            if params["METHOD"] == "maad" :
+                df_features, params_shape = maad.features.shape_features(Sxx_clean_dB, 
+                                                                resolution=params["SHAPE_RES"], 
+                                                                rois=df_rois_for_shape)
+                df_features['label'] = 'unknown'
+                df_features['confidence'] = 1
 
-        if params["METHOD"] == "maad" :
+                if display:
+                    maad.util.plot_shape(df_features, params_shape, ax=ax[1, 0])
+
+            elif params["METHOD"] == "birdnet" :
+                detections = single_birdnet_analysis(audio_path, lat=params['LATITUDE'], lon=params['LONGITUDE'], date=params['DATE'])
+                embeddings = detections['embeddings']
+                # create a vector of string x1, x2, x3, x4, x5 depending on the length of XX
+                df_features = pd.concat([df_rois_for_shape, pd.DataFrame([embeddings], columns=['x'+str(i) for i in range(1,len(embeddings)+1)])], axis=1)
+                df_features['label'] = detections['label']
+                df_features['confidence'] = detections['confidence']   
+        else:
             df_features, params_shape = maad.features.shape_features(Sxx_clean_dB, 
                                                             resolution=params["SHAPE_RES"], 
                                                             rois=df_rois_for_shape)
+            df_features['label'] = np.nan
+            df_features['confidence'] = np.nan
 
             if display:
                 maad.util.plot_shape(df_features, params_shape, ax=ax[1, 0])
-
-        elif params["METHOD"] == "birdnet" :
-            detections = single_birdnet_analysis(audio_path, lat=params['LATITUDE'], lon=params['LONGITUDE'], date=params['DATE'])
-            embeddings = detections['embeddings']
-            # create a vector of string x1, x2, x3, x4, x5 depending on the length of XX
-            df_features = pd.concat([df_rois_for_shape, pd.DataFrame([embeddings], columns=['x'+str(i) for i in range(1,len(embeddings)+1)])], axis=1)
-            df_features['label'] = detections['label']
-            df_features['confidence'] = detections['confidence']   
             
         # Keep columns ['min_y', 'min_x', 'max_y', 'max_x'] in case of these
         # features are not in the original dataset. If there are already
@@ -459,15 +471,26 @@ def multicpu_compute_features(
     # Default name of the csv file with features
     #-------------------------------------------------------------------------
     if save_csv_filename is None :
-        save_csv_filename = (
-            'features_'
-            + params["SHAPE_RES"]
-            + "_NFFT"
-            + str(params["NFFT"])
-            + "_SR"
-            + str(params["SAMPLE_RATE"])
-            + ".csv"
-        )
+        if params["METHOD"] == "maad":
+            save_csv_filename = (
+                'features_'
+                + params["SHAPE_RES"]
+                + "_NFFT"
+                + str(params["NFFT"])
+                + "_SR"
+                + str(params["SAMPLE_RATE"])
+                + ".csv"
+            )
+        elif params["METHOD"] == "birdnet":
+            save_csv_filename = (
+                'features_LON'
+                + str(params["LONGITUDE"])
+                + "_LAT"
+                + str(params["LONGITUDE"])
+                + "_DATE"
+                + str(params["DATE"])
+                + ".csv"
+            )
                 
     # format save_path into Path
     save_path = Path(save_path)

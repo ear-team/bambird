@@ -52,6 +52,7 @@ PARAMS_EXTRACT:
   MARGIN_T: 0.1           # time margin in s around the ROI
   MARGIN_F: 250           # frequency margin in Hz around the ROI
   FILTER_ORDER: 5         # butterworth filter order to select the bandwidth corresponding to the ROI
+  CNN_MARGINS_T: 0        # CNN margins. Zero padding the ROI to fit the CNN input size (e.g. 3s for birdnet)
   
 ################################
 # FEATURES EXTRACTION PARAMETERS
@@ -66,18 +67,41 @@ PARAMS_FEATURES:
   # Spectrogram
   NFFT: 1024               # Number of points of the spectrogram
   SHAPE_RES: 'high'        # Resolution of the shapes {low, med, high}
+  # Features
+  METHOD: 'maad'
+  LATITUDE: 0
+  LONGITUDE: 0
+  DATE:
 
 ################################
 # CLUSTERING PARAMETERS
 ################################
 PARAMS_CLUSTER:
-  FEATURES: ['shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
+  FEATURES: ['shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f']   # choose the features used to cluster {'shp', 'x', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
   SCALER: MINMAXSCALER              # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
+  # Dimensionality reduction
+  METHOD_REDUCTION:                   # method to reduce the dimension of the features before clustering {'PCA', 'UMAP'}
+  # PCA parameters
+  N_COMPONENTS_PCA: 10                # Number of components to keep
+  PERCENTAGE_VAR:                     # Percentage of variance to keep
+  # UMAP parameters
+  N_COMPONENTS: 10                        # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
+  N_NEIGHBORS: 30                         # The size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation. 
+                                          # Larger values result in more global views of the manifold, while smaller values result in more local data being preserved
+  MIN_DIST: 0                             # The effective minimum distance between embedded points. Smaller values will result in a more clustered/clumped embedding 
+                                          # where nearby points on the manifold are drawn closer together, while larger values will result on a more even dispersal of points
+  N_AVG_UMAP : 1                          # Number of UMAP that will be averaged. 
+  # HDBSCAN DBSCAN
   PERCENTAGE_PTS: 5                 # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
   MIN_PTS:                          # minimum number of ROIs to form a cluster {integer or blank}
+  MIN_CORE_PTS : 10                 # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+                                    # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
+                                    # and clusters will be restricted to progressively more dense areas.
   EPS: auto                         # set the maximum distance between elements in a single clusters {a number or 'auto'}
   METHOD: DBSCAN                    # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
   KEEP: BIGGEST                     # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
+  # Fusion of ROIs from the same clusters if they are close in time
+  INTERVAL_DURATION:                # minimum duration of the interval in s to consider to combine the ROIs of the same cluster
 
 
 

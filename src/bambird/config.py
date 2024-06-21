@@ -64,6 +64,8 @@ PARAMS_EXTRACT = {
     "MARGIN_F": 250,  # frequency margin in Hz around the ROI
     # butterworth filter order to select the bandwidth corresponding to the ROI
     "FILTER_ORDER": 5,
+    # CNN margins. Zero padding the ROI to fit the CNN input size (e.g. 3s for birdnet)
+    "CNN_MARGINS_T": None,
 }
 
 PARAMS_FEATURES = {
@@ -78,10 +80,21 @@ PARAMS_FEATURES = {
     "NFFT": 1024,  
     # Number of points of the spectrogram
     "SHAPE_RES": "high",
+    # Select the method to compute the features
+    "METHOD": "maad",  # 'maad' or 'birdnet'
+    'LATITUDE': 0,
+    'LONGITUDE': 0,
+    'DATE': None,
 }
 
 PARAMS_CLUSTER = {
-    "FEATURES": ['shp', 'centroid_f', 'peak_f'],  # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' } 
+    "FEATURES": ['shp', 'centroid_f', 'peak_f'],  # choose the features used to cluster {'shp', 'x', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' } 
+    "SCALER": "MINMAXSCALER",           # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
+    # Dimensionality reduction
+    'METHOD_REDUCTION': 'UMAP',          # method to reduce the dimension of the features before clustering {'PCA', 'UMAP'}
+    # PCA parameters
+    'N_COMPONENTS_PCA': 10,                # Number of components to keep
+    'PERCENTAGE_VAR':  None,                # Percentage of variance to keep
     # UMAP parameters
     "N_COMPONENTS": 10,                         # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
     "N_NEIGHBORS": 30,                          # The size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation. 
@@ -90,15 +103,15 @@ PARAMS_CLUSTER = {
                                                 # where nearby points on the manifold are drawn closer together, while larger values will result on a more even dispersal of points
     "N_AVG_UMAP" : 1,                           # Number of UMAP that will be averaged. 
     # HDBSCAN DBSCAN
-    "PERCENTAGE_PTS": 5,                 # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
-    "MIN_PTS": None,                     # minimum number of ROIs to form a cluster {integer or blank}
-    "MIN_CORE_PTS" : 10,                 # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
-                                         # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
-                                         # and clusters will be restricted to progressively more dense areas.
+    "PERCENTAGE_PTS": 5,                # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
+    "MIN_PTS": None,                    # minimum number of ROIs to form a cluster {integer or blank}
+    "MIN_CORE_PTS" : 10,                # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+                                        # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
+                                        # and clusters will be restricted to progressively more dense areas.
     "METHOD": "DBSCAN",                 # HDBSCAN or DBSCAN
-    "SCALER": "MINMAXSCALER",           # STANDARDSCALER or ROBUSTSCALER or MINMAXSCALER
     "KEEP":   "BIGGEST",                # ALL or BIGGEST
     "EPS":    "auto",                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
+    # Fusion of ROIs from the same clusters if they are close in time
     "INTERVAL_DURATION": 1              # minimum duration of the interval in s to consider to combine the ROIs of the same cluster
 }
 

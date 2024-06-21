@@ -352,6 +352,8 @@ def find_cluster(
         X = _prepare_features(df_single_categories, 
                             scaler = params['SCALER'],
                             features = params['FEATURES'])
+        # cast X to ndarray
+        X = np.array(X)
                         
         if display:
             # Plot the features
@@ -364,46 +366,93 @@ def find_cluster(
             )
             ax3[count].set_xlabel("features vector")
             ax3[count].set_title("Features")
+
+        # Dimensionality reduction
+        #-------------------------------------------------------
+        if params['METHOD_REDUCTION'] == "PCA" :
         
-        # # PCA dimensionality reduction to N dimensions
-        # #---------------------------------------------------------------------
-        # N_COMPONENTS = 2
-        # X = PCA(n_components=N_COMPONENTS).fit_transform(X)
+            # # PCA dimensionality reduction to N dimensions
+            # #---------------------------------------------------------------------
 
-        # # UMAP reduction to N dimensions
-        # #---------------------------------------------------------------------
+            if params['N_COMPONENTS'] is not None:
+                X = PCA(n_components=params['N_COMPONENTS']).fit_transform(X)
+                # cast X to ndarray
+                X = np.array(X)
 
-        # if no UMAP averaging, keep the same random seed for repetitions
-        if  params['N_AVG_UMAP'] == 1 : 
-            X = umap.UMAP(
-                        # densmap=True,                           # 
-                        n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
-                        min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
-                        n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
-                                                                # (potentially to the detriment of the big picture), while large values will push UMAP to look 
-                                                                # at larger neighborhoods of each point when estimating the manifold structure of the data
-                        random_state=cfg.RANDOM_SEED,
-                        n_jobs=-1
-                        ).fit_transform(X)
-        elif params['N_AVG_UMAP'] > 1 :
-            uu = 0
-            XX = []
-            while uu < params['N_AVG_UMAP'] :
-                X_temp = umap.UMAP(
-                            # densmap=True, 
+                if verbose :
+                    print("______PCA reduction")
+            elif params['PERCENTAGE_VAR'] is not None:
+                X = PCA(n_components=params['PERCENTAGE_VAR']).fit_transform(X)
+                # cast X to ndarray
+                X = np.array(X)
+
+                if verbose :
+                    print("______PCA reduction")
+            else:
+                if verbose :
+                    print("N_COMPONENTS and PERCENTAGE_VAR are empty => No PCA reduction")
+                pass
+
+        elif params['METHOD_REDUCTION'] == "UMAP" :
+
+            # # UMAP reduction to N dimensions
+            # #---------------------------------------------------------------------
+
+            # if no UMAP averaging, keep the same random seed for repetitions
+            if  params['N_AVG_UMAP'] == 1 : 
+                X = umap.UMAP(
+                            # densmap=True,                           # 
                             n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
                             min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
                             n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
                                                                     # (potentially to the detriment of the big picture), while large values will push UMAP to look 
                                                                     # at larger neighborhoods of each point when estimating the manifold structure of the data
+                            random_state=cfg.RANDOM_SEED,
                             n_jobs=-1
                             ).fit_transform(X)
-                if len(XX) >0 :
-                    XX = np.add(XX, X_temp)
-                else :
-                    XX = X_temp
-                uu += 1
-            X = np.divide(XX,params['N_AVG_UMAP'] )
+                # cast X to ndarray
+                X = np.array(X)
+
+                if verbose :
+                    print("______UMAP reduction")
+
+            # if UMAP averaging, change the random seed for each repetition
+            elif params['N_AVG_UMAP'] > 1 :
+                uu = 0
+                XX = []
+                while uu < params['N_AVG_UMAP'] :
+                    X_temp = umap.UMAP(
+                                # densmap=True, 
+                                n_components=params['N_COMPONENTS'],    # HDBSCAN need values < 20
+                                min_dist    =params['MIN_DIST'],        # default is .1, small walue will pack points together densely
+                                n_neighbors =params['N_NEIGHBORS'],     # default is 15. This means that low values of n_neighbors will force UMAP to concentrate on very local structure 
+                                                                        # (potentially to the detriment of the big picture), while large values will push UMAP to look 
+                                                                        # at larger neighborhoods of each point when estimating the manifold structure of the data
+                                random_state=cfg.RANDOM_SEED + uu,
+                                n_jobs=-1
+                                ).fit_transform(X)
+                    if len(XX) >0 :
+                        XX = np.add(XX, X_temp)
+                    else :
+                        XX = X_temp
+                    uu += 1
+                # average the UMAP results
+                X = np.divide(XX,params['N_AVG_UMAP'] )
+                # cast X to ndarray
+                X = np.array(X)
+
+                if verbose :
+                    print("______UMAP reduction with {} averaging".format(params['N_AVG_UMAP']))
+
+            else :
+                if verbose :
+                    print("N_AVG_UMAP is empty => No UMAP reduction")
+                pass
+        
+        else:
+            if verbose :
+                print("METHOD_REDUCTION is empty => No dimension reduction before clustering")
+            pass
         
         # add vector of features used for the clustering as a new column "features"
         #--------------------------------------------------------------------------
@@ -471,13 +520,17 @@ def find_cluster(
             #-------------------------------------------------------
             else :
                 EPS = params["EPS"]
+
+            
+            print("EPS is {}".format(EPS))
     
             # find the number of clusters and the rois that belong to the cluster
             #--------------------------------------------------------------------
 
             # if PERCENTATGE_PTS is not None, calculate the minimum number of points
             if params["PERCENTAGE_PTS"] is not None :
-                params["MIN_PTS"] = np.max(int(len(X) * params["PERCENTAGE_PTS"] / 100), 3)
+                params["MIN_PTS"] = np.max([int(len(X) * params["PERCENTAGE_PTS"] / 100), 5])
+                params["MIN_CORE_PTS"] = 5 #params["MIN_PTS"] -1
 
             if params["METHOD"] == "DBSCAN":
                 cluster = DBSCAN(
@@ -920,6 +973,9 @@ def combine_rois(
 
     return df_combined
 
+
+###############################################################################
+
 def multi_cpu_combine_rois(
                     df_cluster,
                     remove_noise=True,
@@ -998,115 +1054,6 @@ def multi_cpu_combine_rois(
                                         ignore_index=True)
 
     return df_combined
-
-
-###############################################################################
-# def combine_ROIs_from_same_cluster(df_cluster,
-#                                 params=cfg.PARAMS['PARAMS_CLUSTER'],
-#                                 verbose=False):
-#     """
-#     Combine the ROIs that belong to the same cluster in order to obtain a single ROIs. The steps are :
-#     - for each filename :
-#         - for each cluster :
-#             - combine the ROIs that belong to the same cluster if the interval between them is less than INTERVAL_DURATION.
-#             The result should be a new ROI with the start time of the first ROI and the end time of the last ROI as well as
-#             the minimum and maximum frequency of all the ROIs.
-#             - average the features of all the ROIs that belong to the same cluster.
-#             - add a new name filename_ts with the name of the filename and the cluster number.
-#             - save the combined ROI into a new dataframe
-    
-#     Parameters
-#     ----------
-#     df_cluster : pandas dataframe
-#         Dataframe with the label found for each roi.
-#     params : dictionnary, optional
-#         contains all the parameters to perform the clustering
-#         The default is DEFAULT_PARAMS_CLUSTER.
-#     verbose : boolean, optional
-#         if true, print information. The default is False.
-
-#     Returns
-#     -------
-#     df_combined : pandas dataframe
-#         Dataframe with the combined ROIs.
-#     """
-#     # write the code here
-#     if verbose :
-#         print('\n')
-#         print('================== COMBINE WAVES FROM SAME CLUSTER =================\n')
-
-#     # copy the dataframe
-#     df = df_cluster.copy()
-
-#     # reset the index
-#     df.set_index("filename", inplace = True)
-
-#     # create a new dataframe to store the combined ROIs
-#     df_combined = pd.DataFrame(columns=df.columns)
-
-#     # remove the cluster -1 (noise)
-#     df = df[df["cluster_number"] != -1]
-
-#     # for each filename
-#     for filename in df.index.unique():
-#     # for filename in ['20240303_063500.WAV']:    
-#         print(f'=============== {filename} ===============')
-
-#         # select the ROIs of the current filename
-#         df_single_filename = df.loc[filename]
-
-#         # test if there is a single ROI in the file
-#         if isinstance(df_single_filename, pd.Series):
-#             df_single_cluster = df_single_filename.to_frame()
-#             # add the ROI into the dataframe
-#             df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
-#         else:
-#             # for each cluster
-#             # Test if its a single integer or a list of clusters
-#             if df_single_filename["cluster_number"].size > 1:
-#                 cluster_number = df_single_filename["cluster_number"].unique()
-#             else:
-#                 cluster_number = [df_single_filename["cluster_number"]]
-            
-#             # for each cluster number
-#             for cluster in cluster_number:
-#                 if verbose:
-#                     print(f'______ the cluster is {cluster} ________')
-
-#                 # select the ROIs of the current cluster
-#                 #---------------------------------------
-
-#                 # test if there is a single ROI corresponding to the cluster
-#                 if isinstance(df_single_filename, pd.Series):
-#                     df_single_cluster = df_single_filename.to_frame()
-#                     # add the ROI into the dataframe
-#                     df_combined = pd.concat([df_combined,df_single_cluster], axis=0, ignore_index=True)
-#                 # if multiple ROIs
-#                 else : 
-#                     df_single_cluster = df_single_filename[df_single_filename["cluster_number"] == cluster]
-
-#                     if verbose:
-#                         print(f'Number of ROIs before {len(df_single_cluster)}')
-
-#                     # merge the ROIs
-#                     df_single_cluster_merged = _merge_bbox(
-#                                                     df_single_cluster, 
-#                                                     margins=[params['INTERVAL_DURATION'],params['INTERVAL_DURATION']], 
-#                                                     verbose=verbose
-#                                                     )
-
-#                     if verbose:
-#                         print(f'Number of ROIs after {len(df_single_cluster_merged)}')
-
-#                     # test if df_single_cluster_merged is a series
-#                     if isinstance(df_single_cluster_merged, pd.Series):
-#                         df_single_cluster_merged = df_single_cluster_merged.to_frame()
-
-#                     # add the new ROI into the dataframe
-#                     df_combined = pd.concat([df_combined,df_single_cluster_merged], axis=0, ignore_index=True)
-
-#     return df_combined
-
 
 
 ###############################################################################
