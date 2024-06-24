@@ -570,7 +570,7 @@ def multicpu_extract_rois(
             # Add the date column from df_data if exists
             #--------------------------------------------
             if 'date' in df_data.columns:
-                df_rois_sorted['date'] = df_rois_sorted['filename'].map(df_data.set_index('filename')['date'])
+                df_rois_sorted['date'] = df_rois_sorted['fullfilename'].map(df_data.set_index('fullfilename')['date'])
             
             # save rois
             #-------------------------------
