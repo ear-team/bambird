@@ -1250,18 +1250,18 @@ def cluster_eval(df_cluster,
 
 ###############################################################################
 def overlay_rois (cluster,
-                  markers = None,
-                  column_labels ='auto_label',
-                  unique_labels=[0,1],
-                  color_labels=['tab:red', 'tab:green', 'tab:orange', 'tab:blue', 
-                                 'tab:purple','tab:pink','tab:brown','tab:olive',
-                                 'tab:cyan','tab:gray','yellow'],
-                  textbox_label=True,
-                  params=cfg.PARAMS['PARAMS_EXTRACT'],
-                  filename=None,
-                  random_seed=None,
-                  verbose=False,
-                  **kwargs):
+                markers = None,
+                column_labels ='auto_label',
+                unique_labels=[0,1],
+                color_labels=['tab:red', 'tab:green', 'tab:orange', 'tab:blue', 
+                                'tab:purple','tab:pink','tab:brown','tab:olive',
+                                'tab:cyan','tab:gray','yellow'],
+                textbox_label=True,
+                params=cfg.PARAMS['PARAMS_EXTRACT'],
+                filename=None,
+                random_seed=None,
+                verbose=False,
+                **kwargs):
     
     if verbose :
         print('\n')
@@ -1276,7 +1276,7 @@ def overlay_rois (cluster,
             # load the data from the csv
             df_cluster = pd.read_csv(cluster, index_col=0)
             df_cluster.reset_index(inplace=True)
-                      
+            
     elif isinstance(cluster, pd.DataFrame): 
         df_cluster = cluster.copy()
 
@@ -1295,7 +1295,7 @@ def overlay_rois (cluster,
         df_cluster = df_cluster.join(markers)
         df_cluster.reset_index(inplace=True)
 
-    # select one xeno-canto file
+    # select one audio file
     #---------------------------
     if "filename" in df_cluster :
         try:
@@ -1305,7 +1305,7 @@ def overlay_rois (cluster,
     else:
         # if there is no filename column but filename_ts, extract the filename
         if "filename_ts" in df_cluster :
-            df_cluster['filename'] = df_cluster['filename_ts'].apply(lambda file : file.split('_',1)[0]+'.mp3')
+            df_cluster['filename'] = df_cluster['filename_ts'].apply(lambda file : file.split('_',1)[0]+ '.' + file.split('.',-1)[-1])
             df_cluster.set_index(['filename'],inplace=True)
         else :
             raise Exception(
@@ -1323,7 +1323,7 @@ def overlay_rois (cluster,
     df_single_file.reset_index(inplace=True)
     df_cluster.reset_index(inplace=True)
 
-    # Xeno-Canto filename
+    # audio filename
     fullfilename = df_single_file['fullfilename'].unique()[0]
     
     # add a label column
@@ -1342,8 +1342,8 @@ def overlay_rois (cluster,
         )
         
         fig = plt.figure(figsize=kwargs.pop("figsize", 
-                                         (params["AUDIO_DURATION"]/60*15,7)))
-        
+                                        (params["AUDIO_DURATION"]/60*15,7)))
+    
         ax0 = plt.subplot2grid((5, 1), (0, 0), rowspan=1)
         ax1 = plt.subplot2grid((5, 1), (1, 0), rowspan=4)
 
@@ -1357,7 +1357,7 @@ def overlay_rois (cluster,
             noverlap=params["NFFT"] // 2,
         )
         
-       
+    
         df_single_file['min_t'] = df_single_file['min_t']+ df_single_file['abs_min_t']
         df_single_file['max_t'] = df_single_file['max_t']+ df_single_file['abs_min_t'] 
         df_single_file = maad.util.format_features(df_single_file, tn, fn)
@@ -1370,11 +1370,11 @@ def overlay_rois (cluster,
         kwargs.update({"vmin": np.min(X)})
         kwargs.update({"extent": ext})
         maad.util.plot_spectrogram(X, 
-                              log_scale=False, 
-                              colorbar=False,
-                              ax=ax1,
-                              now = False,
-                              **kwargs)
+                            log_scale=False, 
+                            colorbar=False,
+                            ax=ax1,
+                            now = False,
+                            **kwargs)
         
         # 4.
         # # cast numbers into strings
@@ -1385,16 +1385,16 @@ def overlay_rois (cluster,
         
         # overlay
         maad.util.overlay_rois(im_ref=X, 
-                              rois = df_single_file,
-                              ax=ax1,
-                              fig=fig,
-                              unique_labels=unique_labels,
-                              edge_color=color_labels,
-                              textbox_label=textbox_label)
+                            rois = df_single_file,
+                            ax=ax1,
+                            fig=fig,
+                            unique_labels=unique_labels,
+                            edge_color=color_labels,
+                            textbox_label=textbox_label)
 
         fig.suptitle((df_single_file.filename.unique()
-                     + " " 
-                     + df_single_file.categories.unique()))
+                    + " " 
+                    + df_single_file.categories.unique()))
         fig.tight_layout()
         plt.show()
 
