@@ -94,7 +94,7 @@ PARAMS_CLUSTER:
   # HDBSCAN DBSCAN
   PERCENTAGE_PTS: #0.2                          # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
   MIN_PTS: 3                                # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
-  MIN_CORE_PTS : 3                            # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+  MIN_CORE_PTS : 2                            # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
                                               # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
                                               # and clusters will be restricted to progressively more dense areas.
   EPS: 0 #'auto'                                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
