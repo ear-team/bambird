@@ -1279,6 +1279,11 @@ def overlay_rois (cluster,
             
     elif isinstance(cluster, pd.DataFrame): 
         df_cluster = cluster.copy()
+    
+    elif isinstance(cluster, pd.Series):
+        # convert the series into a dataframe
+        df_cluster = cluster.copy()
+        df_cluster = df_cluster.to_frame().T
 
     else:
         raise Exception(
@@ -1318,6 +1323,10 @@ def overlay_rois (cluster,
 
     # extract the row corresponding to the filename
     df_single_file = df_cluster.loc[filename]
+
+    # test if there is a single ROI in the file
+    if isinstance(df_single_file, pd.Series):
+        df_single_file = df_single_file.to_frame().T
 
     # reset the index
     df_single_file.reset_index(inplace=True)
