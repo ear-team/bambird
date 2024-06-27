@@ -39,16 +39,16 @@ PARAMS_EXTRACT:
   NFFT: 1024              # Number of points used for the SFFT to compute the spectrogram
   N_RUNNING_MEAN: 25      # Number of points used to compute the running mean of the noise profil
   # hysteretic thresholding parameters
-  SEED_LEVEL: 13
-  LOW_LEVEL: 3
+  SEED_LEVEL: 16
+  LOW_LEVEL: 6
   # Select and merge bbox parameters
   MAX_RATIO_YX: 50         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
   MIN_EVENT_DUR: 0.1      # minimum event duration in s
   MAX_EVENT_DUR: 10        # maximum event duration in s
-  FUSION_ROIS: [0.25, 1000] # (seconds, hertz)  
+  FUSION_ROIS: [0.2, 100] # (seconds, hertz)  
   MIN_FREQ_BW : 50
   MAX_FREQ_BW : 22000
-  REMOVE_ROIS_FMIN_LIM: 500
+  REMOVE_ROIS_FMIN_LIM: 
   REMOVE_ROIS_FMAX_LIM: 
   REMOVE_RAIN : False
   # Save ROIs parameters
