@@ -83,9 +83,9 @@ PARAMS_CLUSTER:
   FEATURES: ['x']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
   SCALER: MINMAXSCALER                        # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
   # Dimensionality reduction
-  METHOD_REDUCTION: PCA                 # method to reduce the dimension of the features before clustering {'PCA', 'UMAP'}
+  METHOD_REDUCTION: UMAP                 # method to reduce the dimension of the features before clustering {'PCA', 'UMAP'}
   # UMAP parameters
-  N_COMPONENTS: 33 #20                           # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
+  N_COMPONENTS: 20                           # The dimension of the space to embed into. Should not be larger than 20 as (H)DBSCAN cannot handle vectors larger than 20 points.
   N_NEIGHBORS: 15                             # The size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation. 
                                               # Larger values result in more global views of the manifold, while smaller values result in more local data being preserved
   MIN_DIST : 0                                # The effective minimum distance between embedded points. Smaller values will result in a more clustered/clumped embedding 
@@ -93,11 +93,11 @@ PARAMS_CLUSTER:
   N_AVG_UMAP : 1                              # Number of UMAP that will be averaged. 
   # HDBSCAN DBSCAN
   PERCENTAGE_PTS: #0.2                          # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
-  MIN_PTS: 3                                # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
-  MIN_CORE_PTS : 2                            # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+  MIN_PTS: 20                               # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
+  MIN_CORE_PTS : 20                            # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
                                               # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
                                               # and clusters will be restricted to progressively more dense areas.
-  EPS: 0 #'auto'                                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
+  EPS: 'auto'                                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
   METHOD: HDBSCAN                             # cluster method that allow some points beeing outside of a cluster {HDBSCAN, DBSCAN}
   KEEP: ALL                                   # define if we want to keep all the clusters or only the biggest cluster, while the rest is discarded as noise {BIGGEST, ALL}
   # Fusion of ROIs from the same clusters if they are close in time

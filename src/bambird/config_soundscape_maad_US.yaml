@@ -28,7 +28,7 @@ PARAMS_EXTRACT:
   # Extract Audio resampling
   SAMPLE_RATE: 384000      # Sampling frequency in Hz
   # Audio preprocess
-  LOW_FREQ: 10000            # Low frequency in Hz of the bandpass filter applied to the audio
+  LOW_FREQ: 7000            # Low frequency in Hz of the bandpass filter applied to the audio
   HIGH_FREQ: 192000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 1         # butterworth filter order to select the bandwidth corresponding to the ROI
   AUDIO_DURATION: 60      # Max duration of the audio file (in seconds)
@@ -45,7 +45,7 @@ PARAMS_EXTRACT:
   MAX_RATIO_YX: 50         # ratio Y/X between the high (Y in px) and the width (X in px) of the ROI
   MIN_EVENT_DUR: 0.05      # minimum event duration in s
   MAX_EVENT_DUR: 30        # maximum event duration in s
-  FUSION_ROIS: [0.25, 500] # (seconds, hertz)  
+  FUSION_ROIS: [0.25, 2500] # (seconds, hertz)  
   MIN_FREQ_BW : 
   MAX_FREQ_BW : 
   REMOVE_ROIS_FMIN_LIM: 
@@ -65,7 +65,7 @@ PARAMS_FEATURES:
   # Extract Audio resampling
   SAMPLE_RATE: 384000     # Sampling frequency in Hz
   # Audio preprocess
-  LOW_FREQ: 10000            # Low frequency in Hz of the bandpass filter applied to the audio
+  LOW_FREQ: 7000            # Low frequency in Hz of the bandpass filter applied to the audio
   HIGH_FREQ: 192000        # High frequency in Hz of the bandpass filter applied to the audio
   BUTTER_ORDER: 5         # butterworth filter order to select the bandwidth corresponding to the ROI
   # Spectrogram
@@ -80,7 +80,7 @@ PARAMS_FEATURES:
 # CLUSTERING PARAMETERS
 ################################
 PARAMS_CLUSTER:
-  FEATURES: ['shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
+  FEATURES: ['shp', 'centroid_f', 'peak_f'] #, 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f']   # choose the features used to cluster {'shp', 'centroid_f', 'peak_f', 'duration_t', 'bandwidth_f', 'bandwidth_min_f', 'bandwidth_max_f', 'min_f', 'max_f' }
   SCALER: MINMAXSCALER                        # scaler method to prepare the features before the clustering {STANDARDSCALER, ROBUSTSCALER, MINMAXSCALER}
   # Dimensionality reduction
   METHOD_REDUCTION: UMAP                 # method to reduce the dimension of the features before clustering {'PCA', 'UMAP'}
@@ -92,9 +92,9 @@ PARAMS_CLUSTER:
                                               # where nearby points on the manifold are drawn closer together, while larger values will result on a more even dispersal of points
   N_AVG_UMAP : 1                              # Number of UMAP that will be averaged. 
   # HDBSCAN DBSCAN
-  PERCENTAGE_PTS: #0.2                           # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
-  MIN_PTS:  40                               # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
-  MIN_CORE_PTS : 5                           # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
+  PERCENTAGE_PTS: 2                          # minimum number of ROIs to form a cluster (in % of the total number of ROIs) {number between 0 and 1 or blank}
+  MIN_PTS:                                 # (DBSCAN => min_points, HDBSCAN => min_cluster_size) minimum number of ROIs to form a cluster {integer or blank}
+  MIN_CORE_PTS :                            # (HDBSCAN only => min_samples) The number of samples in a neighbourhood for a point to be considered a core point.
                                               # The larger the value of MIN_CORE_PTS you provide, the more conservative the clustering – more points will be declared as noise, 
                                               # and clusters will be restricted to progressively more dense areas.
   EPS: auto                                   # set the maximum distance between elements in a single clusters {a number or 'auto'}
