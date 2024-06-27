@@ -332,7 +332,7 @@ def extract_rois_in_soundscape(
         )
 
     ### 6. Fusion ROIS    
-    if type(FUSION_ROIS) is tuple :
+    if FUSION_ROIS is not None :
         Ny_elements = round(FUSION_ROIS[0] / DELTA_T)
         Nx_elements = round(FUSION_ROIS[1] / DELTA_F)
         im_mask = closing(im_mask, footprint=np.ones([Nx_elements,Ny_elements]))
