@@ -104,3 +104,5 @@ PARAMS_CLUSTER:
   INTERVAL_DURATION: 1                        # minimum duration of the interval in s to consider to combine the ROIs of the same cluster
 
 
+
+
