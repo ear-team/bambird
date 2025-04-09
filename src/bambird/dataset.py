@@ -202,7 +202,7 @@ def download_xc (df_dataset,
                               index_label = 'id') 
         except :
             pass
-   
+        
     #--------------------------------------------------------------------------
     # display information about the downloaded audio files
     if verbose :        
@@ -299,7 +299,7 @@ def query_download_xc(
         df_dataset.to_csv(csv_fullfilename, sep=";", index=True, index_label='id') 
         
         if (NUM_FILES is not None) and (len(df_dataset)>0): 
-               
+            
             # number of audio files per species
             df_num = df_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
             
@@ -319,8 +319,9 @@ def query_download_xc(
                 if n >= NUM_FILES :
                     # subdf_dataset = subdf_dataset.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
                     #                                                                    random_state=random_seed)))
-                    subdf_dataset = pd.concat([subdf_dataset,
-                                               mask.apply(lambda x: x.sample(n=NUM_FILES,
+                    subdf_dataset = pd.concat([
+                                            subdf_dataset,
+                                            mask.apply(lambda x: x.sample(n=NUM_FILES,
                                                                             random_state=random_seed))
                                                 ])
                 else:
@@ -328,7 +329,7 @@ def query_download_xc(
                     subdf_dataset = pd.concat([subdf_dataset, mask])
         else:
             subdf_dataset = df_dataset
-       
+
         # download all the audio files into a directory with a subdirectory for each
         # species
         try :
@@ -361,10 +362,10 @@ def query_download_xc(
         
         if verbose:
             print((("The metadata file {} already exits\n") +
-                  ("with a total of {} audio metadata\n") + 
-                  ("and with {} already downloaded audio recordings")).format(csv_fullfilename,
-                                                                             len(df_dataset),
-                                                                             len(df_dataset[~df_dataset['fullfilename'].isna()])))
+                ("with a total of {} audio metadata\n") + 
+                ("and with {} already downloaded audio recordings")).format(csv_fullfilename,
+                                                                            len(df_dataset),
+                                                                            len(df_dataset[~df_dataset['fullfilename'].isna()])))
                                                     
         # Test if we ask for new files to be downloaded (increment == True)
         if increment :
@@ -374,7 +375,7 @@ def query_download_xc(
             
             # if limit in the number of files
             if (NUM_FILES is not None) and (len(subdf_dataset)>0):
-               
+            
                 # number of audio files per species
                 df_num = subdf_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
                 
@@ -395,7 +396,7 @@ def query_download_xc(
                         # df_to_dl = df_to_dl.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
                         #                                                          random_state=random_seed)))
                         df_to_dl = pd.concat([df_to_dl,
-                                              mask.apply(lambda x: x.sample(n=NUM_FILES, 
+                                            mask.apply(lambda x: x.sample(n=NUM_FILES, 
                                                                             random_state=random_seed))
                                                 ])                    
                     else:
@@ -438,7 +439,7 @@ def query_download_xc(
             
             # if limit in the number of files
             if (NUM_FILES is not None) and (len(df_dataset)>0) :
-               
+            
                 # number of audio files per species
                 df_num = df_dataset.groupby(['gen','sp'], group_keys=False).apply(lambda x: len(x))
                 
@@ -459,7 +460,7 @@ def query_download_xc(
                         # df = df.append(mask.apply(lambda x: x.sample(n=NUM_FILES, 
                         #                                              random_state=random_seed)))
                         df = pd.concat([df, 
-                                       mask.apply(lambda x: x.sample(n=NUM_FILES, 
+                                        mask.apply(lambda x: x.sample(n=NUM_FILES, 
                                                                     random_state=random_seed))
                                     ])                    
                     else:
@@ -472,8 +473,7 @@ def query_download_xc(
 
 #%%
 def grab_audio_to_df (path, 
-                      audio_format, 
-                      verbose=False) :
+                    verbose=False) :
     """
     
     columns_name :
@@ -486,9 +486,17 @@ def grab_audio_to_df (path,
     """
     
     # create a dataframe with all recordings in the directory
-    filelist = glob.glob(os.path.join(path,
-                                      '**/*.'+audio_format), 
-                         recursive=True)
+    # filelist = glob.glob(os.path.join(path,
+    #                                   '**/*.'+audio_format), 
+    #                      recursive=True)
+    
+    extensions = ["mp3", "wav", "flac", "ogg", "aac"] 
+    filelist = [
+        filename
+        for ext in extensions
+        for filename in glob.glob(os.path.join(path, f"**/*.{ext}"), recursive=True)
+    ]
+
     
     df_dataset = pd.DataFrame()
     for file in filelist:
@@ -502,7 +510,7 @@ def grab_audio_to_df (path,
         #                               'id'          :iden},
         #                             ignore_index=True)
         df_dataset = pd.concat([df_dataset,
-                               pd.DataFrame({
+                                pd.DataFrame({
                                     'fullfilename':file,
                                     'filename'    :Path(file).parts[-1],
                                     'categories'  :categories,

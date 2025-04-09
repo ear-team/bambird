@@ -194,6 +194,7 @@ def single_file_extract_rois(
     fun,
     params=cfg.PARAMS['PARAMS_EXTRACT'],
     save_path=None,
+    save_rois=False,
     display=False,
     verbose=False):
     """ Extract all Rois in the audio file
@@ -206,7 +207,9 @@ def single_file_extract_rois(
     params : dictionnary
         contains all the parameters to extract the rois 
     save_path : string, default is None
-        Path to the directory where the segmented rois will be saved    
+        Path to the directory where the segmented rois will be saved   
+    save_rois : boolean, optional
+        if true, the rois will be saved as wav files. The default is False. 
     display : TYPE, optional
         DESCRIPTION. The default is False.
     verbose : TYPE, optional
@@ -332,7 +335,7 @@ def single_file_extract_rois(
                         pass
 
                     # Save ROIs as raw audio file
-                    if save_path is not None:                        
+                    if (save_path is not None) and (save_rois == True):                        
                         if len(current_df_rois) > 0:
                             current_df_rois = _save_rois(
                                 chunk,
@@ -370,6 +373,7 @@ def multicpu_extract_rois(
     dataset, 
     params=cfg.PARAMS['PARAMS_EXTRACT'],
     save_path=None,
+    save_rois=False,
     save_csv_filename='rois.csv',
     overwrite=False,
     nb_cpu=None,
@@ -392,6 +396,8 @@ def multicpu_extract_rois(
         contains all the parameters to extract the rois 
     save_path : string, default is None
         Path to the directory where the segmented rois will be saved    
+    save_rois : boolean, optional
+        if true, the rois will be saved as wav files. The default is False.
     save_csv_filename: string, optional
         csv filename that contains all the rois that will be saved. The default
         is rois.csv
@@ -436,16 +442,15 @@ def multicpu_extract_rois(
             # create a dataframe with all recordings in the directory
             #--------------------------------------------------------
             df_data = grab_audio_to_df (path            =dataset, 
-                                        audio_format    ='mp3',
                                         verbose         =verbose)
             
             # set default save_path and save_filename
             #----------------------------------------
-            if save_path is None:
-                if (dataset[-1] == "/") or (dataset[-1] == "/"):
-                    dataset = dataset[:-1]
+            # if save_path is None:
+            #     if (dataset[-1] == "/") or (dataset[-1] == "/"):
+            #         dataset = dataset[:-1]
 
-                save_path = str(dataset) + "_ROIS"
+            #     save_path = str(dataset) + "_ROIS"
             
         # test if dataset_path is a valid csv file
         #----------------------------------------
@@ -454,8 +459,8 @@ def multicpu_extract_rois(
             df_data = pd.read_csv(dataset, sep=';')
             
             # set default save_path and save_filename
-            if save_path is None:
-                save_path = os.path.dirname(dataset) + "_ROIS"
+            # if save_path is None:
+            #     save_path = os.path.dirname(dataset) + "_ROIS"
                         
     # if dataset is a dataframe : 
     # > read the dataframe       
@@ -463,9 +468,9 @@ def multicpu_extract_rois(
     elif isinstance(dataset, pd.DataFrame): 
         df_data = dataset.copy()
         
-        # set default save_path and save_filename
-        if save_path is None:
-            save_path = str(Path(df_data['fullfilename'].iloc[0]).parent.parent) + "_ROIS"
+        # # set default save_path and save_filename
+        # if save_path is None:
+        #     save_path = str(Path(df_data['fullfilename'].iloc[0]).parent.parent) + "_ROIS"
             
     else:
         raise Exception(
@@ -479,9 +484,10 @@ def multicpu_extract_rois(
     if ('categories' in df_data.columns) == False :
         df_data['categories'] = "default"    
 
-    # Check if the output directory already exists
+    # Check if the output csv already exists
     #---------------------------------------------
     dir_exist = os.path.exists(str(save_path)) 
+
     if (dir_exist == False) or ((dir_exist == True) and (overwrite == True)) : 
         if (dir_exist == True) and (overwrite == True):
             if verbose:
@@ -538,6 +544,7 @@ def multicpu_extract_rois(
                 fun=params['FUNC'],
                 params=params,
                 save_path=save_path,
+                save_rois=save_rois,
                 display=False,
                 verbose=False,
             )
@@ -580,18 +587,27 @@ def multicpu_extract_rois(
                     df_rois_sorted.set_index(['filename_ts'], inplace=True)
                 except:
                     pass  
-                
-                # test if the directory exists if not, create it 
-                if os.path.exists(str(save_path)) == False:
-                    save_path.mkdir(parents=True, exist_ok=True)
-                
-                # save and append dataframe
-                csv_fullfilename = Path(save_path) / save_csv_filename
-                df_rois_sorted.to_csv(csv_fullfilename, 
-                                    sep=';', 
-                                    header=True)
-                # reset index
-                df_rois_sorted.reset_index(inplace=True)
+
+                if save_path is not None :
+                    # test if the directory exists if not, create it 
+                    if os.path.exists(str(save_path)) == False:
+                        save_path.mkdir(parents=True, exist_ok=True)
+                    
+                    # save and append dataframe
+                    csv_fullfilename = Path(save_path) / save_csv_filename
+                    df_rois_sorted.to_csv(csv_fullfilename, 
+                                        sep=';', 
+                                        header=True)
+                    # reset index
+                    df_rois_sorted.reset_index(inplace=True)
+                else:
+                    # save and append dataframe
+                    csv_fullfilename = save_csv_filename
+                    df_rois_sorted.to_csv(csv_fullfilename, 
+                                        sep=';', 
+                                        header=True)
+                    # reset index
+                    df_rois_sorted.reset_index(inplace=True)
         
         else:
             # reset the index

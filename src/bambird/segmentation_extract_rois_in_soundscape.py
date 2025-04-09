@@ -138,6 +138,8 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
     centroid=[] 
     area = []   
     snr = []
+    leq = []
+    bgn = []
     if rois is None: 
         centroid = ndimage.center_of_mass(Sxx) 
         centroid = pd.DataFrame(np.asarray(centroid)).T 
@@ -146,30 +148,47 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
         centroid['duration_x'] = Sxx.shape[1]
         centroid['bandwidth_y'] = Sxx.shape[0]
         # TODO : add in MAAD
-        centroid['snr'] = mean_dB(add_dB(Sxx,axis=0)) 
+        centroid['leq'] = power2dB(np.mean(np.sum(Sxx,axis=0)) )
+        centroid['bgn'] = power2dB(np.mean(np.sum(np.percentile(Sxx,50),axis=1)))
+        centroid['snr'] = centroid['leq']- centroid['bgn']
     else: 
+        # if im_rois is not provided, compute the centroid of each roi 
+        # and the area of the roi based on the bounding box
+        # rectangular area (overestimation) 
+        area = (rois.max_y -rois.min_y) * (rois.max_x -rois.min_x)  
+
+        # centroid of rectangular roi
+        for _, row in rois.iterrows() : 
+            row = pd.DataFrame(row).T 
+            im_blobs = maad.rois.rois_to_imblobs(np.zeros(Sxx.shape), row)     
+            rprops = measure.regionprops(im_blobs, intensity_image=Sxx)
+            # centroid.append(rprops.pop().weighted_centroid) 
+            centroid = [roi.weighted_centroid for roi in rprops]
+            # TODO : add in MAAD
+            leq += [power2dB(np.mean(np.sum(roi.image_intensity,axis=0))) for roi in rprops]
+            bgn += [power2dB(np.mean(np.sum(np.percentile(roi.image_intensity,90),axis=0))) for roi in rprops]
+
         if im_rois is not None : 
+            if len(leq) != 0 :
+                leq = []
             # real centroid and area
             rprops = measure.regionprops(im_rois, intensity_image=Sxx)
             centroid = [roi.weighted_centroid for roi in rprops]
             area = [roi.area for roi in rprops]
             # TODO : add in MAAD
-            snr = [power2dB(np.mean(np.sum(roi.image_intensity,axis=0))) for roi in rprops]
-        else:
-            # rectangular area (overestimation) 
-            area = (rois.max_y -rois.min_y) * (rois.max_x -rois.min_x)  
-            # centroid of rectangular roi
-            for _, row in rois.iterrows() : 
-                row = pd.DataFrame(row).T 
-                im_blobs = maad.rois.rois_to_imblobs(np.zeros(Sxx.shape), row)     
-                rprops = measure.regionprops(im_blobs, intensity_image=Sxx)
-                centroid.append(rprops.pop().weighted_centroid) 
-                # TODO : add in MAAD
-                snr.append(power2dB(np.mean(np.sum(rprops.pop().image_intensity,axis=0)))) 
-                
+            leq += [power2dB(np.mean(np.sum(roi.image_intensity,axis=0))) for roi in rprops]
+
+        # compute the snr
+        # TODO : add in MAAD
+        snr = [l-b for l,b in zip(leq, bgn)]
+
         centroid = pd.DataFrame(centroid, columns=['centroid_y', 'centroid_x'], index=rois.index)
         
-        ##### Energy of the signal (99th percentile of the bbox)
+        ###### leq
+        centroid['leq'] = leq
+        ###### bgn
+        centroid['bgn'] = bgn
+        #####  snr
         centroid['snr'] = snr
         # ##### duration in number of pixels 
         centroid['duration_x'] = (rois.max_x -rois.min_x)  
@@ -177,7 +196,7 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
         centroid['bandwidth_y'] = (rois.max_y -rois.min_y) 
         ##### area
         centroid['area_xy'] = area      
-     
+
         # concat rois and centroid dataframes 
         centroid = rois.join(pd.DataFrame(centroid, index=rois.index))  
 
@@ -274,19 +293,21 @@ def extract_rois_in_soundscape(
 
     if REMOVE_RAIN: 
         # remove single vertical lines
-        Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB.T,
+        Sxx_clean_dB, Sxx_noise_vertical_dB = maad.sound.remove_background_along_axis(Sxx_dB.T,
                                                             mode='mean',
                                                             N=1,
                                                             display=False)
         Sxx_dB = Sxx_clean_dB.T
 
     # remove single horizontal lines
-    Sxx_clean_dB, _ = maad.sound.remove_background_along_axis(Sxx_dB,
+    Sxx_clean_dB, Sxx_noise_horizontal_dB = maad.sound.remove_background_along_axis(Sxx_dB,
                                                     mode='median',
                                                     N=1,
                                                     display=False)
     # Set the background to 0
     Sxx_clean_dB[Sxx_clean_dB<=0] = 0
+
+    ####################################
 
     if display:
         maad.util.plot_spectrogram(
@@ -354,7 +375,7 @@ def extract_rois_in_soundscape(
         
         # found the centroid and add the centroid parameters ('centroid_y',
         # 'centroid_x', 'duration_x', 'bandwidth_y', 'area_xy') into df_rois
-        df_rois = _centroid_features(Sxx_clean_dB, df_rois, im_rois)
+        df_rois = _centroid_features(Sxx_dB, df_rois, im_rois)
         
         # format ROis to initial tn and fn
         df_rois = maad.util.format_features(df_rois, tn, fn)
@@ -408,6 +429,9 @@ def extract_rois_in_soundscape(
         if REMOVE_ROIS_FMAX_LIM is not None:
             if isinstance(REMOVE_ROIS_FMAX_LIM, (float, int)) :
                 high_frequency_threshold_in_pixels = min(im_rois.shape[1]-1, round(REMOVE_ROIS_FMAX_LIM / DELTA_F))
+            elif isinstance(REMOVE_ROIS_FMAX_LIM, (tuple, list, np.ndarray)) and len(REMOVE_ROIS_FMAX_LIM) == 2 :
+                low_frequency_threshold_in_pixels = max(1, round(REMOVE_ROIS_FMAX_LIM[0] / DELTA_F))
+                high_frequency_threshold_in_pixels = min(im_rois.shape[1]-1, round(REMOVE_ROIS_FMAX_LIM[1] / DELTA_F))
             else:
                 raise ValueError ('REMOVE_ROIS_FMAX_LIM should be {None, or single value')
 
@@ -418,6 +442,15 @@ def extract_rois_in_soundscape(
                 im_rois[im_rois==labelID] = 0
             # delete the rois corresponding to the labelID that we removed in im_mask
             df_rois = df_rois[~df_rois['labelID'].isin(list_labelID)]
+
+            if low_frequency_threshold_in_pixels is not None :
+                # retrieve the list of labels that match the condition  
+                list_labelID = df_rois[df_rois['max_y']<=low_frequency_threshold_in_pixels]['labelID']
+                # set to 0 all the pixel that match the labelID that we want to remove
+                for labelID in list_labelID.astype(int).tolist() :
+                    im_rois[im_rois==labelID] = 0
+                # delete the rois corresponding to the labelID that we removed in im_mask
+                df_rois = df_rois[~df_rois['labelID'].isin(list_labelID)]
         
         if MAX_YX_RATIO is not None:
             df_rois = df_rois[df_rois['ratio_xy'] < MAX_YX_RATIO]  
