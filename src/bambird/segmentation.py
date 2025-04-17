@@ -446,11 +446,11 @@ def multicpu_extract_rois(
             
             # set default save_path and save_filename
             #----------------------------------------
-            # if save_path is None:
-            #     if (dataset[-1] == "/") or (dataset[-1] == "/"):
-            #         dataset = dataset[:-1]
+            if save_path is None:
+                if (dataset[-1] == "/") or (dataset[-1] == "/"):
+                    dataset = dataset[:-1]
 
-            #     save_path = str(dataset) + "_ROIS"
+                save_path = str(dataset) + "_ROIS"
             
         # test if dataset_path is a valid csv file
         #----------------------------------------
@@ -459,8 +459,8 @@ def multicpu_extract_rois(
             df_data = pd.read_csv(dataset, sep=';')
             
             # set default save_path and save_filename
-            # if save_path is None:
-            #     save_path = os.path.dirname(dataset) + "_ROIS"
+            if save_path is None:
+                save_path = os.path.dirname(dataset) + "_ROIS"
                         
     # if dataset is a dataframe : 
     # > read the dataframe       
@@ -469,8 +469,8 @@ def multicpu_extract_rois(
         df_data = dataset.copy()
         
         # # set default save_path and save_filename
-        # if save_path is None:
-        #     save_path = str(Path(df_data['fullfilename'].iloc[0]).parent.parent) + "_ROIS"
+        if save_path is None:
+            save_path = str(Path(df_data['fullfilename'].iloc[0]).parent.parent) + "_ROIS"
             
     else:
         raise Exception(

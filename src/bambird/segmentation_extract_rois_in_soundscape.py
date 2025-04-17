@@ -166,7 +166,7 @@ def _centroid_features(Sxx, rois=None, im_rois=None):
             centroid = [roi.weighted_centroid for roi in rprops]
             # TODO : add in MAAD
             leq += [power2dB(np.mean(np.sum(roi.image_intensity,axis=0))) for roi in rprops]
-            bgn += [power2dB(np.mean(np.sum(np.percentile(roi.image_intensity,90),axis=0))) for roi in rprops]
+            bgn += [power2dB(np.mean(np.sum(np.percentile(roi.image_intensity,50),axis=0))) for roi in rprops]
 
         if im_rois is not None : 
             if len(leq) != 0 :
