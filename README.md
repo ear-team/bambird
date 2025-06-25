@@ -3,32 +3,28 @@
 
 ## Installation
 
-First install the environment `xprize-final`
-```bash
-$ conda env update -n my_env --file environment.yaml
-```
-
-Then install the latest version of the dev branch from source clone the master repository and from the top-level folder call:
-
-```bash
-$ git clone --branch dev https://github.com/ear-team/bambird.git && cd bambird
-$ pip install -e .
-```
-
-Optional, install a wrapper of birdnet to get the embeddings. 
-birdnetlib requires Python 3.9+ and prior installation of Tensorflow Lite and ffmpeg.
-
 Prequisite
-```bash
-pip install tflite-runtime
-```
 ```bash
 sudo apt-get install ffmpeg
 ```
-Then install birdnetlib
+
+First install the latest version of the dev branch from source clone the master repository and from the top-level folder call.
 ```bash
-pip install birdnetlib
+$ git clone --branch dev https://github.com/ear-team/bambird.git && cd bambird
 ```
+
+Then create an conda environment (called for instance bambird) with python version >3.9 and pip. 
+```bash
+$ conda create -n bambird python=3.10 pip
+```
+
+Finally, after activating the conda environment `bambird`, install the package. The instruction -e is optional. It allows you to edit the code of the package. The changes are immediatly applied.  
+```bash
+$ conda activate bambird
+$ pip install -e .
+```
+
+
 
 ## Usage
 

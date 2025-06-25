@@ -1,4 +1,4 @@
-name: xprize-final
+name: bambird
 channels:
   - conda-forge
   - defaults
@@ -15,8 +15,13 @@ dependencies:
   - tqdm
   - librosa
   - umap-learn
+  - pyyaml>=6.0
+  - ipywidgets
+  - pandas
   - pip:
       - scikit-maad>=1.4.2
       - kneed
       - hdbscan
+      - tflite-runtime
+      - birdnetlib
   
